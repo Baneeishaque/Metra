@@ -6,6 +6,8 @@
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
     <uses-permission android:name="android.permission.RECEIVE_SMS" />
     <uses-permission android:name="android.permission.READ_SMS" />
+    <uses-permission android:name="android.permission.WRITE_SMS" />
+    <uses-permission android:name="android.permission.SEND_SMS" />
 
     <application
         android:allowBackup="false"
@@ -16,16 +18,17 @@
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning">
 
+        <activity android:name=".SendMessageActivity" />
+
         <activity
             android:name=".LauncherActivity"
             android:launchMode="singleInstance"
             android:theme="@style/AppTheme.NoActionBar">
-
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-
             <intent-filter>
                 <action android:name="android.intent.action.SEND" />
                 <action android:name="android.intent.action.SENDTO" />
@@ -37,19 +40,14 @@
                 <data android:scheme="mms" />
                 <data android:scheme="mmsto" />
             </intent-filter>
-
         </activity>
-
         <activity
             android:name=".MainActivity"
             android:theme="@style/AppTheme.NoActionBar" />
-
         <activity
             android:name=".TrustedSourcesActivity"
             android:label="@string/title_activity_trusted_sources"
-            android:theme="@style/AppTheme.NoActionBar" />
-
-        <!-- SMS Receiver -->
+            android:theme="@style/AppTheme.NoActionBar" /> <!-- SMS Receiver -->
         <receiver
             android:name=".SmsReceiver"
             android:directBootAware="true"
@@ -63,7 +61,6 @@
                 <action android:name="android.provider.Telephony.SMS_RECEIVED" />
             </intent-filter>
         </receiver>
-
         <receiver
             android:name=".MMSBroadcastReceiver"
             android:exported="true"
@@ -94,6 +91,6 @@
                 <data android:scheme="mmsto" />
             </intent-filter>
         </service>
-
     </application>
+
 </manifest>
