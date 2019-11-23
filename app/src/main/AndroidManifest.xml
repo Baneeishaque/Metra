@@ -26,7 +26,7 @@
             android:name=".SmsReceiver"
             android:permission="android.permission.BROADCAST_SMS">
             <intent-filter>
-                <action android:name="android.provider.Telephony.SMS_DELIVER" />
+                <!--                <action android:name="android.provider.Telephony.SMS_DELIVER" />-->
                 <action android:name="android.provider.Telephony.SMS_RECEIVED" />
                 <action android:name="android.intent.action.BOOT_COMPLETED" />
             </intent-filter>
@@ -38,12 +38,10 @@
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
-
-                <action android:name="android.intent.action.SEND" />
-                <action android:name="android.intent.action.SENDTO" />
-
-                <data android:scheme="sms" />
-                <data android:scheme="smsto" />
+                <!--                <action android:name="android.intent.action.SEND" />-->
+                <!--                <action android:name="android.intent.action.SENDTO" />-->
+                <!--                <data android:scheme="sms" />-->
+                <!--                <data android:scheme="smsto" />-->
             </intent-filter>
         </activity>
 
