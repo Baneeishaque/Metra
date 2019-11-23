@@ -3,9 +3,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="com.example.metra">
 
-    <uses-permission android:name="android.permission.RECEIVE_SMS" />
-    <uses-permission android:name="android.permission.READ_SMS" />
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+    <uses-permission android:name="android.permission.READ_SMS" />
+    <uses-permission android:name="android.permission.RECEIVE_SMS" />
 
     <application
         android:allowBackup="false"
@@ -24,24 +24,25 @@
         <!-- SMS Receiver -->
         <receiver
             android:name=".SmsReceiver"
+            android:directBootAware="true"
             android:permission="android.permission.BROADCAST_SMS">
             <intent-filter>
-                <!--                <action android:name="android.provider.Telephony.SMS_DELIVER" />-->
-                <action android:name="android.provider.Telephony.SMS_RECEIVED" />
                 <action android:name="android.intent.action.BOOT_COMPLETED" />
+                <action android:name="android.intent.action.LOCKED_BOOT_COMPLETED" />
+                <action android:name="android.intent.action.QUICKBOOT_POWERON" />
+                <action android:name="android.provider.Telephony.SMS_DELIVER" />
             </intent-filter>
         </receiver>
 
         <activity
             android:name=".MainActivity"
+            android:launchMode="singleInstance"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.LAUNCHER" />
-                <!--                <action android:name="android.intent.action.SEND" />-->
-                <!--                <action android:name="android.intent.action.SENDTO" />-->
-                <!--                <data android:scheme="sms" />-->
-                <!--                <data android:scheme="smsto" />-->
             </intent-filter>
         </activity>
 

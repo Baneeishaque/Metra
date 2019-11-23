@@ -1,23 +1,40 @@
 package com.example.metra;
 
+import android.Manifest;
+import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.database.Cursor;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ArrayAdapter;
+import android.widget.ListView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.core.content.ContextCompat;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 
-public class MainActivity extends ReceiveSmsPermissionActivity {
+import java.util.ArrayList;
+import java.util.Objects;
 
-    final int receiveSmsRequestCode = 1;
+public class MainActivity extends AppCompatActivity {
+
+    static boolean active = false;
+    final int RECEIVE_SMS_PERMISSION_REQUEST_CODE = 1;
+
     Context activityContext = this;
+    final int READ_SMS_PERMISSION_REQUEST_CODE = 2;
+    ArrayAdapter<String> arrayAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,26 +52,34 @@ public class MainActivity extends ReceiveSmsPermissionActivity {
                         .show();
             }
         });
+
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_SMS) != PackageManager.PERMISSION_GRANTED) {
+            getPermissionToReadSMS();
+        } else {
+            refreshSmsInbox();
+        }
     }
 
-    @Override
-    protected int passPermissionRequestCode() {
-        return receiveSmsRequestCode;
-    }
+    public void refreshSmsInbox() {
 
-    @Override
-    protected int passPermissionRequirementText() {
-        return R.string.read_sms_permission_requirement;
-    }
+        ListView listViewMessages = findViewById(R.id.list_view_messages);
+        ArrayList<String> smsMessagesList = new ArrayList<>();
+        arrayAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, smsMessagesList);
+        listViewMessages.setAdapter(arrayAdapter);
 
-    @Override
-    public void performPermissionGrantedActions() {
+        ContentResolver contentResolver = getContentResolver();
+        Cursor smsInboxCursor = contentResolver.query(Uri.parse("content://sms/inbox"), new String[]{"date", "address", "body"}, null, null, "date DESC LIMIT 5");
+        int indexAddress = Objects.requireNonNull(smsInboxCursor).getColumnIndex("address");
+        int indexBody = smsInboxCursor.getColumnIndex("body");
+        if (indexBody < 0 || !smsInboxCursor.moveToFirst()) return;
 
-    }
+        arrayAdapter.clear();
+        do {
+            arrayAdapter.add("\nFrom: " + smsInboxCursor.getString(indexAddress) + "\n" + smsInboxCursor.getString(indexBody) + "\n");
+        } while (smsInboxCursor.moveToNext());
+        arrayAdapter.notifyDataSetChanged();
 
-    @Override
-    public void performPermissionDeniedActions() {
-
+        smsInboxCursor.close();
     }
 
     @Override
@@ -70,6 +95,45 @@ public class MainActivity extends ReceiveSmsPermissionActivity {
             startActivity(new Intent(this, TrustedSourcesActivity.class));
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    public void getPermissionToReadSMS() {
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_SMS) != PackageManager.PERMISSION_GRANTED) {
+            if (shouldShowRequestPermissionRationale(Manifest.permission.READ_SMS)) {
+                Toast.makeText(this, "Please allow permission! - Read SMS", Toast.LENGTH_SHORT).show();
+            } else {
+                Toast.makeText(this, "Please allow permission! - Read SMS", Toast.LENGTH_SHORT).show();
+            }
+            requestPermissions(new String[]{Manifest.permission.READ_SMS}, READ_SMS_PERMISSION_REQUEST_CODE);
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+
+        if (requestCode == READ_SMS_PERMISSION_REQUEST_CODE) {
+            if (grantResults.length == 1 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                Toast.makeText(this, "Read SMS permission granted", Toast.LENGTH_SHORT).show();
+                refreshSmsInbox();
+            } else {
+                Toast.makeText(this, "Read SMS permission denied", Toast.LENGTH_SHORT).show();
+                finishAffinity();
+            }
+        } else {
+            Toast.makeText(this, "Unexpected value: " + requestCode, Toast.LENGTH_LONG).show();
+        }
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        active = true;
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        active = false;
     }
 
 //    @Override

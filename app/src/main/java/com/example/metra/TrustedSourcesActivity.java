@@ -87,8 +87,8 @@ public class TrustedSourcesActivity extends AppCompatActivity {
         TrustedSourcesListAdapter adapter = new TrustedSourcesListAdapter(trustedSourcesDatabaseHelper.getAllTrustedSources(), this);
 
         //handle listView and assign adapter
-        ListView lView = findViewById(R.id.list_view);
-        lView.setAdapter(adapter);
+        ListView listView = findViewById(R.id.list_view);
+        listView.setAdapter(adapter);
     }
 
 }
