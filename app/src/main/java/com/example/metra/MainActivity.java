@@ -29,12 +29,11 @@ import java.util.Objects;
 
 public class MainActivity extends AppCompatActivity {
 
+    static MainActivity inst;
     static boolean active = false;
-    final int RECEIVE_SMS_PERMISSION_REQUEST_CODE = 1;
-
-    Context activityContext = this;
     final int READ_SMS_PERMISSION_REQUEST_CODE = 2;
-    ArrayAdapter<String> arrayAdapter;
+    Context activityContext = this;
+    private ArrayAdapter<String> arrayAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -124,16 +123,26 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    @Override
-    public void onStart() {
-        super.onStart();
-        active = true;
+    public static MainActivity instance() {
+        return inst;
     }
 
     @Override
     public void onStop() {
         super.onStop();
         active = false;
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        active = true;
+        inst = this;
+    }
+
+    public void updateInbox(final String smsMessage) {
+        arrayAdapter.insert(smsMessage, 0);
+        arrayAdapter.notifyDataSetChanged();
     }
 
 //    @Override
