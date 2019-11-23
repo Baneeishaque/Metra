@@ -22,7 +22,26 @@ public class LauncherActivity extends AppCompatActivity {
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.RECEIVE_SMS) != PackageManager.PERMISSION_GRANTED) {
             getPermissionToReceiveSMS();
         } else {
+            handleIncomingData();
             moveToMainScreen();
+        }
+    }
+
+    private void handleIncomingData() {
+        // Get intent, action and MIME type
+        Intent intent = getIntent();
+        String action = intent.getAction();
+        String type = intent.getType();
+
+        if (Intent.ACTION_SEND.equals(action) && type != null) {
+            if ("text/plain".equals(type)) {
+                // Handle text being sent
+                String sharedText = intent.getStringExtra(Intent.EXTRA_TEXT);
+                if (sharedText != null) {
+                    // Update UI to reflect text being shared
+                    LogUtils.debug("Received : " + sharedText);
+                }
+            }
         }
     }
 
@@ -43,6 +62,7 @@ public class LauncherActivity extends AppCompatActivity {
         if (requestCode == RECEIVE_SMS_PERMISSION_REQUEST_CODE) {
             if (grantResults.length == 1 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                 Toast.makeText(this, "Receive SMS permission granted", Toast.LENGTH_SHORT).show();
+                handleIncomingData();
                 moveToMainScreen();
             } else {
                 Toast.makeText(this, "Receive SMS permission denied", Toast.LENGTH_SHORT).show();
