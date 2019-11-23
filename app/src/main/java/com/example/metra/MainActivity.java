@@ -105,7 +105,6 @@ public class MainActivity extends ReceiveSmsPermissionActivity {
                     })
                     .setIcon(android.R.drawable.ic_dialog_alert)
                     .show();
-
         }
     }
 }
