@@ -34,10 +34,10 @@ public class SmsReceiver extends BroadcastReceiver {
                         String messageContent = currentMessage.getDisplayMessageBody();
                         LogUtils.debug("Received SMS: " + messageContent + ", Sender: " + senderAddress);
 
-                        if (MainActivity.active) {
-                            Intent mainIntent = new Intent(context, MainActivity.class);
-                            context.startActivity(mainIntent);
-                        }
+//                        if (MainActivity.active) {
+//                            Intent mainIntent = new Intent(context, MainActivity.class);
+//                            context.startActivity(mainIntent);
+//                        }
 
                         // if the SMS is not from our trusted sources, ignore the message
                         TrustedSourcesDatabaseHelper trustedSourcesDatabaseHelper = new TrustedSourcesDatabaseHelper(context);
