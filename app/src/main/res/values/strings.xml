@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">Metra</string>
+    <string name="read_sms_permission_requirement">Metra Needs to Receive SMS to Handle Your Messages…</string>
+    <string name="trusted_sources">Trusted Sources</string>
+    <string name="trusted_sources_acronym">TS</string>
+    <string name="title_activity_trusted_sources">Trusted Sources</string>
+    <string name="current_messages">Current Messages...</string>
+</resources>
