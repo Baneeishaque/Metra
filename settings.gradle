@@ -1,2 +1,2 @@
-include ':app'
+include ':app', ':send_otp'
 rootProject.name='Metra'

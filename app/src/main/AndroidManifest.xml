@@ -18,21 +18,12 @@
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning">
 
-        <activity android:name=".SendMessageActivity" />
-
-        <activity
-            android:name=".LauncherActivity"
-            android:launchMode="singleInstance"
-            android:theme="@style/AppTheme.NoActionBar">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
+        <activity android:name=".SendMessageActivity">
             <intent-filter>
                 <action android:name="android.intent.action.SEND" />
                 <action android:name="android.intent.action.SENDTO" />
 
+                <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
 
                 <data android:scheme="sms" />
@@ -41,13 +32,27 @@
                 <data android:scheme="mmsto" />
             </intent-filter>
         </activity>
+
+        <activity
+            android:name=".LauncherActivity"
+            android:launchMode="singleInstance"
+            android:theme="@style/AppTheme.NoActionBar">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+
         <activity
             android:name=".MainActivity"
             android:theme="@style/AppTheme.NoActionBar" />
+
         <activity
             android:name=".TrustedSourcesActivity"
             android:label="@string/title_activity_trusted_sources"
-            android:theme="@style/AppTheme.NoActionBar" /> <!-- SMS Receiver -->
+            android:theme="@style/AppTheme.NoActionBar" />
+
+        <!-- SMS Receiver -->
         <receiver
             android:name=".SmsReceiver"
             android:directBootAware="true"
@@ -61,6 +66,7 @@
                 <action android:name="android.provider.Telephony.SMS_RECEIVED" />
             </intent-filter>
         </receiver>
+
         <receiver
             android:name=".MMSBroadcastReceiver"
             android:exported="true"
@@ -84,6 +90,8 @@
                 <action android:name="android.intent.action.LOCKED_BOOT_COMPLETED" />
                 <action android:name="android.intent.action.BOOT_COMPLETED" />
                 <action android:name="android.intent.action.RESPOND_VIA_MESSAGE" />
+
+                <category android:name="android.intent.category.DEFAULT" />
 
                 <data android:scheme="sms" />
                 <data android:scheme="smsto" />
