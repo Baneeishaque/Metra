@@ -2,6 +2,8 @@ package com.example.metra;
 
 import android.Manifest;
 import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.telephony.SmsManager;
@@ -11,14 +13,19 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
+
+import java.util.Objects;
 
 public class SendMessageActivity extends AppCompatActivity {
 
     final int SEND_SMS_PERMISSION_REQUEST_CODE = 1;
     Context activityContext = this;
     EditText editTextPhoneNumber, editTextMessageBody;
+    boolean securityFlag = false;
+    String existingSender;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,9 +47,35 @@ public class SendMessageActivity extends AppCompatActivity {
                 }
             }
         });
+
+        handleIncomingData();
     }
 
     private void sendSMS() {
+
+        if (securityFlag) {
+
+            new AlertDialog.Builder(this).setTitle("Caution!").setMessage("Trying to forward a message from trusted source - " + existingSender + ", Continue?")
+
+                    .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int which) {
+                            sendIt();
+                        }
+                    })
+
+                    .setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                        }
+                    })
+                    .setIcon(android.R.drawable.ic_dialog_alert)
+                    .show();
+        } else {
+            sendIt();
+        }
+    }
+
+    private void sendIt() {
         SmsManager smsManager = SmsManager.getDefault();
         smsManager.sendTextMessage(editTextPhoneNumber.getText().toString(), null, editTextMessageBody.getText().toString(), null, null);
         Toast.makeText(activityContext, "Message sent!", Toast.LENGTH_SHORT).show();
@@ -74,5 +107,37 @@ public class SendMessageActivity extends AppCompatActivity {
         } else {
             Toast.makeText(this, "Unexpected value: " + requestCode, Toast.LENGTH_LONG).show();
         }
+    }
+
+    private void handleIncomingData() {
+
+        // Get intent & action
+        Intent intent = getIntent();
+        String action = intent.getAction();
+
+        if (Objects.equals(action, Intent.ACTION_SENDTO)) {
+            String messageContent = intent.getStringExtra("sms_body");
+            if (messageContent != null) {
+                LogUtils.debug("Done");
+                MessagesDatabaseHelper messagesDatabaseHelper = new MessagesDatabaseHelper(this);
+                existingSender = messagesDatabaseHelper.checkMessage(messageContent);
+                if (!existingSender.isEmpty()) {
+                    securityFlag = true;
+                }
+            }
+        }
+
+//        String type = intent.getType();
+//        if (Intent.ACTION_SEND.equals(action) && type != null) {
+//            if ("text/plain".equals(type)) {
+//                // Handle text being sent
+//                String sharedText = intent.getStringExtra(Intent.EXTRA_TEXT);
+//                if (sharedText != null) {
+//                    // Update UI to reflect text being shared
+//                    LogUtils.debug("Received : " + sharedText);
+//                }
+//            }
+//        }
+
     }
 }

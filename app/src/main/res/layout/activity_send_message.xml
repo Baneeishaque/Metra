@@ -4,57 +4,52 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@android:color/darker_gray"
     tools:context=".SendMessageActivity">
 
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/edit_text_phone_number_holder"
+    <EditText
+        android:id="@+id/edit_text_phone_number"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="40dp"
         android:layout_margin="16dp"
-        app:layout_constraintBottom_toTopOf="@id/edit_text_message_holder"
+        android:background="@drawable/shape"
+        android:ems="10"
+        android:hint="Receiver..."
+        android:imeOptions="actionNext"
+        android:importantForAutofill="no"
+        android:inputType="phone"
+        android:textSize="24sp"
+        app:layout_constraintBottom_toTopOf="@id/edit_text_message"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toTopOf="parent" />
 
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/edit_text_phone_number"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:hint="Receiver..."
-            android:inputType="phone" />
-
-    </com.google.android.material.textfield.TextInputLayout>
-
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/edit_text_message_holder"
+    <EditText
+        android:id="@+id/edit_text_message"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_margin="16dp"
+        android:background="@drawable/shape"
+        android:ems="10"
+        android:hint="Message..."
+        android:imeOptions="actionNext"
+        android:importantForAutofill="no"
+        android:inputType="text"
+        android:textSize="24sp"
         app:layout_constraintBottom_toTopOf="@id/button_send"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/edit_text_phone_number_holder">
-
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/edit_text_message"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:hint="Message"
-            android:inputType="textMultiLine"
-            android:minLines="1" />
-
-    </com.google.android.material.textfield.TextInputLayout>
+        app:layout_constraintTop_toBottomOf="@id/edit_text_phone_number" />
 
     <Button
         android:id="@+id/button_send"
         android:layout_width="match_parent"
         android:layout_height="48dp"
-        android:layout_margin="8dp"
+        android:layout_margin="16dp"
+        android:background="@drawable/shape_button"
         android:text="Send..."
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/edit_text_message_holder" />
+        app:layout_constraintTop_toBottomOf="@id/edit_text_message" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

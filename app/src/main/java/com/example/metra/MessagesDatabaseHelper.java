@@ -2,6 +2,7 @@ package com.example.metra;
 
 import android.content.ContentValues;
 import android.content.Context;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
@@ -50,5 +51,26 @@ public class MessagesDatabaseHelper extends SQLiteOpenHelper {
 
         // close db connection
         db.close();
+    }
+
+    public String checkMessage(String passedMessage) {
+
+        String result = "";
+
+        // get readable database as we are not inserting anything
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        Cursor cursor = db.query(Message.TABLE_NAME,
+                new String[]{Message.COLUMN_ID, Message.COLUMN_SENDER, Message.COLUMN_MESSAGE_BODY},
+                Message.COLUMN_MESSAGE_BODY + "=?",
+                new String[]{passedMessage}, null, null, null, null);
+
+        if (cursor.moveToFirst()) {
+            result = cursor.getString(cursor.getColumnIndex(Message.COLUMN_SENDER));
+        }
+        // close the db connection
+        cursor.close();
+
+        return result;
     }
 }
