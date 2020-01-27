@@ -5,4 +5,6 @@
     <string name="trusted_sources_acronym">TS</string>
     <string name="title_activity_trusted_sources">Trusted Sources</string>
     <string name="current_messages">Current Messages...</string>
+    <string name="trusted_apps_acronym">TA</string>
+    <string name="title_activity_trusted_apps">Trusted Apps</string>
 </resources>

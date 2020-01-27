@@ -6,4 +6,8 @@
         android:id="@+id/trusted_sources"
         android:title="@string/trusted_sources_acronym"
         app:showAsAction="always" />
+    <item
+        android:id="@+id/trusted_apps"
+        android:title="@string/trusted_apps_acronym"
+        app:showAsAction="always" />
 </menu>
