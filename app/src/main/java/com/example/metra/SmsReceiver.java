@@ -41,9 +41,13 @@ public class SmsReceiver extends BroadcastReceiver {
 
                         // if the SMS is not from our trusted sources, ignore the message
                         TrustedSourcesDatabaseHelper trustedSourcesDatabaseHelper = new TrustedSourcesDatabaseHelper(context);
+
                         if (trustedSourcesDatabaseHelper.checkSmsSender(senderAddress.toLowerCase())) {
+
                             MessagesDatabaseHelper messagesDatabaseHelper = new MessagesDatabaseHelper(context);
+
                             messagesDatabaseHelper.insertMessage(senderAddress, messageContent);
+
                             Toast.makeText(context, "SMS added to Metra Database...", Toast.LENGTH_LONG).show();
                         }
                     }

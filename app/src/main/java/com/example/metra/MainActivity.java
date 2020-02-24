@@ -98,7 +98,7 @@ public class MainActivity extends AppCompatActivity {
             startActivity(new Intent(this, TrustedSourcesActivity.class));
         }
         if (item.getItemId() == R.id.trusted_apps) {
-            startActivity(new Intent(this, TresttedAppsActivity.class));
+//            startActivity(new Intent(this, TresttedAppsActivity.class));
         }
         return super.onOptionsItemSelected(item);
     }

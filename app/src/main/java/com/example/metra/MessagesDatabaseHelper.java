@@ -41,8 +41,7 @@ public class MessagesDatabaseHelper extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getWritableDatabase();
 
         ContentValues values = new ContentValues();
-        // `id` will be inserted automatically.
-        // no need to add it.
+        // `id` will be inserted automatically - no need to add it.
         values.put(Message.COLUMN_SENDER, sender);
         values.put(Message.COLUMN_MESSAGE_BODY, messageBody);
 

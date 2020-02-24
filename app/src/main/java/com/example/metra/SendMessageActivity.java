@@ -53,6 +53,19 @@ public class SendMessageActivity extends AppCompatActivity {
 
     private void sendSMS() {
 
+        String messageContent = editTextMessageBody.getText().toString();
+
+        if (!messageContent.isEmpty()) {
+
+            MessagesDatabaseHelper messagesDatabaseHelper = new MessagesDatabaseHelper(this);
+
+            existingSender = messagesDatabaseHelper.checkMessage(messageContent);
+
+            if (!existingSender.isEmpty()) {
+                securityFlag = true;
+            }
+        }
+
         if (securityFlag) {
 
             new AlertDialog.Builder(this).setTitle("Caution!").setMessage("Trying to forward a message from trusted source - " + existingSender + ", Continue?")
@@ -118,7 +131,6 @@ public class SendMessageActivity extends AppCompatActivity {
         if (Objects.equals(action, Intent.ACTION_SENDTO)) {
             String messageContent = intent.getStringExtra("sms_body");
             if (messageContent != null) {
-                LogUtils.debug("Done");
                 MessagesDatabaseHelper messagesDatabaseHelper = new MessagesDatabaseHelper(this);
                 existingSender = messagesDatabaseHelper.checkMessage(messageContent);
                 if (!existingSender.isEmpty()) {

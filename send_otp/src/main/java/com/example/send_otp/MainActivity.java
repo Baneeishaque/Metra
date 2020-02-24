@@ -28,10 +28,10 @@ public class MainActivity extends AppCompatActivity {
 
     public void sendMessageMethod2(View view) {
         // add the phone number in the data
-        Uri uri = Uri.parse("smsto:" + "+919446827218");
+        Uri uri = Uri.parse("smsto:" + "+919895624669");
         Intent smsSIntent = new Intent(Intent.ACTION_SENDTO, uri);
         // add the message at the sms_body extra field
-        smsSIntent.putExtra("sms_body", "Test Message");
+        smsSIntent.putExtra("sms_body", "Test-Message");
         startActivity(smsSIntent);
     }
 

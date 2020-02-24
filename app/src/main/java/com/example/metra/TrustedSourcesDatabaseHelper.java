@@ -79,9 +79,13 @@ public class TrustedSourcesDatabaseHelper extends SQLiteOpenHelper {
     }
 
     boolean checkSmsSender(String phoneNumber) {
+
         List<TrustedSource> trusted_sources = getAllTrustedSources();
+
         for (TrustedSource trustedSource : trusted_sources) {
+
             if (trustedSource.getPhone_number().equals(phoneNumber)) {
+
                 return true;
             }
         }
