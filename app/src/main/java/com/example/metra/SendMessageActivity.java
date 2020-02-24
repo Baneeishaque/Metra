@@ -149,14 +149,9 @@ public class SendMessageActivity extends AppCompatActivity {
         String action = intent.getAction();
 
         if (Objects.equals(action, Intent.ACTION_SENDTO)) {
-            String messageContent = intent.getStringExtra("sms_body");
-            if (messageContent != null) {
-                DatabaseHelper messagesDatabaseHelper = new DatabaseHelper(this);
-                existingSender = messagesDatabaseHelper.checkMessage(messageContent);
-                if (!existingSender.isEmpty()) {
-                    securityFlag = true;
-                }
-            }
+
+            editTextMessageBody.setText(intent.getStringExtra("sms_body"));
+            editTextPhoneNumber.setText(intent.getStringExtra("address"));
         }
 
 //        String type = intent.getType();

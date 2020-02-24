@@ -15,7 +15,7 @@ import androidx.appcompat.widget.Toolbar;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
-public class TresttedAppsActivity extends AppCompatActivity {
+public class TrustedAppsActivity extends AppCompatActivity {
     Context activityContext = this;
 
     @Override
@@ -66,7 +66,7 @@ public class TresttedAppsActivity extends AppCompatActivity {
                         trustedAppsDatabaseHelper.insertTrustedApp(input.getText().toString());
                         LogUtils.debug(input.getText().toString() + " Added to Trusted DB...");
 //                        TODO : To Activity Utils
-                        startActivity(new Intent(activityContext, TresttedAppsActivity.class));
+                        startActivity(new Intent(activityContext, TrustedAppsActivity.class));
                         ((AppCompatActivity) activityContext).finish();
                     }
                 });

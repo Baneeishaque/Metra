@@ -1,4 +1,4 @@
-package com.example.send_otp;
+package com.example.metra;
 
 import android.content.Intent;
 import android.net.Uri;
@@ -9,12 +9,12 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.material.snackbar.Snackbar;
 
-public class MainActivity extends AppCompatActivity {
+public class SmsForwardTestActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_sms_forward_test);
     }
 
     public void sendMessageMethod1(View view) {
