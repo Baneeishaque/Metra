@@ -19,8 +19,7 @@ public class SmsForwardTestActivity extends AppCompatActivity {
 
     public void sendMessageMethod1(View view) {
 
-        Snackbar.make(view, "Will Come Soon..", Snackbar.LENGTH_LONG)
-                .show();
+        Snackbar.make(view, "Will Come Soon..", Snackbar.LENGTH_LONG).show();
     }
 
     public void sendMessageMethod2(View view) {
@@ -36,7 +35,6 @@ public class SmsForwardTestActivity extends AppCompatActivity {
 
     public void sendMessageMethod3(View view) {
 
-        Snackbar.make(view, "Will Come Soon..", Snackbar.LENGTH_LONG)
-                .show();
+        Snackbar.make(view, "Will Come Soon..", Snackbar.LENGTH_LONG).show();
     }
 }

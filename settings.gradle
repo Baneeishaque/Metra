@@ -1,2 +1,2 @@
-include ':app', ':send_otp', ':vpn'
-rootProject.name='Metra'
+include ':app', ':vpn'
+rootProject.name = 'Metra'
