@@ -57,7 +57,7 @@ public class TrustedSourcesListAdapter extends BaseAdapter implements ListAdapte
             @Override
             public void onClick(View v) {
 //                TODO : Confirmation
-                TrustedSourcesDatabaseHelper trustedSourcesDatabaseHelper = new TrustedSourcesDatabaseHelper(context);
+                DatabaseHelper trustedSourcesDatabaseHelper = new DatabaseHelper(context);
                 trustedSourcesDatabaseHelper.deleteTrustedSource(trustedSources.get(position));
                 trustedSources.remove(position);
                 notifyDataSetChanged();

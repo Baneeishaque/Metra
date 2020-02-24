@@ -12,8 +12,9 @@ public class Message {
             "CREATE TABLE " + TABLE_NAME + "("
                     + COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT,"
                     + COLUMN_SENDER + " TEXT,"
-                    + COLUMN_MESSAGE_BODY + " TEXT,"
+                    + COLUMN_MESSAGE_BODY + " TEXT"
                     + ")";
+
     private int id;
     private String sender, messageBody;
 

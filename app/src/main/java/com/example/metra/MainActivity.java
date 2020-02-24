@@ -39,8 +39,11 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        //TODO : Pre check for service
         startService(new Intent(this, QuickResponseService.class));
 
         Toolbar toolbar = findViewById(R.id.toolbar);

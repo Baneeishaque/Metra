@@ -40,11 +40,11 @@ public class SmsReceiver extends BroadcastReceiver {
                         }
 
                         // if the SMS is not from our trusted sources, ignore the message
-                        TrustedSourcesDatabaseHelper trustedSourcesDatabaseHelper = new TrustedSourcesDatabaseHelper(context);
+                        DatabaseHelper trustedSourcesDatabaseHelper = new DatabaseHelper(context);
 
                         if (trustedSourcesDatabaseHelper.checkSmsSender(senderAddress.toLowerCase())) {
 
-                            MessagesDatabaseHelper messagesDatabaseHelper = new MessagesDatabaseHelper(context);
+                            DatabaseHelper messagesDatabaseHelper = new DatabaseHelper(context);
 
                             messagesDatabaseHelper.insertMessage(senderAddress, messageContent);
 
@@ -53,6 +53,7 @@ public class SmsReceiver extends BroadcastReceiver {
                     }
                 }
             } catch (Exception e) {
+
                 LogUtils.debug("Exception: " + e.getMessage());
             }
         }

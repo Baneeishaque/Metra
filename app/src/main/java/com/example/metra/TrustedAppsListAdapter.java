@@ -57,7 +57,7 @@ public class TrustedAppsListAdapter extends BaseAdapter implements ListAdapter {
             @Override
             public void onClick(View v) {
 //                TODO : Confirmation
-                TrustedAppsDatabaseHelper trustedAppsDatabaseHelper = new TrustedAppsDatabaseHelper(context);
+                DatabaseHelper trustedAppsDatabaseHelper = new DatabaseHelper(context);
                 trustedAppsDatabaseHelper.deleteTrustedApp(trustedApps.get(position));
                 trustedApps.remove(position);
                 notifyDataSetChanged();

@@ -1,9 +1,5 @@
 package com.example.metra;
 
-import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
-
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -12,6 +8,10 @@ import android.text.InputType;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ListView;
+
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
@@ -62,7 +62,7 @@ public class TresttedAppsActivity extends AppCompatActivity {
                     public void onClick(DialogInterface dialog, int which) {
                         //TODO : Phone Number Validation
                         //TODO : Check for already existing number
-                        TrustedAppsDatabaseHelper trustedAppsDatabaseHelper = new TrustedAppsDatabaseHelper(activityContext);
+                        DatabaseHelper trustedAppsDatabaseHelper = new DatabaseHelper(activityContext);
                         trustedAppsDatabaseHelper.insertTrustedApp(input.getText().toString());
                         LogUtils.debug(input.getText().toString() + " Added to Trusted DB...");
 //                        TODO : To Activity Utils
@@ -80,7 +80,7 @@ public class TresttedAppsActivity extends AppCompatActivity {
             }
         });
 
-        TrustedAppsDatabaseHelper trustedAppsDatabaseHelper = new TrustedAppsDatabaseHelper(this);
+        DatabaseHelper trustedAppsDatabaseHelper = new DatabaseHelper(this);
 
         //instantiate custom adapter
         TrustedAppsListAdapter adapter = new TrustedAppsListAdapter(trustedAppsDatabaseHelper.getAllTrustedApps(), this);

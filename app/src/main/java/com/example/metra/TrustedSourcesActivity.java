@@ -21,6 +21,7 @@ public class TrustedSourcesActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_trusted_sources);
 
@@ -29,59 +30,58 @@ public class TrustedSourcesActivity extends AppCompatActivity {
 
         FloatingActionButton fab = findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
+
             @Override
             public void onClick(View view) {
 
                 //TODO : Alert Dialog Utils
                 //TODO : Input Dialog Utils
 
-//                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-//                        .setAction("Action", null).show();
-
                 AlertDialog.Builder builder = new AlertDialog.Builder(activityContext);
                 builder.setTitle("New Trusted Source");
 
                 //TODO : Style the input
+                //TODO : Pick from Contacts
 
                 // Set up the input
                 final EditText input = new EditText(activityContext);
                 // Specify the type of input expected
-                //TODO : Pick from Contacts
                 input.setInputType(InputType.TYPE_CLASS_PHONE);
                 input.setHint("Phone Number...");
-//                LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, DisplayUtils.convertPixelsToDp(96, activityContext));
-//                int marginDp=DisplayUtils.convertPixelsToDp(128,activityContext);
-//                lp.setMargins(marginDp,marginDp,marginDp,marginDp);
-//                input.setLayoutParams(lp);
                 builder.setView(input);
-
-//                builder.setView(R.layout.add_trusted_soiurce);
 
                 // Set up the buttons
                 builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
+
                         //TODO : Phone Number Validation
                         //TODO : Check for already existing number
-                        TrustedSourcesDatabaseHelper trustedSourcesDatabaseHelper = new TrustedSourcesDatabaseHelper(activityContext);
+
+                        DatabaseHelper trustedSourcesDatabaseHelper = new DatabaseHelper(activityContext);
                         trustedSourcesDatabaseHelper.insertTrustedSource(input.getText().toString());
+
                         LogUtils.debug(input.getText().toString() + " Added to Trusted DB...");
-//                        TODO : To Activity Utils
+
+                        //TODO : To Activity Utils
                         startActivity(new Intent(activityContext, TrustedSourcesActivity.class));
                         ((AppCompatActivity) activityContext).finish();
                     }
                 });
+
                 builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-//                        dialog.cancel();
                     }
                 });
+
                 builder.show();
             }
         });
 
-        TrustedSourcesDatabaseHelper trustedSourcesDatabaseHelper = new TrustedSourcesDatabaseHelper(this);
+        DatabaseHelper trustedSourcesDatabaseHelper = new DatabaseHelper(this);
 
         //instantiate custom adapter
         TrustedSourcesListAdapter adapter = new TrustedSourcesListAdapter(trustedSourcesDatabaseHelper.getAllTrustedSources(), this);
@@ -90,5 +90,4 @@ public class TrustedSourcesActivity extends AppCompatActivity {
         ListView listView = findViewById(R.id.list_view);
         listView.setAdapter(adapter);
     }
-
 }

@@ -22,13 +22,18 @@ import java.util.Objects;
 public class SendMessageActivity extends AppCompatActivity {
 
     final int SEND_SMS_PERMISSION_REQUEST_CODE = 1;
+
     Context activityContext = this;
+
     EditText editTextPhoneNumber, editTextMessageBody;
+
     boolean securityFlag = false;
+
     String existingSender;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_send_message);
 
@@ -41,8 +46,11 @@ public class SendMessageActivity extends AppCompatActivity {
             public void onClick(View v) {
 
                 if (ContextCompat.checkSelfPermission(activityContext, Manifest.permission.SEND_SMS) != PackageManager.PERMISSION_GRANTED) {
+
                     getPermissionToSendSMS();
+
                 } else {
+
                     sendSMS();
                 }
             }
@@ -57,11 +65,12 @@ public class SendMessageActivity extends AppCompatActivity {
 
         if (!messageContent.isEmpty()) {
 
-            MessagesDatabaseHelper messagesDatabaseHelper = new MessagesDatabaseHelper(this);
+            DatabaseHelper messagesDatabaseHelper = new DatabaseHelper(this);
 
             existingSender = messagesDatabaseHelper.checkMessage(messageContent);
 
             if (!existingSender.isEmpty()) {
+
                 securityFlag = true;
             }
         }
@@ -71,27 +80,38 @@ public class SendMessageActivity extends AppCompatActivity {
             new AlertDialog.Builder(this).setTitle("Caution!").setMessage("Trying to forward a message from trusted source - " + existingSender + ", Continue?")
 
                     .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+
+                        @Override
                         public void onClick(DialogInterface dialog, int which) {
+
                             sendIt();
+
                         }
                     })
 
                     .setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
+
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
                         }
+
                     })
                     .setIcon(android.R.drawable.ic_dialog_alert)
                     .show();
         } else {
+
             sendIt();
         }
     }
 
     private void sendIt() {
+
         SmsManager smsManager = SmsManager.getDefault();
+
         smsManager.sendTextMessage(editTextPhoneNumber.getText().toString(), null, editTextMessageBody.getText().toString(), null, null);
+
         Toast.makeText(activityContext, "Message sent!", Toast.LENGTH_SHORT).show();
+
         editTextMessageBody.setText("");
     }
 
@@ -131,7 +151,7 @@ public class SendMessageActivity extends AppCompatActivity {
         if (Objects.equals(action, Intent.ACTION_SENDTO)) {
             String messageContent = intent.getStringExtra("sms_body");
             if (messageContent != null) {
-                MessagesDatabaseHelper messagesDatabaseHelper = new MessagesDatabaseHelper(this);
+                DatabaseHelper messagesDatabaseHelper = new DatabaseHelper(this);
                 existingSender = messagesDatabaseHelper.checkMessage(messageContent);
                 if (!existingSender.isEmpty()) {
                     securityFlag = true;
