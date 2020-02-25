@@ -4,6 +4,7 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
 
 import androidx.recyclerview.widget.RecyclerView;
@@ -19,6 +20,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
     private ArrayList<AbstractModel> modelList;
 
     private OnItemClickListener mItemClickListener;
+    private OnForwardButtonClickListener mForwardButtonClickListener;
 //    private OnCheckedListener mOnCheckedListener;
 
 //    private Set<Integer> checkSet = new HashSet<>();
@@ -50,7 +52,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 
             final AbstractModel model = getItem(position);
             ViewHolder genericViewHolder = (ViewHolder) holder;
-            genericViewHolder.itemTxtTitle.setText(model.getTitle());
+            genericViewHolder.itemTxtTitle.setText(model.getAddress());
             genericViewHolder.itemTxtMessage.setText(model.getMessage());
 
 //            //in some cases, it will prevent unwanted situations
@@ -70,6 +72,15 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 //                    mOnCheckedListener.onChecked(buttonView, isChecked, position, model);
 //                }
 //            });
+
+            genericViewHolder.itemButtonForward.setOnClickListener(new View.OnClickListener() {
+
+                @Override
+                public void onClick(View v) {
+
+                    mForwardButtonClickListener.onForwardButtonClick(model);
+                }
+            });
         }
     }
 
@@ -82,6 +93,11 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
     public void SetOnItemClickListener(final OnItemClickListener mItemClickListener) {
 
         this.mItemClickListener = mItemClickListener;
+    }
+
+    public void SetOnForwardButtonClickListener(final OnForwardButtonClickListener mForwardButtonClickListener) {
+
+        this.mForwardButtonClickListener = mForwardButtonClickListener;
     }
 
 //    public void SetOnCheckedListener(final OnCheckedListener onCheckedListener) {
@@ -98,7 +114,10 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         void onItemClick(View view, int position, AbstractModel model);
     }
 
+    public interface OnForwardButtonClickListener {
 
+        void onForwardButtonClick(AbstractModel model);
+    }
 //    public interface OnCheckedListener {
 //
 //        void onChecked(View view, boolean isChecked, int position, AbstractModel model);
@@ -108,6 +127,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 
         private TextView itemTxtTitle;
         private TextView itemTxtMessage;
+        private Button itemButtonForward;
 
         public ViewHolder(final View itemView) {
 
@@ -115,6 +135,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 
             this.itemTxtTitle = itemView.findViewById(R.id.item_txt_title);
             this.itemTxtMessage = itemView.findViewById(R.id.item_txt_message);
+            this.itemButtonForward = itemView.findViewById(R.id.button_forward);
 
             itemView.setOnClickListener(new View.OnClickListener() {
 

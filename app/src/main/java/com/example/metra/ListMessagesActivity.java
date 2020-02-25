@@ -129,7 +129,22 @@ public class ListMessagesActivity extends AppCompatActivity {
             public void onItemClick(View view, int position, AbstractModel model) {
 
                 //handle item click events here
-//                Toast.makeText(ListMessagesActivity.this, "Hey " + model.getTitle(), Toast.LENGTH_SHORT).show();
+//                Toast.makeText(ListMessagesActivity.this, "Hey " + model.getAddress(), Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        mAdapter.SetOnForwardButtonClickListener(new RecyclerViewAdapter.OnForwardButtonClickListener() {
+
+            @Override
+            public void onForwardButtonClick(AbstractModel model) {
+
+                // add the phone number in the data
+                Uri uri = Uri.parse("smsto:" + model.getAddress());
+                Intent smsSIntent = new Intent(Intent.ACTION_SENDTO, uri);
+                // add the message at the sms_body extra field
+                smsSIntent.putExtra("address", model.getAddress());
+                smsSIntent.putExtra("sms_body", model.getMessage());
+                startActivity(smsSIntent);
             }
         });
 
@@ -174,9 +189,7 @@ public class ListMessagesActivity extends AppCompatActivity {
     public void updateInbox(String sender, String smsMessage) {
 
         modelList.add(0, new AbstractModel(sender, smsMessage));
-        mAdapter.notifyDataSetChanged();
-//        arrayAdapter.insert(smsMessage, 0);
-//        arrayAdapter.notifyDataSetChanged();
+        mAdapter.updateList(modelList);
     }
 
     @Override
@@ -278,7 +291,7 @@ public class ListMessagesActivity extends AppCompatActivity {
 
                     for (int i = 0; i < modelList.size(); i++) {
 
-                        if (modelList.get(i).getTitle().toLowerCase().contains(s.toLowerCase()) || modelList.get(i).getMessage().toLowerCase().contains(s.toLowerCase())) {
+                        if (modelList.get(i).getAddress().toLowerCase().contains(s.toLowerCase()) || modelList.get(i).getMessage().toLowerCase().contains(s.toLowerCase())) {
 
                             filterList.add(modelList.get(i));
                             mAdapter.updateList(filterList);
