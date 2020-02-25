@@ -3,12 +3,16 @@ package com.example.metra;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.database.Cursor;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.ContactsContract;
 import android.text.InputType;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ListView;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
@@ -22,6 +26,7 @@ public class TrustedSourcesActivity extends AppCompatActivity {
     FloatingActionButton fab_from_contacts;
     FloatingActionButton fab_from_input;
     private boolean isFABOpen;
+    private int SELECT_PHONE_NUMBER = 1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -83,14 +88,7 @@ public class TrustedSourcesActivity extends AppCompatActivity {
                         //TODO : Phone Number Validation
                         //TODO : Check for already existing number
 
-                        DatabaseHelper trustedSourcesDatabaseHelper = new DatabaseHelper(activityContext);
-                        trustedSourcesDatabaseHelper.insertTrustedSource(input.getText().toString());
-
-                        LogUtils.debug(input.getText().toString() + " Added to Trusted DB...");
-
-                        //TODO : To Activity Utils
-                        startActivity(new Intent(activityContext, TrustedSourcesActivity.class));
-                        ((AppCompatActivity) activityContext).finish();
+                        addPhoneNumberToDb(input.getText().toString());
                     }
                 });
 
@@ -110,6 +108,9 @@ public class TrustedSourcesActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
+                Intent i = new Intent(Intent.ACTION_PICK);
+                i.setType(ContactsContract.CommonDataKinds.Phone.CONTENT_TYPE);
+                startActivityForResult(i, SELECT_PHONE_NUMBER);
             }
         });
 
@@ -121,6 +122,18 @@ public class TrustedSourcesActivity extends AppCompatActivity {
         //handle listView and assign adapter
         ListView listView = findViewById(R.id.list_view);
         listView.setAdapter(adapter);
+    }
+
+    private void addPhoneNumberToDb(String phoneNumber) {
+
+        DatabaseHelper trustedSourcesDatabaseHelper = new DatabaseHelper(activityContext);
+        trustedSourcesDatabaseHelper.insertTrustedSource(phoneNumber);
+
+        LogUtils.debug(phoneNumber + " Added to Trusted DB...");
+
+        //TODO : To Activity Utils
+        startActivity(new Intent(activityContext, TrustedSourcesActivity.class));
+        ((AppCompatActivity) activityContext).finish();
     }
 
     private void showFABMenu() {
@@ -135,5 +148,25 @@ public class TrustedSourcesActivity extends AppCompatActivity {
         isFABOpen = false;
         fab_from_contacts.animate().translationY(0);
         fab_from_input.animate().translationY(0);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+
+        super.onActivityResult(requestCode, resultCode, data);
+
+        // Get the URI and query the content provider for the phone number
+        Uri contactUri = data.getData();
+        String[] projection = new String[]{ContactsContract.CommonDataKinds.Phone.NUMBER};
+        Cursor cursor = this.getContentResolver().query(contactUri, projection,
+                null, null, null);
+
+        // If the cursor returned is valid, get the phone number
+        if (cursor != null && cursor.moveToFirst()) {
+
+            int numberIndex = cursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER);
+            addPhoneNumberToDb(cursor.getString(numberIndex));
+        }
+        cursor.close();
     }
 }
