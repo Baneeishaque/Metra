@@ -1,8 +1,10 @@
 package com.example.metra;
 
 import android.content.BroadcastReceiver;
+import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.telephony.SmsMessage;
 import android.widget.Toast;
@@ -50,7 +52,13 @@ public class SmsReceiver extends BroadcastReceiver {
 
                             Toast.makeText(context, "SMS added to Metra Database...", Toast.LENGTH_LONG).show();
                         }
-                        //TODO : Add to native message db
+
+                        ContentValues values = new ContentValues();
+                        values.put("address", senderAddress);
+                        values.put("body", messageContent);
+                        values.put("read", currentMessage.getStatus());
+                        values.put("date", currentMessage.getTimestampMillis());
+                        context.getContentResolver().insert(Uri.parse("content://sms/inbox"), values);
                     }
                 }
             } catch (Exception e) {
