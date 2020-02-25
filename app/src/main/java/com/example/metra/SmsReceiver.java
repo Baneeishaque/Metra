@@ -36,7 +36,6 @@ public class SmsReceiver extends BroadcastReceiver {
 
                         if (ListMessagesActivity.active) {
                             ListMessagesActivity inst = ListMessagesActivity.instance();
-//                            inst.updateInbox("\nFrom: " + senderAddress + "\n" + messageContent + "\n");
                             inst.updateInbox(senderAddress, messageContent);
                         }
 
@@ -51,6 +50,7 @@ public class SmsReceiver extends BroadcastReceiver {
 
                             Toast.makeText(context, "SMS added to Metra Database...", Toast.LENGTH_LONG).show();
                         }
+                        //TODO : Add to native message db
                     }
                 }
             } catch (Exception e) {
