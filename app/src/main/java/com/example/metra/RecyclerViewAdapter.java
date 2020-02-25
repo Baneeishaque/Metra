@@ -4,16 +4,11 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.CheckBox;
-import android.widget.CompoundButton;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.Set;
 
 /**
  * A custom adapter to use with the RecyclerView widget.
@@ -24,9 +19,9 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
     private ArrayList<AbstractModel> modelList;
 
     private OnItemClickListener mItemClickListener;
-    private OnCheckedListener mOnCheckedListener;
+//    private OnCheckedListener mOnCheckedListener;
 
-    private Set<Integer> checkSet = new HashSet<>();
+//    private Set<Integer> checkSet = new HashSet<>();
 
     public RecyclerViewAdapter(Context context, ArrayList<AbstractModel> modelList) {
 
@@ -58,23 +53,23 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             genericViewHolder.itemTxtTitle.setText(model.getTitle());
             genericViewHolder.itemTxtMessage.setText(model.getMessage());
 
-            //in some cases, it will prevent unwanted situations
-            genericViewHolder.itemCheckList.setOnCheckedChangeListener(null);
-            //if true, your checkbox will be selected, else unselected
-            genericViewHolder.itemCheckList.setChecked(checkSet.contains(position));
-            genericViewHolder.itemCheckList.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-
-                @Override
-                public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-
-                    if (isChecked) {
-                        checkSet.add(position);
-                    } else {
-                        checkSet.remove(position);
-                    }
-                    mOnCheckedListener.onChecked(buttonView, isChecked, position, model);
-                }
-            });
+//            //in some cases, it will prevent unwanted situations
+//            genericViewHolder.itemCheckList.setOnCheckedChangeListener(null);
+//            //if true, your checkbox will be selected, else unselected
+//            genericViewHolder.itemCheckList.setChecked(checkSet.contains(position));
+//            genericViewHolder.itemCheckList.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+//
+//                @Override
+//                public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+//
+//                    if (isChecked) {
+//                        checkSet.add(position);
+//                    } else {
+//                        checkSet.remove(position);
+//                    }
+//                    mOnCheckedListener.onChecked(buttonView, isChecked, position, model);
+//                }
+//            });
         }
     }
 
@@ -89,10 +84,10 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         this.mItemClickListener = mItemClickListener;
     }
 
-    public void SetOnCheckedListener(final OnCheckedListener onCheckedListener) {
-
-        this.mOnCheckedListener = onCheckedListener;
-    }
+//    public void SetOnCheckedListener(final OnCheckedListener onCheckedListener) {
+//
+//        this.mOnCheckedListener = onCheckedListener;
+//    }
 
     private AbstractModel getItem(int position) {
         return modelList.get(position);
@@ -104,26 +99,22 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
     }
 
 
-    public interface OnCheckedListener {
-
-        void onChecked(View view, boolean isChecked, int position, AbstractModel model);
-    }
+//    public interface OnCheckedListener {
+//
+//        void onChecked(View view, boolean isChecked, int position, AbstractModel model);
+//    }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
 
-        private ImageView imgUser;
         private TextView itemTxtTitle;
         private TextView itemTxtMessage;
-        private CheckBox itemCheckList;
 
         public ViewHolder(final View itemView) {
 
             super(itemView);
 
-            this.imgUser = itemView.findViewById(R.id.img_user);
             this.itemTxtTitle = itemView.findViewById(R.id.item_txt_title);
             this.itemTxtMessage = itemView.findViewById(R.id.item_txt_message);
-            this.itemCheckList = itemView.findViewById(R.id.check_list);
 
             itemView.setOnClickListener(new View.OnClickListener() {
 

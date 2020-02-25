@@ -51,10 +51,10 @@ public class MainActivity extends AppCompatActivity {
 
         FloatingActionButton fab = findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
+
             @Override
             public void onClick(View view) {
-//                Snackbar.make(view, "Will Come Soon..", Snackbar.LENGTH_LONG)
-//                        .show();
+
                 startActivity(new Intent(activityContext, SendMessageActivity.class));
             }
         });
@@ -107,10 +107,15 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void getPermissionToReadSMS() {
+
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_SMS) != PackageManager.PERMISSION_GRANTED) {
+
             if (shouldShowRequestPermissionRationale(Manifest.permission.READ_SMS)) {
+
                 Toast.makeText(this, "Please allow permission! - Read SMS", Toast.LENGTH_SHORT).show();
+
             } else {
+
                 Toast.makeText(this, "Please allow permission! - Read SMS", Toast.LENGTH_SHORT).show();
             }
             requestPermissions(new String[]{Manifest.permission.READ_SMS}, READ_SMS_PERMISSION_REQUEST_CODE);

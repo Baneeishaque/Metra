@@ -1,18 +1,31 @@
 package com.example.metra;
 
+import android.Manifest;
 import android.app.SearchManager;
+import android.content.ContentResolver;
+import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.database.Cursor;
 import android.graphics.Color;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.Telephony;
 import android.text.InputFilter;
 import android.text.Spanned;
 import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SearchView;
 import androidx.appcompat.widget.Toolbar;
+import androidx.core.content.ContextCompat;
 import androidx.core.view.MenuItemCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -31,6 +44,15 @@ public class ListMessagesActivity extends AppCompatActivity {
     private RecyclerViewAdapter mAdapter;
     private ArrayList<AbstractModel> modelList = new ArrayList<>();
 
+    static ListMessagesActivity inst;
+    static boolean active = false;
+    final int READ_SMS_PERMISSION_REQUEST_CODE = 2;
+    Context activityContext = this;
+
+    public static ListMessagesActivity instance() {
+        return inst;
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
@@ -38,7 +60,160 @@ public class ListMessagesActivity extends AppCompatActivity {
         setContentView(R.layout.activity_list_messages);
         findViews();
         setSupportActionBar(toolbar);
-        setAdapter();
+
+        fab.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View view) {
+
+                startActivity(new Intent(activityContext, SendMessageActivity.class));
+            }
+        });
+
+        //TODO : Pre check for service
+        startService(new Intent(this, QuickResponseService.class));
+
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_SMS) != PackageManager.PERMISSION_GRANTED) {
+
+            getPermissionToReadSMS();
+
+        } else {
+
+            refreshSmsInbox();
+        }
+    }
+
+    public void getPermissionToReadSMS() {
+
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_SMS) != PackageManager.PERMISSION_GRANTED) {
+
+            if (shouldShowRequestPermissionRationale(Manifest.permission.READ_SMS)) {
+
+                Toast.makeText(this, "Please allow permission! - Read SMS", Toast.LENGTH_SHORT).show();
+
+            } else {
+
+                Toast.makeText(this, "Please allow permission! - Read SMS", Toast.LENGTH_SHORT).show();
+            }
+            requestPermissions(new String[]{Manifest.permission.READ_SMS}, READ_SMS_PERMISSION_REQUEST_CODE);
+        }
+    }
+
+    public void refreshSmsInbox() {
+
+        ContentResolver contentResolver = getContentResolver();
+        Cursor smsInboxCursor = contentResolver.query(Uri.parse("content://sms/inbox"), new String[]{"date", "address", "body"}, null, null, "date DESC LIMIT 5");
+        int indexAddress = Objects.requireNonNull(smsInboxCursor).getColumnIndex("address");
+        int indexBody = smsInboxCursor.getColumnIndex("body");
+        if (indexBody < 0 || !smsInboxCursor.moveToFirst()) return;
+
+        modelList.clear();
+        do {
+
+            modelList.add(new AbstractModel(smsInboxCursor.getString(indexAddress), smsInboxCursor.getString(indexBody)));
+
+        } while (smsInboxCursor.moveToNext());
+
+        mAdapter = new RecyclerViewAdapter(activityContext, modelList);
+        recyclerView.setHasFixedSize(true);
+
+        // use a linear layout manager
+        LinearLayoutManager layoutManager = new LinearLayoutManager(this);
+        recyclerView.setLayoutManager(layoutManager);
+
+        recyclerView.setAdapter(mAdapter);
+
+        mAdapter.SetOnItemClickListener(new RecyclerViewAdapter.OnItemClickListener() {
+
+            @Override
+            public void onItemClick(View view, int position, AbstractModel model) {
+
+                //handle item click events here
+//                Toast.makeText(ListMessagesActivity.this, "Hey " + model.getTitle(), Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        smsInboxCursor.close();
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+
+        if (requestCode == READ_SMS_PERMISSION_REQUEST_CODE) {
+            if (grantResults.length == 1 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+
+                Toast.makeText(this, "Read SMS permission granted", Toast.LENGTH_SHORT).show();
+                refreshSmsInbox();
+
+            } else {
+
+                Toast.makeText(this, "Read SMS permission denied", Toast.LENGTH_SHORT).show();
+                finishAffinity();
+            }
+        } else {
+
+            Toast.makeText(this, "Unexpected value: " + requestCode, Toast.LENGTH_LONG).show();
+        }
+    }
+
+    @Override
+    public void onStop() {
+
+        super.onStop();
+        active = false;
+    }
+
+    @Override
+    public void onStart() {
+
+        super.onStart();
+        active = true;
+        inst = this;
+    }
+
+    public void updateInbox(String sender, String smsMessage) {
+
+        modelList.add(0, new AbstractModel(sender, smsMessage));
+        mAdapter.notifyDataSetChanged();
+//        arrayAdapter.insert(smsMessage, 0);
+//        arrayAdapter.notifyDataSetChanged();
+    }
+
+    @Override
+    protected void onResume() {
+
+        super.onResume();
+        checkDefaultSMSApplication();
+    }
+
+    private void checkDefaultSMSApplication() {
+
+        if (!Telephony.Sms.getDefaultSmsPackage(this).equals(getPackageName())) {
+
+            // App is not default.
+            // Show the "not currently set as the default SMS app" interface
+            new AlertDialog.Builder(this).setTitle("Caution!").setMessage("Metra is not your default SMS application, please correct it...")
+                    // Specifying a listener allows you to take an action before dismissing the dialog.
+                    // The dialog is automatically dismissed when a dialog button is clicked.
+                    .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int which) {
+                            // Continue with operation
+                            Intent intent = new Intent(Telephony.Sms.Intents.ACTION_CHANGE_DEFAULT);
+                            intent.putExtra(Telephony.Sms.Intents.EXTRA_PACKAGE_NAME, getPackageName());
+                            startActivity(intent);
+                        }
+                    })
+
+                    // A null listener allows the button to dismiss the dialog and take no further action.
+                    .setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            finishAffinity();
+                        }
+                    })
+                    .setIcon(android.R.drawable.ic_dialog_alert)
+                    .show();
+        }
     }
 
     private void findViews() {
@@ -103,7 +278,7 @@ public class ListMessagesActivity extends AppCompatActivity {
 
                     for (int i = 0; i < modelList.size(); i++) {
 
-                        if (modelList.get(i).getTitle().toLowerCase().contains(s.toLowerCase())) {
+                        if (modelList.get(i).getTitle().toLowerCase().contains(s.toLowerCase()) || modelList.get(i).getMessage().toLowerCase().contains(s.toLowerCase())) {
 
                             filterList.add(modelList.get(i));
                             mAdapter.updateList(filterList);
@@ -120,50 +295,16 @@ public class ListMessagesActivity extends AppCompatActivity {
         return true;
     }
 
-    private void setAdapter() {
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
 
-        modelList.add(new AbstractModel("Android", "Hello " + " Android"));
-        modelList.add(new AbstractModel("Beta", "Hello " + " Beta"));
-        modelList.add(new AbstractModel("Cupcake", "Hello " + " Cupcake"));
-        modelList.add(new AbstractModel("Donut", "Hello " + " Donut"));
-        modelList.add(new AbstractModel("Eclair", "Hello " + " Eclair"));
-        modelList.add(new AbstractModel("Froyo", "Hello " + " Froyo"));
-        modelList.add(new AbstractModel("Gingerbread", "Hello " + " Gingerbread"));
-        modelList.add(new AbstractModel("Honeycomb", "Hello " + " Honeycomb"));
-        modelList.add(new AbstractModel("Ice Cream Sandwich", "Hello " + " Ice Cream Sandwich"));
-        modelList.add(new AbstractModel("Jelly Bean", "Hello " + " Jelly Bean"));
-        modelList.add(new AbstractModel("KitKat", "Hello " + " KitKat"));
-        modelList.add(new AbstractModel("Lollipop", "Hello " + " Lollipop"));
-        modelList.add(new AbstractModel("Marshmallow", "Hello " + " Marshmallow"));
-        modelList.add(new AbstractModel("Nougat", "Hello " + " Nougat"));
-        modelList.add(new AbstractModel("Android O", "Hello " + " Android O"));
+        if (item.getItemId() == R.id.trusted_sources) {
 
-        mAdapter = new RecyclerViewAdapter(ListMessagesActivity.this, modelList);
-        recyclerView.setHasFixedSize(true);
+            startActivity(new Intent(this, TrustedSourcesActivity.class));
 
-        // use a linear layout manager
-        LinearLayoutManager layoutManager = new LinearLayoutManager(this);
-        recyclerView.setLayoutManager(layoutManager);
-
-        recyclerView.setAdapter(mAdapter);
-
-        mAdapter.SetOnItemClickListener(new RecyclerViewAdapter.OnItemClickListener() {
-
-            @Override
-            public void onItemClick(View view, int position, AbstractModel model) {
-
-                //handle item click events here
-                Toast.makeText(ListMessagesActivity.this, "Hey " + model.getTitle(), Toast.LENGTH_SHORT).show();
-            }
-        });
-
-        mAdapter.SetOnCheckedListener(new RecyclerViewAdapter.OnCheckedListener() {
-
-            @Override
-            public void onChecked(View view, boolean isChecked, int position, AbstractModel model) {
-
-                Toast.makeText(ListMessagesActivity.this, (isChecked ? "Checked " : "Unchecked ") + model.getTitle(), Toast.LENGTH_SHORT).show();
-            }
-        });
+        } else if (item.getItemId() == R.id.trusted_apps) {
+//            startActivity(new Intent(this, TrustedAppsActivity.class));
+        }
+        return super.onOptionsItemSelected(item);
     }
 }

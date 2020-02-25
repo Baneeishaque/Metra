@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:compat="http://schemas.android.com/apk/res-auto">
 
     <item
@@ -8,5 +9,15 @@
         android:title="Search"
         compat:actionViewClass="androidx.appcompat.widget.SearchView"
         compat:showAsAction="collapseActionView|always" />
+
+    <item
+        android:id="@+id/trusted_sources"
+        android:title="@string/trusted_sources_acronym"
+        app:showAsAction="ifRoom" />
+
+    <item
+        android:id="@+id/trusted_apps"
+        android:title="@string/trusted_apps_acronym"
+        app:showAsAction="ifRoom" />
 
 </menu>

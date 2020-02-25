@@ -34,9 +34,10 @@ public class SmsReceiver extends BroadcastReceiver {
                         String messageContent = currentMessage.getDisplayMessageBody();
                         LogUtils.debug("Received SMS: " + messageContent + ", Sender: " + senderAddress);
 
-                        if (MainActivity.active) {
-                            MainActivity inst = MainActivity.instance();
-                            inst.updateInbox("\nFrom: " + senderAddress + "\n" + messageContent + "\n");
+                        if (ListMessagesActivity.active) {
+                            ListMessagesActivity inst = ListMessagesActivity.instance();
+//                            inst.updateInbox("\nFrom: " + senderAddress + "\n" + messageContent + "\n");
+                            inst.updateInbox(senderAddress, messageContent);
                         }
 
                         // if the SMS is not from our trusted sources, ignore the message
