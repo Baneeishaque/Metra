@@ -29,6 +29,9 @@
         android:layout_gravity="bottom|end"
         android:layout_margin="@dimen/fab_margin"
         app:backgroundTint="#6CC887"
+        app:borderWidth="0dp"
+        app:elevation="6dp"
+        app:fabSize="normal"
         app:srcCompat="@android:drawable/ic_menu_add" />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

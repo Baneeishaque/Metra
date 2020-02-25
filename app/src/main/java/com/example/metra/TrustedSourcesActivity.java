@@ -19,6 +19,10 @@ public class TrustedSourcesActivity extends AppCompatActivity {
 
     Context activityContext = this;
 
+    FloatingActionButton fab_from_contacts;
+    FloatingActionButton fab_from_input;
+    private boolean isFABOpen;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
@@ -29,10 +33,30 @@ public class TrustedSourcesActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
 
         FloatingActionButton fab = findViewById(R.id.fab);
+        fab_from_contacts = findViewById(R.id.fab_from_contacts);
+        fab_from_input = findViewById(R.id.fab_from_input);
+
         fab.setOnClickListener(new View.OnClickListener() {
 
             @Override
             public void onClick(View view) {
+
+                if (!isFABOpen) {
+
+                    showFABMenu();
+
+                } else {
+
+                    closeFABMenu();
+                }
+
+            }
+        });
+
+        fab_from_input.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
 
                 //TODO : Alert Dialog Utils
                 //TODO : Input Dialog Utils
@@ -81,6 +105,14 @@ public class TrustedSourcesActivity extends AppCompatActivity {
             }
         });
 
+        fab_from_contacts.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
+
         DatabaseHelper trustedSourcesDatabaseHelper = new DatabaseHelper(this);
 
         //instantiate custom adapter
@@ -89,5 +121,19 @@ public class TrustedSourcesActivity extends AppCompatActivity {
         //handle listView and assign adapter
         ListView listView = findViewById(R.id.list_view);
         listView.setAdapter(adapter);
+    }
+
+    private void showFABMenu() {
+
+        isFABOpen = true;
+        fab_from_contacts.animate().translationY(-getResources().getDimension(R.dimen.standard_55));
+        fab_from_input.animate().translationY(-getResources().getDimension(R.dimen.standard_105));
+    }
+
+    private void closeFABMenu() {
+
+        isFABOpen = false;
+        fab_from_contacts.animate().translationY(0);
+        fab_from_input.animate().translationY(0);
     }
 }
