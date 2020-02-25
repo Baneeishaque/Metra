@@ -87,6 +87,34 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return trusted_sources;
     }
 
+    ArrayList<AbstractModel> getAllMessages() {
+
+        ArrayList<AbstractModel> messages = new ArrayList<>();
+
+        // Select All Query
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        Cursor cursor = db.rawQuery("SELECT  * FROM " + Message.TABLE_NAME, null);
+
+        // looping through all rows and adding to list
+        if (cursor.moveToFirst()) {
+
+            do {
+
+                messages.add(new AbstractModel(cursor.getString(cursor.getColumnIndex(Message.COLUMN_SENDER)), cursor.getString(cursor.getColumnIndex(Message.COLUMN_MESSAGE_BODY))));
+
+            } while (cursor.moveToNext());
+        }
+
+        cursor.close();
+
+        // close db connection
+        db.close();
+
+        // return trusted sources list
+        return messages;
+    }
+
     boolean checkSmsSender(String phoneNumber) {
 
         List<TrustedSource> trusted_sources = getAllTrustedSources();

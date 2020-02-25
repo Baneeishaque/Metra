@@ -149,6 +149,9 @@ public class ListMessagesActivity extends AppCompatActivity {
         });
 
         smsInboxCursor.close();
+
+        modelList.addAll(0, new DatabaseHelper(this).getAllMessages());
+        mAdapter.updateList(modelList);
     }
 
     @Override
