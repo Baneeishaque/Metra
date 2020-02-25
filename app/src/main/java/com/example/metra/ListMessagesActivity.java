@@ -316,7 +316,8 @@ public class ListMessagesActivity extends AppCompatActivity {
             startActivity(new Intent(this, TrustedSourcesActivity.class));
 
         } else if (item.getItemId() == R.id.trusted_apps) {
-//            startActivity(new Intent(this, TrustedAppsActivity.class));
+
+            startActivity(new Intent(this, TrustedAppsActivity.class));
         }
         return super.onOptionsItemSelected(item);
     }

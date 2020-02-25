@@ -20,8 +20,9 @@ public class TrustedAppsActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_trestted_apps);
+        setContentView(R.layout.activity_trusted_apps);
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -33,9 +34,6 @@ public class TrustedAppsActivity extends AppCompatActivity {
 
                 //TODO : Alert Dialog Utils
                 //TODO : Input Dialog Utils
-
-//                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-//                        .setAction("Action", null).show();
 
                 AlertDialog.Builder builder = new AlertDialog.Builder(activityContext);
                 builder.setTitle("New Trusted App");
@@ -88,6 +86,5 @@ public class TrustedAppsActivity extends AppCompatActivity {
         //handle listView and assign adapter
         ListView listView = findViewById(R.id.list_view);
         listView.setAdapter(adapter);
-
     }
 }
