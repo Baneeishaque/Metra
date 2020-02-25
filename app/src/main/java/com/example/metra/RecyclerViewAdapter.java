@@ -17,21 +17,18 @@ import java.util.ArrayList;
 public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     private Context mContext;
-    private ArrayList<AbstractModel> modelList;
+    private ArrayList<Sms> modelList;
 
     private OnItemClickListener mItemClickListener;
     private OnForwardButtonClickListener mForwardButtonClickListener;
-//    private OnCheckedListener mOnCheckedListener;
 
-//    private Set<Integer> checkSet = new HashSet<>();
-
-    public RecyclerViewAdapter(Context context, ArrayList<AbstractModel> modelList) {
+    public RecyclerViewAdapter(Context context, ArrayList<Sms> modelList) {
 
         this.mContext = context;
         this.modelList = modelList;
     }
 
-    public void updateList(ArrayList<AbstractModel> modelList) {
+    public void updateList(ArrayList<Sms> modelList) {
 
         this.modelList = modelList;
         notifyDataSetChanged();
@@ -50,29 +47,10 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         //Here you can fill your row view
         if (holder instanceof ViewHolder) {
 
-            final AbstractModel model = getItem(position);
+            final Sms model = getItem(position);
             ViewHolder genericViewHolder = (ViewHolder) holder;
             genericViewHolder.itemTxtTitle.setText(model.getAddress());
             genericViewHolder.itemTxtMessage.setText(model.getMessage());
-
-//            //in some cases, it will prevent unwanted situations
-//            genericViewHolder.itemCheckList.setOnCheckedChangeListener(null);
-//            //if true, your checkbox will be selected, else unselected
-//            genericViewHolder.itemCheckList.setChecked(checkSet.contains(position));
-//            genericViewHolder.itemCheckList.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-//
-//                @Override
-//                public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-//
-//                    if (isChecked) {
-//                        checkSet.add(position);
-//                    } else {
-//                        checkSet.remove(position);
-//                    }
-//                    mOnCheckedListener.onChecked(buttonView, isChecked, position, model);
-//                }
-//            });
-
             genericViewHolder.itemButtonForward.setOnClickListener(new View.OnClickListener() {
 
                 @Override
@@ -100,28 +78,19 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         this.mForwardButtonClickListener = mForwardButtonClickListener;
     }
 
-//    public void SetOnCheckedListener(final OnCheckedListener onCheckedListener) {
-//
-//        this.mOnCheckedListener = onCheckedListener;
-//    }
-
-    private AbstractModel getItem(int position) {
+    private Sms getItem(int position) {
         return modelList.get(position);
     }
 
     public interface OnItemClickListener {
 
-        void onItemClick(View view, int position, AbstractModel model);
+        void onItemClick(View view, int position, Sms model);
     }
 
     public interface OnForwardButtonClickListener {
 
-        void onForwardButtonClick(AbstractModel model);
+        void onForwardButtonClick(Sms model);
     }
-//    public interface OnCheckedListener {
-//
-//        void onChecked(View view, boolean isChecked, int position, AbstractModel model);
-//    }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
 

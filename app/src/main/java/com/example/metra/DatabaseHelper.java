@@ -87,9 +87,9 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return trusted_sources;
     }
 
-    ArrayList<AbstractModel> getAllMessages() {
+    ArrayList<Sms> getAllMessages() {
 
-        ArrayList<AbstractModel> messages = new ArrayList<>();
+        ArrayList<Sms> messages = new ArrayList<>();
 
         // Select All Query
         SQLiteDatabase db = this.getWritableDatabase();
@@ -101,7 +101,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
             do {
 
-                messages.add(new AbstractModel(cursor.getString(cursor.getColumnIndex(Message.COLUMN_SENDER)), cursor.getString(cursor.getColumnIndex(Message.COLUMN_MESSAGE_BODY))));
+                messages.add(new Sms(cursor.getString(cursor.getColumnIndex(Message.COLUMN_SENDER)), cursor.getString(cursor.getColumnIndex(Message.COLUMN_MESSAGE_BODY))));
 
             } while (cursor.moveToNext());
         }

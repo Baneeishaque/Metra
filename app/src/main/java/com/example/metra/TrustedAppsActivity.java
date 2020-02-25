@@ -46,13 +46,7 @@ public class TrustedAppsActivity extends AppCompatActivity {
                 //TODO : Pick from Contacts
                 input.setInputType(InputType.TYPE_CLASS_TEXT);
                 input.setHint("App Name.......");
-//                LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, DisplayUtils.convertPixelsToDp(96, activityContext));
-//                int marginDp=DisplayUtils.convertPixelsToDp(128,activityContext);
-//                lp.setMargins(marginDp,marginDp,marginDp,marginDp);
-//                input.setLayoutParams(lp);
                 builder.setView(input);
-
-//                builder.setView(R.layout.add_trusted_soiurce);
 
                 // Set up the buttons
                 builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
@@ -71,7 +65,6 @@ public class TrustedAppsActivity extends AppCompatActivity {
                 builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-//                        dialog.cancel();
                     }
                 });
                 builder.show();

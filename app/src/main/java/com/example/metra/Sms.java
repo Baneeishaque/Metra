@@ -1,17 +1,17 @@
 package com.example.metra;
 
-public class AbstractModel {
+public class Sms {
 
     private String address;
     private String message;
 
-    public AbstractModel(String address, String message) {
+    public Sms(String address, String message) {
 
         this.address = address;
         this.message = message;
     }
 
-    public AbstractModel() {
+    public Sms() {
     }
 
     public String getAddress() {

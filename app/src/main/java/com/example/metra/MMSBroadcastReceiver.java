@@ -9,6 +9,7 @@ public class MMSBroadcastReceiver extends BroadcastReceiver {
 
     @Override
     public void onReceive(Context context, Intent intent) {
+
         Toast.makeText(context, "Not yet Supported!", Toast.LENGTH_SHORT).show();
     }
 }

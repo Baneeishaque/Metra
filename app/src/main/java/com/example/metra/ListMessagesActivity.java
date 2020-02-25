@@ -42,7 +42,7 @@ public class ListMessagesActivity extends AppCompatActivity {
     private FloatingActionButton fab;
 
     private RecyclerViewAdapter mAdapter;
-    private ArrayList<AbstractModel> modelList = new ArrayList<>();
+    private ArrayList<Sms> modelList = new ArrayList<>();
 
     static ListMessagesActivity inst;
     static boolean active = false;
@@ -110,7 +110,7 @@ public class ListMessagesActivity extends AppCompatActivity {
         modelList.clear();
         do {
 
-            modelList.add(new AbstractModel(smsInboxCursor.getString(indexAddress), smsInboxCursor.getString(indexBody)));
+            modelList.add(new Sms(smsInboxCursor.getString(indexAddress), smsInboxCursor.getString(indexBody)));
 
         } while (smsInboxCursor.moveToNext());
 
@@ -126,7 +126,7 @@ public class ListMessagesActivity extends AppCompatActivity {
         mAdapter.SetOnItemClickListener(new RecyclerViewAdapter.OnItemClickListener() {
 
             @Override
-            public void onItemClick(View view, int position, AbstractModel model) {
+            public void onItemClick(View view, int position, Sms model) {
 
                 //handle item click events here
 //                Toast.makeText(ListMessagesActivity.this, "Hey " + model.getAddress(), Toast.LENGTH_SHORT).show();
@@ -136,7 +136,7 @@ public class ListMessagesActivity extends AppCompatActivity {
         mAdapter.SetOnForwardButtonClickListener(new RecyclerViewAdapter.OnForwardButtonClickListener() {
 
             @Override
-            public void onForwardButtonClick(AbstractModel model) {
+            public void onForwardButtonClick(Sms model) {
 
                 // add the phone number in the data
                 Uri uri = Uri.parse("smsto:" + model.getAddress());
@@ -188,7 +188,7 @@ public class ListMessagesActivity extends AppCompatActivity {
 
     public void updateInbox(String sender, String smsMessage) {
 
-        modelList.add(0, new AbstractModel(sender, smsMessage));
+        modelList.add(0, new Sms(sender, smsMessage));
         mAdapter.updateList(modelList);
     }
 
@@ -285,7 +285,7 @@ public class ListMessagesActivity extends AppCompatActivity {
             @Override
             public boolean onQueryTextChange(String s) {
 
-                ArrayList<AbstractModel> filterList = new ArrayList<AbstractModel>();
+                ArrayList<Sms> filterList = new ArrayList<Sms>();
 
                 if (s.length() > 0) {
 

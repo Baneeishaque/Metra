@@ -154,6 +154,7 @@ public class SendMessageActivity extends AppCompatActivity {
             editTextPhoneNumber.setText(intent.getStringExtra("address"));
         }
 
+        //TODO : Code for other forward methods
 //        String type = intent.getType();
 //        if (Intent.ACTION_SEND.equals(action) && type != null) {
 //            if ("text/plain".equals(type)) {
