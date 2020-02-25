@@ -54,7 +54,9 @@ public class LauncherActivity extends AppCompatActivity {
     }
 
     private void moveToMainScreen() {
-        startActivity(new Intent(this, MainActivity.class));
+
+//        startActivity(new Intent(this, MainActivity.class));
+        startActivity(new Intent(this, ListMessagesActivity.class));
         this.finish();
     }
 }

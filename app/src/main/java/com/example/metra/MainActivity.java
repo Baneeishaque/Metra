@@ -44,7 +44,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         //TODO : Pre check for service
-        startService(new Intent(this, QuickResponseService.class));
+//        startService(new Intent(this, QuickResponseService.class));
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);

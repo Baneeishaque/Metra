@@ -10,7 +10,6 @@
     <uses-permission android:name="android.permission.SEND_SMS" />
 
     <application
-
         android:allowBackup="false"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
@@ -20,11 +19,17 @@
         tools:ignore="GoogleAppIndexingWarning">
 
         <activity
+            android:name=".ListMessagesActivity"
+            android:label="@string/title_activity_list_messages"
+            android:theme="@style/AppTheme.Template.Base" />
+
+        <activity
             android:name=".TrustedAppsActivity"
             android:label="@string/title_activity_trusted_apps"
             android:theme="@style/AppTheme.NoActionBar" />
 
         <activity android:name=".SendMessageActivity">
+
             <intent-filter>
                 <action android:name="android.intent.action.SEND" />
                 <action android:name="android.intent.action.SENDTO" />
@@ -37,6 +42,7 @@
                 <data android:scheme="mms" />
                 <data android:scheme="mmsto" />
             </intent-filter>
+
         </activity>
 
         <activity
@@ -114,6 +120,6 @@
                 <data android:scheme="mmsto" />
             </intent-filter>
         </service>
-    </application>
 
+    </application>
 </manifest>
