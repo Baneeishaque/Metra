@@ -24,8 +24,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase db) {
 
-        // create trusted_sources table
-        db.execSQL(TrustedSource.CREATE_TABLE);
+        db.execSQL(CommunicationOrigin.CREATE_TABLE);
         db.execSQL(Message.CREATE_TABLE);
         db.execSQL(TrustedApp.CREATE_TABLE);
     }
@@ -35,7 +34,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
 
         // Drop older table if existed
-        db.execSQL("DROP TABLE IF EXISTS " + TrustedSource.TABLE_NAME);
+        db.execSQL("DROP TABLE IF EXISTS " + CommunicationOrigin.TABLE_NAME);
         db.execSQL("DROP TABLE IF EXISTS " + Message.TABLE_NAME);
         db.execSQL("DROP TABLE IF EXISTS " + TrustedApp.TABLE_NAME);
 
@@ -43,37 +42,38 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         onCreate(db);
     }
 
-    void insertTrustedSource(String phone_number) {
+    void insertCommunicationOrigin(String name, String phoneNumber) {
 
         // get writable database as we want to write data
         SQLiteDatabase db = this.getWritableDatabase();
 
         ContentValues values = new ContentValues();
         // `id` will be inserted automatically - no need to add it.
-        values.put(TrustedSource.COLUMN_PHONE_NUMBER, phone_number);
+        values.put(CommunicationOrigin.COLUMN_NAME, name);
+        values.put(CommunicationOrigin.COLUMN_PHONE_NUMBER, phoneNumber);
 
         // insert row
-        long id = db.insert(TrustedSource.TABLE_NAME, null, values);
+        long id = db.insert(CommunicationOrigin.TABLE_NAME, null, values);
 
         // close db connection
         db.close();
     }
 
-    ArrayList<TrustedSource> getAllTrustedSources() {
+    ArrayList<CommunicationOrigin> getAllCommunicationOrigins() {
 
-        ArrayList<TrustedSource> trusted_sources = new ArrayList<>();
+        ArrayList<CommunicationOrigin> communicationOrigins = new ArrayList<>();
 
         // Select All Query
         SQLiteDatabase db = this.getWritableDatabase();
 
-        Cursor cursor = db.rawQuery("SELECT  * FROM " + TrustedSource.TABLE_NAME, null);
+        Cursor cursor = db.rawQuery("SELECT  * FROM " + CommunicationOrigin.TABLE_NAME, null);
 
         // looping through all rows and adding to list
         if (cursor.moveToFirst()) {
 
             do {
 
-                trusted_sources.add(new TrustedSource(cursor.getInt(cursor.getColumnIndex(TrustedSource.COLUMN_ID)), cursor.getString(cursor.getColumnIndex(TrustedSource.COLUMN_PHONE_NUMBER))));
+                communicationOrigins.add(new CommunicationOrigin(cursor.getInt(cursor.getColumnIndex(CommunicationOrigin.COLUMN_ID)), cursor.getString(cursor.getColumnIndex(CommunicationOrigin.COLUMN_NAME)), cursor.getString(cursor.getColumnIndex(CommunicationOrigin.COLUMN_PHONE_NUMBER))));
 
             } while (cursor.moveToNext());
         }
@@ -84,44 +84,16 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.close();
 
         // return trusted sources list
-        return trusted_sources;
-    }
-
-    ArrayList<Sms> getAllMessages() {
-
-        ArrayList<Sms> messages = new ArrayList<>();
-
-        // Select All Query
-        SQLiteDatabase db = this.getWritableDatabase();
-
-        Cursor cursor = db.rawQuery("SELECT  * FROM " + Message.TABLE_NAME, null);
-
-        // looping through all rows and adding to list
-        if (cursor.moveToFirst()) {
-
-            do {
-
-                messages.add(new Sms(cursor.getString(cursor.getColumnIndex(Message.COLUMN_SENDER)), cursor.getString(cursor.getColumnIndex(Message.COLUMN_MESSAGE_BODY))));
-
-            } while (cursor.moveToNext());
-        }
-
-        cursor.close();
-
-        // close db connection
-        db.close();
-
-        // return trusted sources list
-        return messages;
+        return communicationOrigins;
     }
 
     boolean checkSmsSender(String phoneNumber) {
 
-        List<TrustedSource> trusted_sources = getAllTrustedSources();
+        List<CommunicationOrigin> communicationOrigins = getAllCommunicationOrigins();
 
-        for (TrustedSource trustedSource : trusted_sources) {
+        for (CommunicationOrigin communicationOrigin : communicationOrigins) {
 
-            if (trustedSource.getPhone_number().equals(phoneNumber)) {
+            if (communicationOrigin.getPhoneNumber().equals(phoneNumber)) {
 
                 return true;
             }
@@ -129,11 +101,33 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return false;
     }
 
-    void deleteTrustedSource(TrustedSource trustedSource) {
+    void deleteCommunicationOriginById(CommunicationOrigin communicationOrigin) {
 
         SQLiteDatabase db = this.getWritableDatabase();
 
-        db.delete(TrustedSource.TABLE_NAME, TrustedSource.COLUMN_ID + " = ?", new String[]{String.valueOf(trustedSource.getId())});
+        db.delete(CommunicationOrigin.TABLE_NAME, CommunicationOrigin.COLUMN_ID + " = ?", new String[]{String.valueOf(communicationOrigin.getId())});
+
+        LogUtils.debug("Trusted Source Deleted From DB...");
+
+        db.close();
+    }
+
+    void deleteCommunicationOriginByName(CommunicationOrigin communicationOrigin) {
+
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        db.delete(CommunicationOrigin.TABLE_NAME, CommunicationOrigin.COLUMN_NAME + " = ?", new String[]{String.valueOf(communicationOrigin.getName())});
+
+        LogUtils.debug("Trusted Source Deleted From DB...");
+
+        db.close();
+    }
+
+    void deleteCommunicationOriginByPhoneNumber(CommunicationOrigin communicationOrigin) {
+
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        db.delete(CommunicationOrigin.TABLE_NAME, CommunicationOrigin.COLUMN_PHONE_NUMBER + " = ?", new String[]{String.valueOf(communicationOrigin.getPhoneNumber())});
 
         LogUtils.debug("Trusted Source Deleted From DB...");
 
@@ -176,6 +170,34 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         cursor.close();
 
         return result;
+    }
+
+    ArrayList<Sms> getAllMessages() {
+
+        ArrayList<Sms> messages = new ArrayList<>();
+
+        // Select All Query
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        Cursor cursor = db.rawQuery("SELECT  * FROM " + Message.TABLE_NAME, null);
+
+        // looping through all rows and adding to list
+        if (cursor.moveToFirst()) {
+
+            do {
+
+                messages.add(new Sms(cursor.getString(cursor.getColumnIndex(Message.COLUMN_SENDER)), cursor.getString(cursor.getColumnIndex(Message.COLUMN_MESSAGE_BODY))));
+
+            } while (cursor.moveToNext());
+        }
+
+        cursor.close();
+
+        // close db connection
+        db.close();
+
+        // return trusted sources list
+        return messages;
     }
 
     void insertTrustedApp(String app_name) {

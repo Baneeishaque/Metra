@@ -313,7 +313,7 @@ public class ListMessagesActivity extends AppCompatActivity {
 
         if (item.getItemId() == R.id.trusted_sources) {
 
-            startActivity(new Intent(this, TrustedSourcesActivity.class));
+            startActivity(new Intent(this, ToBeSecureCommunicationOriginsActivity.class));
 
         } else if (item.getItemId() == R.id.trusted_apps) {
 
