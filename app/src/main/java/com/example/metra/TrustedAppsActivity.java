@@ -40,22 +40,10 @@ public class TrustedAppsActivity extends AppCompatActivity {
             startActivityForResult(new Intent(this, PickApplicationActivity.class), PICK_UNTRUSTED_APPLICATION_REQUEST);
         });
 
-//        DatabaseHelper trustedAppsDatabaseHelper = new DatabaseHelper(this);
-//
-//        //instantiate custom adapter
-//        TrustedAppsListAdapter adapter = new TrustedAppsListAdapter(trustedAppsDatabaseHelper.getAllTrustedApps(), this);
-//
-//        //handle listView and assign adapter
-//        ListView listView = findViewById(R.id.list_view);
-//        listView.setAdapter(adapter);
-
         RecyclerView recyclerView = findViewById(R.id.recycler_view);
         communicationOrigins.clear();
-//        ApkInfoExtractor apkInfoExtractor = new ApkInfoExtractor(this);
-//        communicationOrigins.addAll(apkInfoExtractor.GetAllInstalledApkInfo());
         DatabaseHelper trustedAppsDatabaseHelper = new DatabaseHelper(this);
         ArrayList<TrustedApp> trustedApps = trustedAppsDatabaseHelper.getAllTrustedApps();
-//        TrustedAppsListAdapter adapter = new TrustedAppsListAdapter(trustedAppsDatabaseHelper.getAllTrustedApps(), this);
         for (TrustedApp trustedApp : trustedApps) {
             communicationOrigins.add(trustedApp.getApp_name());
         }
