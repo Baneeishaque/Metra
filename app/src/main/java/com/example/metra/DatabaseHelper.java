@@ -264,11 +264,22 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return false;
     }
 
-    void deleteTrustedApp(TrustedApp trustedApp) {
+    void deleteTrustedAppById(TrustedApp trustedApp) {
 
         SQLiteDatabase db = this.getWritableDatabase();
 
         db.delete(TrustedApp.TABLE_NAME, TrustedApp.COLUMN_ID + " = ?", new String[]{String.valueOf(trustedApp.getId())});
+
+        LogUtils.debug("Trusted App Deleted From DB...");
+
+        db.close();
+    }
+
+    void deleteTrustedAppByName(String trustedApp) {
+
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        db.delete(TrustedApp.TABLE_NAME, TrustedApp.COLUMN_APP_NAME + " = ?", new String[]{trustedApp});
 
         LogUtils.debug("Trusted App Deleted From DB...");
 

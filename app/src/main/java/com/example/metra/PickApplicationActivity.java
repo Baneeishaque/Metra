@@ -36,9 +36,7 @@ public class PickApplicationActivity extends AppCompatActivity {
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        //    FloatingActionButton fab_from_contacts;
         RecyclerView recyclerView = findViewById(R.id.recycler_view);
-
         communicationOrigins.clear();
         ApkInfoExtractor apkInfoExtractor = new ApkInfoExtractor(this);
         communicationOrigins.addAll(apkInfoExtractor.GetAllInstalledApkInfo());

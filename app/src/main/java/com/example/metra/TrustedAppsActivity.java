@@ -5,18 +5,25 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.ListView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.buzz.vpn.MainActivity;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
+import java.util.ArrayList;
+
 public class TrustedAppsActivity extends AppCompatActivity {
+
     Context activityContext = this;
     private static final int PICK_UNTRUSTED_APPLICATION_REQUEST = 1;
+    ApplicationsRecyclerViewAdapterWithDelete communicationOriginsRecyclerViewAdapter;
+    private ArrayList<String> communicationOrigins = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,54 +37,56 @@ public class TrustedAppsActivity extends AppCompatActivity {
         FloatingActionButton fab = findViewById(R.id.fab);
         fab.setOnClickListener(view -> {
 
-//            //TODO : Alert Dialog Utils
-//            //TODO : Input Dialog Utils
-//
-//            AlertDialog.Builder builder = new AlertDialog.Builder(activityContext);
-//            builder.setTitle("New Trusted App");
-//
-//            //TODO : Style the input
-//
-//            // Set up the input
-//            final EditText input = new EditText(activityContext);
-//            // Specify the type of input expected
-//            //TODO : Pick from Contacts
-//            input.setInputType(InputType.TYPE_CLASS_TEXT);
-//            input.setHint("App Name.......");
-//            builder.setView(input);
-//
-//            // Set up the buttons
-//            builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
-//                @Override
-//                public void onClick(DialogInterface dialog, int which) {
-//                    //TODO : Phone Number Validation
-//                    //TODO : Check for already existing number
-//                    DatabaseHelper trustedAppsDatabaseHelper = new DatabaseHelper(activityContext);
-//                    trustedAppsDatabaseHelper.insertTrustedApp(input.getText().toString());
-//                    LogUtils.debug(input.getText().toString() + " Added to Trusted DB...");
-////                        TODO : To Activity Utils
-//                    startActivity(new Intent(activityContext, TrustedAppsActivity.class));
-//                    ((AppCompatActivity) activityContext).finish();
-//                }
-//            });
-//            builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-//                @Override
-//                public void onClick(DialogInterface dialog, int which) {
-//                }
-//            });
-//            builder.show();
-
             startActivityForResult(new Intent(this, PickApplicationActivity.class), PICK_UNTRUSTED_APPLICATION_REQUEST);
         });
 
+//        DatabaseHelper trustedAppsDatabaseHelper = new DatabaseHelper(this);
+//
+//        //instantiate custom adapter
+//        TrustedAppsListAdapter adapter = new TrustedAppsListAdapter(trustedAppsDatabaseHelper.getAllTrustedApps(), this);
+//
+//        //handle listView and assign adapter
+//        ListView listView = findViewById(R.id.list_view);
+//        listView.setAdapter(adapter);
+
+        RecyclerView recyclerView = findViewById(R.id.recycler_view);
+        communicationOrigins.clear();
+//        ApkInfoExtractor apkInfoExtractor = new ApkInfoExtractor(this);
+//        communicationOrigins.addAll(apkInfoExtractor.GetAllInstalledApkInfo());
         DatabaseHelper trustedAppsDatabaseHelper = new DatabaseHelper(this);
+        ArrayList<TrustedApp> trustedApps = trustedAppsDatabaseHelper.getAllTrustedApps();
+//        TrustedAppsListAdapter adapter = new TrustedAppsListAdapter(trustedAppsDatabaseHelper.getAllTrustedApps(), this);
+        for (TrustedApp trustedApp : trustedApps) {
+            communicationOrigins.add(trustedApp.getApp_name());
+        }
+        communicationOriginsRecyclerViewAdapter = new ApplicationsRecyclerViewAdapterWithDelete(activityContext, communicationOrigins);
+        recyclerView.setHasFixedSize(true);
 
-        //instantiate custom adapter
-        TrustedAppsListAdapter adapter = new TrustedAppsListAdapter(trustedAppsDatabaseHelper.getAllTrustedApps(), this);
+        // use a linear layout manager
+        LinearLayoutManager layoutManager = new LinearLayoutManager(this);
+        recyclerView.setLayoutManager(layoutManager);
 
-        //handle listView and assign adapter
-        ListView listView = findViewById(R.id.list_view);
-        listView.setAdapter(adapter);
+        recyclerView.setAdapter(communicationOriginsRecyclerViewAdapter);
+
+        communicationOriginsRecyclerViewAdapter.SetOnItemClickListener((view, position, communicationOrigin) -> {
+
+            Intent intent = getPackageManager().getLaunchIntentForPackage(communicationOrigin);
+            if (intent != null) {
+
+                startActivity(intent);
+            } else {
+
+                Toast.makeText(this, communicationOrigin + " Error, Please Try Again.", Toast.LENGTH_LONG).show();
+            }
+        });
+
+        communicationOriginsRecyclerViewAdapter.SetOnDeleteButtonClickListener((position, trustedApp) -> {
+
+            //TODO : Confirmation
+            trustedAppsDatabaseHelper.deleteTrustedAppByName(communicationOrigins.get(position));
+            communicationOrigins.remove(position);
+            communicationOriginsRecyclerViewAdapter.updateList(communicationOrigins);
+        });
     }
 
     @Override
@@ -114,6 +123,7 @@ public class TrustedAppsActivity extends AppCompatActivity {
                 DatabaseHelper trustedAppsDatabaseHelper = new DatabaseHelper(activityContext);
                 trustedAppsDatabaseHelper.insertTrustedApp(application);
                 LogUtils.debug(application + " Added to Trusted DB...");
+
                 //TODO : To Activity Utils
                 startActivity(new Intent(activityContext, TrustedAppsActivity.class));
                 ((AppCompatActivity) activityContext).finish();

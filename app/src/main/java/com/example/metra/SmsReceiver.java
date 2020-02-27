@@ -51,14 +51,16 @@ public class SmsReceiver extends BroadcastReceiver {
                             messagesDatabaseHelper.insertMessage(senderAddress, messageContent);
 
                             Toast.makeText(context, "SMS added to Metra Database...", Toast.LENGTH_LONG).show();
-                        }
 
-                        ContentValues values = new ContentValues();
-                        values.put("address", senderAddress);
-                        values.put("body", messageContent);
-                        values.put("read", currentMessage.getStatus());
-                        values.put("date", currentMessage.getTimestampMillis());
-                        context.getContentResolver().insert(Uri.parse("content://sms/inbox"), values);
+                        } else {
+
+                            ContentValues values = new ContentValues();
+                            values.put("address", senderAddress);
+                            values.put("body", messageContent);
+                            values.put("read", currentMessage.getStatus());
+                            values.put("date", currentMessage.getTimestampMillis());
+                            context.getContentResolver().insert(Uri.parse("content://sms/inbox"), values);
+                        }
                     }
                 }
             } catch (Exception e) {

@@ -4,6 +4,7 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -15,14 +16,15 @@ import java.util.ArrayList;
 /**
  * A custom adapter to use with the RecyclerView widget.
  */
-public class ApplicationsRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+public class ApplicationsRecyclerViewAdapterWithDelete extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     private Context mContext;
     private ArrayList<String> applications;
 
-    private OnItemClickListener mItemClickListener;
+    private OnItemClickListener onItemClickListener;
+    private OnDeleteButtonClickListener onDeleteButtonClickListener;
 
-    public ApplicationsRecyclerViewAdapter(Context context, ArrayList<String> applications) {
+    public ApplicationsRecyclerViewAdapterWithDelete(Context context, ArrayList<String> applications) {
 
         this.mContext = context;
         this.applications = applications;
@@ -31,7 +33,7 @@ public class ApplicationsRecyclerViewAdapter extends RecyclerView.Adapter<Recycl
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup viewGroup, int viewType) {
 
-        View view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.applications_item_recycler_view_list, viewGroup, false);
+        View view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.applications_with_delete_item_recycler_view_list, viewGroup, false);
         return new ViewHolder(view);
     }
 
@@ -47,6 +49,8 @@ public class ApplicationsRecyclerViewAdapter extends RecyclerView.Adapter<Recycl
             genericViewHolder.textViewAppName.setText(apkInfoExtractor.GetAppName(ApplicationPackageName));
             genericViewHolder.textViewAppPackageName.setText(ApplicationPackageName);
             genericViewHolder.imageView.setImageDrawable(apkInfoExtractor.getAppIconByPackageName(ApplicationPackageName));
+
+            genericViewHolder.imageButtonDelete.setOnClickListener(v -> onDeleteButtonClickListener.onDeleteButtonClick(position, applications.get(position)));
         }
     }
 
@@ -64,16 +68,26 @@ public class ApplicationsRecyclerViewAdapter extends RecyclerView.Adapter<Recycl
 
     public void SetOnItemClickListener(final OnItemClickListener mItemClickListener) {
 
-        this.mItemClickListener = mItemClickListener;
+        this.onItemClickListener = mItemClickListener;
     }
 
     private String getItem(int position) {
         return applications.get(position);
     }
 
+    public void SetOnDeleteButtonClickListener(final OnDeleteButtonClickListener onDeleteButtonClickListener) {
+
+        this.onDeleteButtonClickListener = onDeleteButtonClickListener;
+    }
+
     public interface OnItemClickListener {
 
         void onItemClick(View view, int position, String model);
+    }
+
+    public interface OnDeleteButtonClickListener {
+
+        void onDeleteButtonClick(int position, String trustedApp);
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
@@ -82,6 +96,7 @@ public class ApplicationsRecyclerViewAdapter extends RecyclerView.Adapter<Recycl
         ImageView imageView;
         TextView textViewAppName;
         TextView textViewAppPackageName;
+        ImageButton imageButtonDelete;
 
         public ViewHolder(View itemView) {
 
@@ -91,8 +106,9 @@ public class ApplicationsRecyclerViewAdapter extends RecyclerView.Adapter<Recycl
             imageView = itemView.findViewById(R.id.imageView);
             textViewAppName = itemView.findViewById(R.id.Apk_Name);
             textViewAppPackageName = itemView.findViewById(R.id.Apk_Package_Name);
+            imageButtonDelete = itemView.findViewById(R.id.button_delete);
 
-            itemView.setOnClickListener(view -> mItemClickListener.onItemClick(itemView, getAdapterPosition(), applications.get(getAdapterPosition())));
+            itemView.setOnClickListener(view -> onItemClickListener.onItemClick(itemView, getAdapterPosition(), applications.get(getAdapterPosition())));
         }
     }
 }

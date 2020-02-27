@@ -41,8 +41,8 @@ public class ListMessagesActivity extends AppCompatActivity {
     private Toolbar toolbar;
     private FloatingActionButton fab;
 
-    private SmsInboxRecyclerViewAdapter mAdapter;
-    private ArrayList<Sms> modelList = new ArrayList<>();
+    private SmsInboxRecyclerViewAdapter smsInboxRecyclerViewAdapter;
+    private ArrayList<Sms> smsArrayList = new ArrayList<>();
 
     static ListMessagesActivity inst;
     static boolean active = false;
@@ -100,48 +100,40 @@ public class ListMessagesActivity extends AppCompatActivity {
         int indexBody = smsInboxCursor.getColumnIndex("body");
         if (indexBody < 0 || !smsInboxCursor.moveToFirst()) return;
 
-        modelList.clear();
+        smsArrayList.clear();
         do {
 
-            modelList.add(new Sms(smsInboxCursor.getString(indexAddress), smsInboxCursor.getString(indexBody)));
+            smsArrayList.add(new Sms(smsInboxCursor.getString(indexAddress), smsInboxCursor.getString(indexBody)));
 
         } while (smsInboxCursor.moveToNext());
 
-        mAdapter = new SmsInboxRecyclerViewAdapter(activityContext, modelList);
+        smsInboxRecyclerViewAdapter = new SmsInboxRecyclerViewAdapter(activityContext, smsArrayList);
         recyclerView.setHasFixedSize(true);
 
         // use a linear layout manager
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(layoutManager);
 
-        recyclerView.setAdapter(mAdapter);
+        recyclerView.setAdapter(smsInboxRecyclerViewAdapter);
 
-        mAdapter.SetOnItemClickListener(new SmsInboxRecyclerViewAdapter.OnItemClickListener() {
-
-            @Override
-            public void onItemClick(View view, int position, Sms model) {
-
-                //handle item click events here
-//                Toast.makeText(ListMessagesActivity.this, "Hey " + model.getAddress(), Toast.LENGTH_SHORT).show();
-            }
+        smsInboxRecyclerViewAdapter.SetOnItemClickListener((view, position, model) -> {
         });
 
-        mAdapter.SetOnForwardButtonClickListener(new SmsInboxRecyclerViewAdapter.OnForwardButtonClickListener() {
+        smsInboxRecyclerViewAdapter.SetOnForwardButtonClickListener(model -> {
 
-            @Override
-            public void onForwardButtonClick(Sms model) {
-
-                // add the phone number in the data
-                Uri uri = Uri.parse("smsto:" + model.getAddress());
-                Intent smsSIntent = new Intent(Intent.ACTION_SENDTO, uri);
-                // add the message at the sms_body extra field
-                smsSIntent.putExtra("address", model.getAddress());
-                smsSIntent.putExtra("sms_body", model.getMessage());
-                startActivity(smsSIntent);
-            }
+            // add the phone number in the data
+            Uri uri = Uri.parse("smsto:" + model.getAddress());
+            Intent smsSIntent = new Intent(Intent.ACTION_SENDTO, uri);
+            // add the message at the sms_body extra field
+            smsSIntent.putExtra("address", model.getAddress());
+            smsSIntent.putExtra("sms_body", model.getMessage());
+            startActivity(smsSIntent);
         });
 
         smsInboxCursor.close();
+
+        DatabaseHelper trustedAppsDatabaseHelper = new DatabaseHelper(this);
+        smsArrayList.addAll(0, trustedAppsDatabaseHelper.getAllMessages());
     }
 
     @Override
@@ -181,8 +173,8 @@ public class ListMessagesActivity extends AppCompatActivity {
 
     public void updateInbox(String sender, String smsMessage) {
 
-        modelList.add(0, new Sms(sender, smsMessage));
-        mAdapter.updateList(modelList);
+        smsArrayList.add(0, new Sms(sender, smsMessage));
+        smsInboxRecyclerViewAdapter.updateList(smsArrayList);
     }
 
     @Override
@@ -282,18 +274,18 @@ public class ListMessagesActivity extends AppCompatActivity {
 
                 if (s.length() > 0) {
 
-                    for (int i = 0; i < modelList.size(); i++) {
+                    for (int i = 0; i < smsArrayList.size(); i++) {
 
-                        if (modelList.get(i).getAddress().toLowerCase().contains(s.toLowerCase()) || modelList.get(i).getMessage().toLowerCase().contains(s.toLowerCase())) {
+                        if (smsArrayList.get(i).getAddress().toLowerCase().contains(s.toLowerCase()) || smsArrayList.get(i).getMessage().toLowerCase().contains(s.toLowerCase())) {
 
-                            filterList.add(modelList.get(i));
-                            mAdapter.updateList(filterList);
+                            filterList.add(smsArrayList.get(i));
+                            smsInboxRecyclerViewAdapter.updateList(filterList);
                         }
                     }
 
                 } else {
 
-                    mAdapter.updateList(modelList);
+                    smsInboxRecyclerViewAdapter.updateList(smsArrayList);
                 }
                 return false;
             }
