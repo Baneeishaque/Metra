@@ -4,7 +4,7 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
 import androidx.recyclerview.widget.RecyclerView;
@@ -89,7 +89,7 @@ public class CommunicationOriginsRecyclerViewAdapter extends RecyclerView.Adapte
 
         private TextView itemTxtTitle;
         private TextView itemTxtMessage;
-        private Button itemButtonDelete;
+        private ImageButton itemButtonDelete;
 
         public ViewHolder(final View itemView) {
 
