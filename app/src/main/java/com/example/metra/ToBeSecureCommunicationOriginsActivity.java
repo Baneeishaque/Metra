@@ -232,7 +232,7 @@ public class ToBeSecureCommunicationOriginsActivity extends AppCompatActivity {
 //    public boolean onCreateOptionsMenu(Menu menu) {
 //
 //        super.onCreateOptionsMenu(menu);
-////        getMenuInflater().inflate(R.menu.menu_search, menu);
+////        getMenuInflater().inflate(R.menu.menu_sms_inbox, menu);
 ////
 ////        // Retrieve the SearchView and plug it into SearchManager
 ////        final SearchView searchView = (SearchView) MenuItemCompat.getActionView(menu.findItem(R.id.action_search));

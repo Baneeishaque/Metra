@@ -41,7 +41,7 @@ public class ListMessagesActivity extends AppCompatActivity {
     private Toolbar toolbar;
     private FloatingActionButton fab;
 
-    private RecyclerViewAdapter mAdapter;
+    private SmsInboxRecyclerViewAdapter mAdapter;
     private ArrayList<Sms> modelList = new ArrayList<>();
 
     static ListMessagesActivity inst;
@@ -61,14 +61,7 @@ public class ListMessagesActivity extends AppCompatActivity {
         findViews();
         setSupportActionBar(toolbar);
 
-        fab.setOnClickListener(new View.OnClickListener() {
-
-            @Override
-            public void onClick(View view) {
-
-                startActivity(new Intent(activityContext, SendMessageActivity.class));
-            }
-        });
+        fab.setOnClickListener(view -> startActivity(new Intent(activityContext, SendMessageActivity.class)));
 
         //TODO : Pre check for service
         startService(new Intent(this, QuickResponseService.class));
@@ -114,7 +107,7 @@ public class ListMessagesActivity extends AppCompatActivity {
 
         } while (smsInboxCursor.moveToNext());
 
-        mAdapter = new RecyclerViewAdapter(activityContext, modelList);
+        mAdapter = new SmsInboxRecyclerViewAdapter(activityContext, modelList);
         recyclerView.setHasFixedSize(true);
 
         // use a linear layout manager
@@ -123,7 +116,7 @@ public class ListMessagesActivity extends AppCompatActivity {
 
         recyclerView.setAdapter(mAdapter);
 
-        mAdapter.SetOnItemClickListener(new RecyclerViewAdapter.OnItemClickListener() {
+        mAdapter.SetOnItemClickListener(new SmsInboxRecyclerViewAdapter.OnItemClickListener() {
 
             @Override
             public void onItemClick(View view, int position, Sms model) {
@@ -133,7 +126,7 @@ public class ListMessagesActivity extends AppCompatActivity {
             }
         });
 
-        mAdapter.SetOnForwardButtonClickListener(new RecyclerViewAdapter.OnForwardButtonClickListener() {
+        mAdapter.SetOnForwardButtonClickListener(new SmsInboxRecyclerViewAdapter.OnForwardButtonClickListener() {
 
             @Override
             public void onForwardButtonClick(Sms model) {
@@ -240,7 +233,7 @@ public class ListMessagesActivity extends AppCompatActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
 
         super.onCreateOptionsMenu(menu);
-        getMenuInflater().inflate(R.menu.menu_search, menu);
+        getMenuInflater().inflate(R.menu.menu_sms_inbox, menu);
 
         // Retrieve the SearchView and plug it into SearchManager
         final SearchView searchView = (SearchView) MenuItemCompat.getActionView(menu.findItem(R.id.action_search));

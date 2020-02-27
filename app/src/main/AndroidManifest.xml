@@ -26,7 +26,7 @@
 
         <activity
             android:name=".TrustedAppsActivity"
-            android:label="@string/title_activity_trusted_apps"
+            android:label="Untrusted Applications"
             android:theme="@style/AppTheme.NoActionBar" />
 
         <activity android:name=".SendMessageActivity">
@@ -59,6 +59,11 @@
         <activity
             android:name=".ToBeSecureCommunicationOriginsActivity"
             android:label="To Be Secure Communication Origins"
+            android:theme="@style/AppTheme.NoActionBar" />
+
+        <activity
+            android:name=".PickApplicationActivity"
+            android:label="Choose Untrusted Application"
             android:theme="@style/AppTheme.NoActionBar" />
 
         <!-- SMS Receiver -->

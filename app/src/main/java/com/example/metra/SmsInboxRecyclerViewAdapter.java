@@ -4,7 +4,7 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
 import androidx.recyclerview.widget.RecyclerView;
@@ -14,7 +14,7 @@ import java.util.ArrayList;
 /**
  * A custom adapter to use with the RecyclerView widget.
  */
-public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+public class SmsInboxRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     private Context mContext;
     private ArrayList<Sms> modelList;
@@ -22,7 +22,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
     private OnItemClickListener mItemClickListener;
     private OnForwardButtonClickListener mForwardButtonClickListener;
 
-    public RecyclerViewAdapter(Context context, ArrayList<Sms> modelList) {
+    public SmsInboxRecyclerViewAdapter(Context context, ArrayList<Sms> modelList) {
 
         this.mContext = context;
         this.modelList = modelList;
@@ -51,14 +51,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             ViewHolder genericViewHolder = (ViewHolder) holder;
             genericViewHolder.itemTxtTitle.setText(model.getAddress());
             genericViewHolder.itemTxtMessage.setText(model.getMessage());
-            genericViewHolder.itemButtonForward.setOnClickListener(new View.OnClickListener() {
-
-                @Override
-                public void onClick(View v) {
-
-                    mForwardButtonClickListener.onForwardButtonClick(model);
-                }
-            });
+            genericViewHolder.itemButtonForward.setOnClickListener(v -> mForwardButtonClickListener.onForwardButtonClick(model));
         }
     }
 
@@ -96,7 +89,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 
         private TextView itemTxtTitle;
         private TextView itemTxtMessage;
-        private Button itemButtonForward;
+        private ImageButton itemButtonForward;
 
         public ViewHolder(final View itemView) {
 
@@ -106,14 +99,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             this.itemTxtMessage = itemView.findViewById(R.id.item_txt_message);
             this.itemButtonForward = itemView.findViewById(R.id.button_forward);
 
-            itemView.setOnClickListener(new View.OnClickListener() {
-
-                @Override
-                public void onClick(View view) {
-
-                    mItemClickListener.onItemClick(itemView, getAdapterPosition(), modelList.get(getAdapterPosition()));
-                }
-            });
+            itemView.setOnClickListener(view -> mItemClickListener.onItemClick(itemView, getAdapterPosition(), modelList.get(getAdapterPosition())));
         }
     }
 }
