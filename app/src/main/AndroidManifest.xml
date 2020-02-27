@@ -25,7 +25,7 @@
             android:theme="@style/AppTheme.Template.Base" />
 
         <activity
-            android:name=".TrustedAppsActivity"
+            android:name=".UnTrustedAppsActivity"
             android:label="Untrusted Applications"
             android:theme="@style/AppTheme.NoActionBar" />
 

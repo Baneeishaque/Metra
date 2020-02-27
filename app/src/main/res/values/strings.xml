@@ -9,4 +9,5 @@
     <string name="title_activity_trusted_apps">Trusted Apps</string>
     <string name="title_activity_list_messages">Messages</string>
     <string name="vpn">VPN</string>
+    <string name="untrusted_apps_acronym">UTA</string>
 </resources>

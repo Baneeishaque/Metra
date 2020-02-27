@@ -302,7 +302,7 @@ public class ListMessagesActivity extends AppCompatActivity {
 
         } else if (item.getItemId() == R.id.trusted_apps) {
 
-            startActivity(new Intent(this, TrustedAppsActivity.class));
+            startActivity(new Intent(this, UnTrustedAppsActivity.class));
         }
         return super.onOptionsItemSelected(item);
     }

@@ -1,8 +1,8 @@
 package com.example.metra;
 
-public class TrustedApp {
+public class UnTrustedApp {
 
-    static final String TABLE_NAME = "trusted_apps";
+    static final String TABLE_NAME = "untrusted_apps";
 
     static final String COLUMN_ID = "id";
     static final String COLUMN_APP_NAME = "app_name";
@@ -15,7 +15,7 @@ public class TrustedApp {
     private int id;
     private String app_name;
 
-    public TrustedApp(int id, String app_name) {
+    public UnTrustedApp(int id, String app_name) {
         this.id = id;
         this.app_name = app_name;
     }

@@ -5,8 +5,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    tools:context=".TrustedAppsActivity"
-    tools:showIn="@layout/activity_trusted_apps">
+    tools:context=".UnTrustedAppsActivity"
+    tools:showIn="@layout/activity_untrusted_apps">
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recycler_view"
