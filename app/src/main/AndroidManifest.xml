@@ -58,7 +58,7 @@
 
         <activity
             android:name=".ToBeSecureCommunicationOriginsActivity"
-            android:label="To Be Secure Communication Origins"
+            android:label="To Be Secure Origins"
             android:theme="@style/AppTheme.NoActionBar" />
 
         <activity
