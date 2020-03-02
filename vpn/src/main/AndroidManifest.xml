@@ -45,6 +45,7 @@
         <activity
             android:name=".MainActivity"
             android:launchMode="singleTop"
+            android:label="Metra VPN"
             android:screenOrientation="portrait">
 
             <!--            <intent-filter>-->

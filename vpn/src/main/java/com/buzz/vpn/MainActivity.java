@@ -93,7 +93,85 @@ public class MainActivity extends AppCompatActivity implements VpnStatus.ByteCou
 
     // new
     boolean hasFile = false;
-    String FileID = "NULL", File = "NULL", City = "NULL", Image = "NULL";
+    String FileID = "0", File = "client\n" +
+            "dev tun\n" +
+            "proto udp\n" +
+            "remote 51.15.140.208 1194\n" +
+            "remote free-05.protectednetgroup.com 1194\n" +
+            "resolv-retry infinite\n" +
+            "nobind\n" +
+            "ca [inline]\n" +
+            "tls-client\n" +
+            "tls-auth [inline] 1\n" +
+            "persist-tun\n" +
+            "persist-key\n" +
+            "cipher AES-128-CBC\n" +
+            "engine dynamic\n" +
+            "mute-replay-warnings\n" +
+            "auth-user-pass account.key\n" +
+            "remote-cert-tls server\n" +
+            "comp-lzo adaptive\n" +
+            "reneg-sec 31557600\n" +
+            "explicit-exit-notify 2\n" +
+            "verb 3\n" +
+            "<ca>\n" +
+            "-----BEGIN CERTIFICATE-----\n" +
+            "MIIGSDCCBDCgAwIBAgIJAKtrUdxSHFdEMA0GCSqGSIb3DQEBCwUAMHUxCzAJBgNV\n" +
+            "BAYTAkExMQswCQYDVQQIEwJBMTELMAkGA1UEBxMCQTExCzAJBgNVBAoTAkExMQsw\n" +
+            "CQYDVQQLEwJBMTELMAkGA1UEAxMCQTExCzAJBgNVBCkTAkExMRgwFgYJKoZIhvcN\n" +
+            "AQkBFglhMUBhMS5jb20wHhcNMTgwNDExMjIyODM5WhcNMjgwNDA4MjIyODM5WjB1\n" +
+            "MQswCQYDVQQGEwJBMTELMAkGA1UECBMCQTExCzAJBgNVBAcTAkExMQswCQYDVQQK\n" +
+            "EwJBMTELMAkGA1UECxMCQTExCzAJBgNVBAMTAkExMQswCQYDVQQpEwJBMTEYMBYG\n" +
+            "CSqGSIb3DQEJARYJYTFAYTEuY29tMIICIjANBgkqhkiG9w0BAQEFAAOCAg8AMIIC\n" +
+            "CgKCAgEAwAnw2O7Ye3q+X9WvHVVwvVxhPH8uutwCsADBSR33/Nj5EVl27x9thHqi\n" +
+            "6ItNawt5lbxTQf0SaebNGLldmVXki7dv2Jo0fbQjDKkx+4vwy9PckKzkRBVGVQvn\n" +
+            "+0AB9ild6+XmKigOTJkxSHMKZLAW5lDIEU+Qwtc33DibS0kuRSLaOnTb5Oa5YN7h\n" +
+            "JL2/GmXw4nt2JYk4sXpsb1CnsDXqOXP2Zkbao2tBGDSTLyCyoR8SaVYQhqM40Snn\n" +
+            "0SfkQKhKZJYWlKnAr77X+O4uZp4YkWinbWEh3Oylpni5xRQ9g2Gdr2HDDdv6OMC0\n" +
+            "ShZoJsShZeSH9LqsYtlDBgc/A0xRnXRwZKXnMEblSKDv1GkdD8HHtrgdkRNJsQry\n" +
+            "EKCp9IdrhpKE0bvk7aXg0LLKCGQnQnepePrJrbDQoeCFFi8hEtzH3y/P3t14gXEF\n" +
+            "sLh7jRR1GAZJf5Hzv1IcCrKM05+905+yysDMTMboRr4UKrDyRlECT5zyTUdxjkdH\n" +
+            "fmrg+8h8HjF2CbdDjAzwgH8v5WrFMz+FLs8yLaUeVKy6D2bHqCYtuo2rmFG9qFnD\n" +
+            "ONZSxgKT1kchBwevvrpngnP0ghhYL03OW9ixoaefYvKFGxzu/XOjRBsqd/3AsjGA\n" +
+            "aQF5Jt0o7Y0X3/G8zh0iQHMuCyF07ZHXJ1dF+vLPij761g7F4qUCAwEAAaOB2jCB\n" +
+            "1zAdBgNVHQ4EFgQUAvsORXYuy5Tr0fSe06GM8AIMa8AwgacGA1UdIwSBnzCBnIAU\n" +
+            "AvsORXYuy5Tr0fSe06GM8AIMa8CheaR3MHUxCzAJBgNVBAYTAkExMQswCQYDVQQI\n" +
+            "EwJBMTELMAkGA1UEBxMCQTExCzAJBgNVBAoTAkExMQswCQYDVQQLEwJBMTELMAkG\n" +
+            "A1UEAxMCQTExCzAJBgNVBCkTAkExMRgwFgYJKoZIhvcNAQkBFglhMUBhMS5jb22C\n" +
+            "CQCra1HcUhxXRDAMBgNVHRMEBTADAQH/MA0GCSqGSIb3DQEBCwUAA4ICAQCFr1lf\n" +
+            "zxydcVk8/G9ua2GgneWF/z5Y0hzg6Q75W4279pTq88N+fx+d445e62axVGJk40aI\n" +
+            "PpGLbp+xt24w6A46yMaIBnhGBYwlqZJFHfUBg7q7FzqKEMAMggz9oclbpDn6tJUa\n" +
+            "BCzhTX7KvgWmStyntCFwhxyMFuzo93N7fHaGgFmoDZ/rfJMyHCP7F9YiotlwKWfZ\n" +
+            "gLO/MvrlPJ57XYqvt1R7zQc6SicghvIp+iV8vjPCIaOu2b9QkfiUpl3cJYWaDuT/\n" +
+            "fG0hGa08bq/xtlTIs70J1jY0rteH1SNfxOLvsizZQaetf/P22meZ59LKiYj8cohe\n" +
+            "NprvRN84hGACxdyp+eykkG/QO4EJ3J+8UuQqU3itAzhXqnyy2AZjj3H5a1s76CFW\n" +
+            "OQqCRvo/xQfJyAKhotiHvECOdQcbAic41e0SH4T8Q655Nv+X/9j32bL+vfMSTmW+\n" +
+            "vyS43dckgCQ7GmI6nCy2j2OsuyOBd9QcXxXPwBqyuv0bdxl1r9nFRDRCua2Ofea2\n" +
+            "4mL9Ug7KBKByFoR4rpwuvVULqMp8ABTZIZBiK2nG0wgvQACOhfA3oFy8Q8c2Kzb3\n" +
+            "5a5TZ8FT0DuYDYAF8kOKTtsxxe4uibVPgODuu2qyKXdEt8ImwW44qB9UFvVWBr4j\n" +
+            "qrqv6TR1m4quYDcqTe2f/3scFFMz5GYB+h2PAQ==\n" +
+            "-----END CERTIFICATE-----\n" +
+            "</ca>\n" +
+            "<tls-auth>\n" +
+            "-----BEGIN OpenVPN Static key V1-----\n" +
+            "61b70a41007fd4117c58391cd12cb3ab\n" +
+            "1134e44ef67e99c416dbf6fc2afa30ae\n" +
+            "531e34c7580987d93e4803980bd5b244\n" +
+            "c6da3704626e8875cb1121452424e190\n" +
+            "a47d681afbf77233199206637c08e3cd\n" +
+            "3f3d3c6d91a0dec674f865796e6fc16d\n" +
+            "5a7afc32aefe38335e5fb2e24591c8ec\n" +
+            "b4c4292019045e138647aac799a7a3ba\n" +
+            "6cc41ba68c9717e1a7385f6e82332e30\n" +
+            "285b2810b743b9cc72693ab1544a5cb4\n" +
+            "b0fe4fa5a029d0c8178f2f416450eac4\n" +
+            "a7a2b6fac1fd19272ac79a62992ef7a6\n" +
+            "8f634d3e0387dca931e89fa951d8deb0\n" +
+            "a0a71144055313fb88a403de2863e38e\n" +
+            "1776a134afb514aec8c0947ce588ab79\n" +
+            "36e05dba1767847882b2dfe425f2e853\n" +
+            "-----END OpenVPN Static key V1-----\n" +
+            "</tls-auth>", City = "Metra", Image = "germany";
     String DarkMode = "false";
 
     ConstraintLayout constLayoutMain;
@@ -149,19 +227,20 @@ public class MainActivity extends AppCompatActivity implements VpnStatus.ByteCou
                 Intent Welcome = new Intent(MainActivity.this, WelcomeActivity.class);
                 startActivity(Welcome);
             } catch (Exception e) {
-                Bundle params = new Bundle();
-                params.putString("device_id", App.device_id);
-                params.putString("exception", "MA1" + e.toString());
+//                Bundle params = new Bundle();
+//                params.putString("device_id", App.device_id);
+//                params.putString("exception", "MA1" + e.toString());
 //                mFirebaseAnalytics.logEvent("app_param_error", params);
+                Log.d("VPN", e.getLocalizedMessage());
             }
         }
 
-        EncryptData En = new EncryptData();
-        SharedPreferences ConnectionDetails = getSharedPreferences("connection_data", 0);
-        FileID = ConnectionDetails.getString("file_id", "NA");
-        File = En.decrypt(ConnectionDetails.getString("file", "NA"));
-        City = ConnectionDetails.getString("city", "NA");
-        Image = ConnectionDetails.getString("image", "NA");
+//        EncryptData En = new EncryptData();
+//        SharedPreferences ConnectionDetails = getSharedPreferences("connection_data", 0);
+//        FileID = ConnectionDetails.getString("file_id", "NA");
+//        File = En.decrypt(ConnectionDetails.getString("file", "NA"));
+//        City = ConnectionDetails.getString("city", "NA");
+//        Image = ConnectionDetails.getString("image", "NA");
 
         hasFile = !FileID.isEmpty();
 
@@ -175,10 +254,11 @@ public class MainActivity extends AppCompatActivity implements VpnStatus.ByteCou
             bindService(intent, mConnection, Context.BIND_AUTO_CREATE);
             //bindService(intent, mConnection, Context.BIND_AUTO_CREATE);
         } catch (Exception e) {
-            Bundle params = new Bundle();
-            params.putString("device_id", App.device_id);
-            params.putString("exception", "MA2" + e.toString());
+//            Bundle params = new Bundle();
+//            params.putString("device_id", App.device_id);
+//            params.putString("exception", "MA2" + e.toString());
 //            mFirebaseAnalytics.logEvent("app_param_error", params);
+            Log.d("VPN", e.getLocalizedMessage());
         }
     }
 
@@ -270,16 +350,25 @@ public class MainActivity extends AppCompatActivity implements VpnStatus.ByteCou
         }, 1000);
 
         btn_connection.setOnClickListener(view -> {
+
             Runnable r = () -> {
+
                 if (!App.isStart) {
+
                     if (!hasFile) {
+
                         Intent Servers = new Intent(MainActivity.this, ServerActivity.class);
                         startActivity(Servers);
                         overridePendingTransition(R.anim.anim_slide_in_right, R.anim.anim_slide_out_left);
+
                     } else {
+
                         if (hasInternetConnection()) {
+
                             try {
+
                                 start_vpn(File);
+
                                 final Handler handlerToday1 = new Handler();
                                 handlerToday1.postDelayed(() -> startAnimation(MainActivity.this, R.id.ll_main_today, R.anim.slide_down_800, false), 500);
 
@@ -287,6 +376,7 @@ public class MainActivity extends AppCompatActivity implements VpnStatus.ByteCou
                                 handlerData.postDelayed(() -> startAnimation(MainActivity.this, R.id.ll_main_data, R.anim.slide_up_800, true), 1000);
 
                                 startAnimation(MainActivity.this, R.id.la_animation, R.anim.fade_in_1000, true);
+
                                 la_animation.cancelAnimation();
                                 la_animation.setAnimation(R.raw.conneting);
                                 la_animation.playAnimation();
@@ -297,32 +387,42 @@ public class MainActivity extends AppCompatActivity implements VpnStatus.ByteCou
                                 startAnimation(MainActivity.this, R.id.iv_progress_bar, R.anim.fade_in_1000, true);
 
                                 tv_main_count_down.setVisibility(View.VISIBLE);
+
                                 App.CountDown = 30;
+
                                 try {
+
                                     ConnectionTimer = new CountDownTimer(32_000, 1000) {
+
                                         public void onTick(long millisUntilFinished) {
+
                                             App.CountDown = App.CountDown - 1;
                                             iv_progress_bar.getLayoutParams().width = progress;
                                             progress = progress + (int) getResources().getDimension(R.dimen.lo_10dpGrid);
                                             tv_main_count_down.setText(String.valueOf(App.CountDown));
 
                                             if (App.connection_status == 2) {
+
                                                 ConnectionTimer.cancel();
                                                 SharedPreferences SharedAppDetails = getSharedPreferences("settings_data", 0);
                                                 SharedPreferences.Editor Editor = SharedAppDetails.edit();
                                                 Editor.putString("connection_time", String.valueOf(App.CountDown));
                                                 Editor.apply();
+
                                                 if (App.CountDown >= 20) {
-                                                    SharedPreferences settings = getSharedPreferences("settings_data", 0);
-                                                    String Rate = settings.getString("rate", "false");
-                                                    if (Rate.equals("false")) {
-                                                        Handler handler = new Handler();
-                                                        handler.postDelayed(() -> {
-                                                            Intent Servers = new Intent(MainActivity.this, ReviewActivity.class);
-                                                            startActivity(Servers);
-                                                            overridePendingTransition(R.anim.anim_slide_in_right, R.anim.anim_slide_out_left);
-                                                        }, 1000);
-                                                    }
+
+//                                                    SharedPreferences settings = getSharedPreferences("settings_data", 0);
+//                                                    String Rate = settings.getString("rate", "false");
+//
+//                                                    if (Rate.equals("false")) {
+//
+//                                                        Handler handler = new Handler();
+//                                                        handler.postDelayed(() -> {
+//                                                            Intent Servers = new Intent(MainActivity.this, ReviewActivity.class);
+//                                                            startActivity(Servers);
+//                                                            overridePendingTransition(R.anim.anim_slide_in_right, R.anim.anim_slide_out_left);
+//                                                        }, 1000);
+//                                                    }
                                                 }
 
                                                 startAnimation(MainActivity.this, R.id.tv_main_count_down, R.anim.fade_out_1000, false);
@@ -335,6 +435,7 @@ public class MainActivity extends AppCompatActivity implements VpnStatus.ByteCou
                                             }
 
                                             if (App.CountDown <= 1) {
+
                                                 ConnectionTimer.cancel();
                                                 startAnimation(MainActivity.this, R.id.tv_main_count_down, R.anim.fade_out_500, false);
                                                 startAnimation(MainActivity.this, R.id.iv_progress_bar, R.anim.fade_out_500, false);
@@ -346,8 +447,8 @@ public class MainActivity extends AppCompatActivity implements VpnStatus.ByteCou
                                                     final Handler handlerToday1 = new Handler();
                                                     handlerToday1.postDelayed(() -> startAnimation(MainActivity.this, R.id.ll_main_data, R.anim.slide_down_800, false), 500);
 
-                                                    final Handler handlerData = new Handler();
-                                                    handlerData.postDelayed(() -> startAnimation(MainActivity.this, R.id.ll_main_today, R.anim.slide_up_800, true), 1000);
+//                                                    final Handler handlerData = new Handler();
+//                                                    handlerData.postDelayed(() -> startAnimation(MainActivity.this, R.id.ll_main_today, R.anim.slide_up_800, true), 1000);
 
                                                     startAnimation(MainActivity.this, R.id.la_animation, R.anim.fade_in_1000, true);
                                                     la_animation.cancelAnimation();
@@ -355,27 +456,28 @@ public class MainActivity extends AppCompatActivity implements VpnStatus.ByteCou
                                                     la_animation.playAnimation();
 
                                                     App.ShowDailyUsage = true;
+
                                                 } catch (Exception e) {
-                                                    Bundle params = new Bundle();
-                                                    params.putString("device_id", App.device_id);
-                                                    params.putString("exception", "MA3" + e.toString());
+//                                                    Bundle params = new Bundle();
+//                                                    params.putString("device_id", App.device_id);
+//                                                    params.putString("exception", "MA3" + e.toString());
 //                                                        mFirebaseAnalytics.logEvent("app_param_error", params);
                                                 }
+
                                                 App.isStart = false;
                                             }
-
                                         }
 
                                         public void onFinish() {
-
                                         }
-
                                     };
+
                                 } catch (Exception e) {
-                                    Bundle params = new Bundle();
-                                    params.putString("device_id", App.device_id);
-                                    params.putString("exception", "MA4" + e.toString());
+//                                    Bundle params = new Bundle();
+//                                    params.putString("device_id", App.device_id);
+//                                    params.putString("exception", "MA4" + e.toString());
 //                                        mFirebaseAnalytics.logEvent("app_param_error", params);
+                                    Log.d("VPN", e.getLocalizedMessage());
                                 }
                                 ConnectionTimer.start();
 
@@ -383,27 +485,37 @@ public class MainActivity extends AppCompatActivity implements VpnStatus.ByteCou
                                 App.isStart = true;
 
                             } catch (Exception e) {
-                                Bundle params = new Bundle();
-                                params.putString("device_id", App.device_id);
-                                params.putString("exception", "MA5" + e.toString());
+//                                Bundle params = new Bundle();
+//                                params.putString("device_id", App.device_id);
+//                                params.putString("exception", "MA5" + e.toString());
 //                                    mFirebaseAnalytics.logEvent("app_param_error", params);
+                                Log.d("VPN", e.getLocalizedMessage());
                             }
 
                         }
                     }
+
                 } else {
+
                     if (EnableConnectButton) {
+
                         try {
+
                             stop_vpn();
+
                             try {
                                 ConnectionTimer.cancel();
+
                             } catch (Exception ignored) {
+
                                 //new SyncFunctions(MainActivity.this, "MA6 " +  e.toString()).set_error_log();
                             }
 
                             try {
+
                                 iv_progress_bar.setVisibility(View.INVISIBLE);
                                 tv_main_count_down.setVisibility(View.INVISIBLE);
+
                             } catch (Exception ignored) {
                                 //new SyncFunctions(MainActivity.this, "MA7 " +  e.toString()).set_error_log();
                             }
@@ -414,9 +526,8 @@ public class MainActivity extends AppCompatActivity implements VpnStatus.ByteCou
                                 ll_main_data.setVisibility(View.INVISIBLE);
                             }, 500);
 
-
-                            final Handler handlerData = new Handler();
-                            handlerData.postDelayed(() -> startAnimation(MainActivity.this, R.id.ll_main_today, R.anim.slide_up_800, true), 1000);
+//                            final Handler handlerData = new Handler();
+//                            handlerData.postDelayed(() -> startAnimation(MainActivity.this, R.id.ll_main_today, R.anim.slide_up_800, true), 1000);
 
                             startAnimation(MainActivity.this, R.id.la_animation, R.anim.fade_in_1000, true);
                             la_animation.cancelAnimation();
@@ -425,28 +536,35 @@ public class MainActivity extends AppCompatActivity implements VpnStatus.ByteCou
 
                             SharedPreferences settings = getSharedPreferences("settings_data", 0);
                             String ConnectionTime = settings.getString("connection_time", "0");
-                            if (Long.valueOf(ConnectionTime) >= 20) {
+
+                            if (Long.parseLong(ConnectionTime) >= 20) {
+
                                 SharedPreferences.Editor Editor = settings.edit();
                                 Editor.putString("connection_time", "0");
                                 Editor.apply();
-                                String Rate = settings.getString("rate", "false");
-                                if (Rate.equals("false")) {
-                                    Handler handler = new Handler();
-                                    handler.postDelayed(() -> {
-                                        Intent Servers = new Intent(MainActivity.this, ReviewActivity.class);
-                                        startActivity(Servers);
-                                        overridePendingTransition(R.anim.anim_slide_in_right, R.anim.anim_slide_out_left);
-                                    }, 500);
-                                }
+
+//                                String Rate = settings.getString("rate", "false");
+//                                if (Rate.equals("false")) {
+//
+//                                    Handler handler = new Handler();
+//                                    handler.postDelayed(() -> {
+//                                        Intent Servers = new Intent(MainActivity.this, ReviewActivity.class);
+//                                        startActivity(Servers);
+//                                        overridePendingTransition(R.anim.anim_slide_in_right, R.anim.anim_slide_out_left);
+//                                    }, 500);
+//                                }
                             }
 
                             App.ShowDailyUsage = true;
+
                         } catch (Exception e) {
-                            Bundle params = new Bundle();
-                            params.putString("device_id", App.device_id);
-                            params.putString("exception", "MA6" + e.toString());
+//                            Bundle params = new Bundle();
+//                            params.putString("device_id", App.device_id);
+//                            params.putString("exception", "MA6" + e.toString());
 //                                mFirebaseAnalytics.logEvent("app_param_error", params);
+                            Log.d("VPN", e.getLocalizedMessage());
                         }
+
                         App.isStart = false;
                     }
                 }
@@ -456,17 +574,24 @@ public class MainActivity extends AppCompatActivity implements VpnStatus.ByteCou
 
         // ui refresh
         thread = new Thread() {
+
             boolean ShowData = true;
             boolean ShowAnimation = true;
 
             @Override
             public void run() {
+
                 try {
+
                     while (!thread.isInterrupted()) {
+
                         Thread.sleep(500);
+
                         runOnUiThread(() -> {
+
                             // set country flag
                             if (App.abortConnection) {
+
                                 App.abortConnection = false;
 
                                 if (App.connection_status != 2) {
@@ -474,19 +599,26 @@ public class MainActivity extends AppCompatActivity implements VpnStatus.ByteCou
                                 }
 
                                 if (App.connection_status == 2) {
-                                    try {
-                                        stop_vpn();
-                                        try {
-                                            ConnectionTimer.cancel();
-                                        } catch (Exception e) {
-                                            Bundle params = new Bundle();
-                                            params.putString("device_id", App.device_id);
-                                            params.putString("exception", "MA7" + e.toString());
-//                                                mFirebaseAnalytics.logEvent("app_param_error", params);
-                                        }
 
-                                        iv_progress_bar.setVisibility(View.INVISIBLE);
-                                        tv_main_count_down.setVisibility(View.INVISIBLE);
+                                    try {
+
+//                                        stop_vpn();
+
+//                                        try {
+//
+////                                            ConnectionTimer.cancel();
+//
+//                                        } catch (Exception e) {
+////                                            Bundle params = new Bundle();
+////                                            params.putString("device_id", App.device_id);
+////                                            params.putString("exception", "MA7" + e.toString());
+////                                                mFirebaseAnalytics.logEvent("app_param_error", params);
+//                                            Log.d("VPN", e.getLocalizedMessage());
+//
+//                                        }
+
+//                                        iv_progress_bar.setVisibility(View.INVISIBLE);
+//                                        tv_main_count_down.setVisibility(View.INVISIBLE);
 
                                         final Handler handlerToday12 = new Handler();
                                         handlerToday12.postDelayed(() -> {
@@ -495,8 +627,8 @@ public class MainActivity extends AppCompatActivity implements VpnStatus.ByteCou
                                         }, 500);
 
 
-                                        final Handler handlerData = new Handler();
-                                        handlerData.postDelayed(() -> startAnimation(MainActivity.this, R.id.ll_main_today, R.anim.slide_up_800, true), 1000);
+//                                        final Handler handlerData = new Handler();
+//                                        handlerData.postDelayed(() -> startAnimation(MainActivity.this, R.id.ll_main_today, R.anim.slide_up_800, true), 1000);
 
                                         startAnimation(MainActivity.this, R.id.la_animation, R.anim.fade_in_1000, true);
                                         la_animation.cancelAnimation();
@@ -504,11 +636,14 @@ public class MainActivity extends AppCompatActivity implements VpnStatus.ByteCou
                                         la_animation.playAnimation();
 
                                         App.ShowDailyUsage = true;
+
                                     } catch (Exception e) {
-                                        Bundle params = new Bundle();
-                                        params.putString("device_id", App.device_id);
-                                        params.putString("exception", "MA8" + e.toString());
+//                                        Bundle params = new Bundle();
+//                                        params.putString("device_id", App.device_id);
+//                                        params.putString("exception", "MA8" + e.toString());
 //                                            mFirebaseAnalytics.logEvent("app_param_error", params);
+                                        Log.d("VPN", e.getLocalizedMessage());
+
                                     }
                                     App.isStart = false;
                                 }
@@ -576,25 +711,34 @@ public class MainActivity extends AppCompatActivity implements VpnStatus.ByteCou
 
                             // set connection button
                             if (hasFile) {
+
                                 if (App.connection_status == 0) {
+
                                     // disconnected
                                     btn_connection.setText("Connect");
                                     btn_connection.setBackground(ContextCompat.getDrawable(MainActivity.this, R.drawable.button_connect));
 
                                 } else if (App.connection_status == 1) {
+
                                     // connecting
                                     if (EnableConnectButton) {
                                         btn_connection.setText("Cancel");
                                         btn_connection.setBackground(ContextCompat.getDrawable(MainActivity.this, R.drawable.button_retry));
+
                                     } else {
+
                                         btn_connection.setText("Connecting");
                                         btn_connection.setBackground(ContextCompat.getDrawable(MainActivity.this, R.drawable.button_retry));
                                     }
+
                                 } else if (App.connection_status == 2) {
+
                                     // connected
                                     btn_connection.setText("Disconnect");
                                     btn_connection.setBackground(ContextCompat.getDrawable(MainActivity.this, R.drawable.button_disconnect));
+
                                 } else if (App.connection_status == 3) {
+
                                     // connected
                                     btn_connection.setText("Remove VPN Apps");
                                     btn_connection.setBackground(ContextCompat.getDrawable(MainActivity.this, R.drawable.button_retry));
@@ -603,28 +747,36 @@ public class MainActivity extends AppCompatActivity implements VpnStatus.ByteCou
 
                             // set message text
                             if (hasFile) {
+
                                 if (hasInternetConnection()) {
+
                                     if (App.connection_status == 0) {
+
                                         // disconnected
                                         tv_message_top_text.setText("The connection is ready");
                                         tv_message_bottom_text.setText("Tap CONNECT to start :)");
 
                                     } else if (App.connection_status == 1) {
+
                                         // connecting
                                         tv_message_top_text.setText("Connecting " + City);
                                         tv_message_bottom_text.setText(VpnStatus.getLastCleanLogMessage(MainActivity.this));
 
                                     } else if (App.connection_status == 2) {
+
                                         // connected
                                         tv_message_top_text.setText("Connected " + City);
                                         tv_message_bottom_text.setText(Data.StringCountDown);
 
                                     } else if (App.connection_status == 3) {
+
                                         // connected
                                         tv_message_top_text.setText("Dangerous VPN apps found");
                                         tv_message_bottom_text.setText("Your device at a risk, remove other VPN apps! potential dangerous VPN apps keep blocking internet connection");
                                     }
+
                                 } else {
+
                                     tv_message_top_text.setText("Connection is not available");
                                     tv_message_bottom_text.setText("Check your internet connection to continue");
                                 }
@@ -632,38 +784,55 @@ public class MainActivity extends AppCompatActivity implements VpnStatus.ByteCou
 
                             // show data limit
                             if (ShowData) {
+
                                 ShowData = false;
+
                                 if (App.connection_status == 0) {
-                                    final Handler handlerData = new Handler();
-                                    handlerData.postDelayed(() -> startAnimation(MainActivity.this, R.id.ll_main_today, R.anim.slide_up_800, true), 1000);
+
+//                                    final Handler handlerData = new Handler();
+//                                    handlerData.postDelayed(() -> startAnimation(MainActivity.this, R.id.ll_main_today, R.anim.slide_up_800, true), 1000);
+
                                 } else if (App.connection_status == 1) {
-                                    final Handler handlerData = new Handler();
-                                    handlerData.postDelayed(() -> startAnimation(MainActivity.this, R.id.ll_main_today, R.anim.slide_up_800, true), 1000);
+
+//                                    final Handler handlerData = new Handler();
+//                                    handlerData.postDelayed(() -> startAnimation(MainActivity.this, R.id.ll_main_today, R.anim.slide_up_800, true), 1000);
+
                                 } else if (App.connection_status == 2) {
+
                                     final Handler handlerData = new Handler();
                                     handlerData.postDelayed(() -> startAnimation(MainActivity.this, R.id.ll_main_data, R.anim.slide_up_800, true), 1000);
+
                                 } else if (App.connection_status == 3) {
+
                                     // connected
-                                    final Handler handlerData = new Handler();
-                                    handlerData.postDelayed(() -> startAnimation(MainActivity.this, R.id.ll_main_today, R.anim.slide_up_800, true), 1000);
+//                                    final Handler handlerData = new Handler();
+//                                    handlerData.postDelayed(() -> startAnimation(MainActivity.this, R.id.ll_main_today, R.anim.slide_up_800, true), 1000);
                                 }
                             }
 
                             // get daily usage
                             if (hasFile) {
+
                                 if (App.connection_status == 0) {
+
                                     // disconnected
                                     if (App.ShowDailyUsage) {
+
                                         App.ShowDailyUsage = false;
                                         String PREF_USAGE = "daily_usage";
                                         SharedPreferences settings = getSharedPreferences(PREF_USAGE, 0);
-                                        long long_usage_today = settings.getLong(TODAY, 0);
 
+                                        long long_usage_today = settings.getLong(TODAY, 0);
                                         if (long_usage_today < 1000) {
+
                                             tv_data_today_text.setText("1KB");
+
                                         } else if ((long_usage_today >= 1000) && (long_usage_today <= 1000_000)) {
+
                                             tv_data_today_text.setText((long_usage_today / 1000) + "KB");
+
                                         } else {
+
                                             tv_data_today_text.setText((long_usage_today / 1000_000) + "MB");
                                         }
                                     }
@@ -672,9 +841,13 @@ public class MainActivity extends AppCompatActivity implements VpnStatus.ByteCou
 
                             // show animation
                             if (hasFile) {
+
                                 if (ShowAnimation) {
+
                                     ShowAnimation = false;
+
                                     if (App.connection_status == 0) {
+
                                         // disconnected
                                         startAnimation(MainActivity.this, R.id.la_animation, R.anim.fade_in_1000, true);
                                         la_animation.cancelAnimation();
@@ -700,13 +873,16 @@ public class MainActivity extends AppCompatActivity implements VpnStatus.ByteCou
                         });
                     }
                 } catch (InterruptedException e) {
-                    Bundle params = new Bundle();
-                    params.putString("device_id", App.device_id);
-                    params.putString("exception", "MA9" + e.toString());
+//                    Bundle params = new Bundle();
+//                    params.putString("device_id", App.device_id);
+//                    params.putString("exception", "MA9" + e.toString());
 //                    mFirebaseAnalytics.logEvent("app_param_error", params);
+                    Log.d("VPN", e.getLocalizedMessage());
+
                 }
             }
         };
+
         thread.start();
     }
 
@@ -735,6 +911,7 @@ public class MainActivity extends AppCompatActivity implements VpnStatus.ByteCou
     }
 
     private void start_vpn(String VPNFile) {
+
         SharedPreferences sp_settings;
         sp_settings = getSharedPreferences("daily_usage", 0);
         long connection_today = sp_settings.getLong(TODAY + "_connections", 0);
@@ -744,9 +921,9 @@ public class MainActivity extends AppCompatActivity implements VpnStatus.ByteCou
         editor.putLong("total_connections", connection_total + 1);
         editor.apply();
 
-        Bundle params = new Bundle();
-        params.putString("device_id", App.device_id);
-        params.putString("city", City);
+//        Bundle params = new Bundle();
+//        params.putString("device_id", App.device_id);
+//        params.putString("city", City);
 //        mFirebaseAnalytics.logEvent("app_param_country", params);
 
         App.connection_status = 1;
@@ -757,30 +934,33 @@ public class MainActivity extends AppCompatActivity implements VpnStatus.ByteCou
                 assert VPNFile != null;
                 inputStream = new ByteArrayInputStream(VPNFile.getBytes(StandardCharsets.UTF_8));
             } catch (Exception e) {
-                params = new Bundle();
-                params.putString("device_id", App.device_id);
-                params.putString("exception", "MA11" + e.toString());
+//                params = new Bundle();
+//                params.putString("device_id", App.device_id);
+//                params.putString("exception", "MA11" + e.toString());
 //                mFirebaseAnalytics.logEvent("app_param_error", params);
+                Log.d("VPN", e.getLocalizedMessage());
             }
 
             try { // M8
                 assert inputStream != null;
                 bufferedReader = new BufferedReader(new InputStreamReader(inputStream/*, Charset.forName("UTF-8")*/));
             } catch (Exception e) {
-                params = new Bundle();
-                params.putString("device_id", App.device_id);
-                params.putString("exception", "MA12" + e.toString());
+//                params = new Bundle();
+//                params.putString("device_id", App.device_id);
+//                params.putString("exception", "MA12" + e.toString());
 //                mFirebaseAnalytics.logEvent("app_param_error", params);
+                Log.d("VPN", e.getLocalizedMessage());
             }
 
             cp = new ConfigParser();
             try {
                 cp.parseConfig(bufferedReader);
             } catch (Exception e) {
-                params = new Bundle();
-                params.putString("device_id", App.device_id);
-                params.putString("exception", "MA13" + e.toString());
+//                params = new Bundle();
+//                params.putString("device_id", App.device_id);
+//                params.putString("exception", "MA13" + e.toString());
 //                mFirebaseAnalytics.logEvent("app_param_error", params);
+                Log.d("VPN", e.getLocalizedMessage());
             }
             vp = cp.convertProfile();
             vp.mAllowedAppsVpnAreDisallowed = true;
@@ -798,19 +978,21 @@ public class MainActivity extends AppCompatActivity implements VpnStatus.ByteCou
                     Log.e("packages", json_object.getString("app"));
                 }
             } catch (JSONException e) {
-                params = new Bundle();
-                params.putString("device_id", App.device_id);
-                params.putString("exception", "MA14" + e.toString());
+//                params = new Bundle();
+//                params.putString("device_id", App.device_id);
+//                params.putString("exception", "MA14" + e.toString());
 //                mFirebaseAnalytics.logEvent("app_param_error", params);
+                Log.d("VPN", e.getLocalizedMessage());
             }
 
             try {
                 vp.mName = Build.MODEL;
             } catch (Exception e) {
-                params = new Bundle();
-                params.putString("device_id", App.device_id);
-                params.putString("exception", "MA15" + e.toString());
+//                params = new Bundle();
+//                params.putString("device_id", App.device_id);
+//                params.putString("exception", "MA15" + e.toString());
 //                mFirebaseAnalytics.logEvent("app_param_error", params);
+                Log.d("VPN", e.getLocalizedMessage());
             }
 
             vp.mUsername = Data.FileUsername;
@@ -828,16 +1010,18 @@ public class MainActivity extends AppCompatActivity implements VpnStatus.ByteCou
                 startActivity(intent);
                 App.isStart = false;
             } catch (Exception e) {
-                params = new Bundle();
-                params.putString("device_id", App.device_id);
-                params.putString("exception", "MA16" + e.toString());
+//                params = new Bundle();
+//                params.putString("device_id", App.device_id);
+//                params.putString("exception", "MA16" + e.toString());
 //                mFirebaseAnalytics.logEvent("app_param_error", params);
+                Log.d("VPN", e.getLocalizedMessage());
             }
         } catch (Exception e) {
-            params = new Bundle();
-            params.putString("device_id", App.device_id);
-            params.putString("exception", "MA17" + e.toString());
+//            params = new Bundle();
+//            params.putString("device_id", App.device_id);
+//            params.putString("exception", "MA17" + e.toString());
 //            mFirebaseAnalytics.logEvent("app_param_error", params);
+            Log.d("VPN", e.getLocalizedMessage());
         }
     }
 
@@ -851,10 +1035,11 @@ public class MainActivity extends AppCompatActivity implements VpnStatus.ByteCou
             try {
                 mService.stopVPN(false);
             } catch (RemoteException e) {
-                Bundle params = new Bundle();
-                params.putString("device_id", App.device_id);
-                params.putString("exception", "MA18" + e.toString());
+//                Bundle params = new Bundle();
+//                params.putString("device_id", App.device_id);
+//                params.putString("exception", "MA18" + e.toString());
 //                mFirebaseAnalytics.logEvent("app_param_error", params);
+                Log.d("VPN", e.getLocalizedMessage());
             }
 
             try {
@@ -862,10 +1047,11 @@ public class MainActivity extends AppCompatActivity implements VpnStatus.ByteCou
                 vp = pm.getProfileByName(Build.MODEL);
                 pm.removeProfile(this, vp);
             } catch (Exception e) {
-                Bundle params = new Bundle();
-                params.putString("device_id", App.device_id);
-                params.putString("exception", "MA17" + e.toString());
+//                Bundle params = new Bundle();
+//                params.putString("device_id", App.device_id);
+//                params.putString("exception", "MA17" + e.toString());
 //                mFirebaseAnalytics.logEvent("app_param_error", params);
+                Log.d("VPN", e.getLocalizedMessage());
             }
         }
     }
