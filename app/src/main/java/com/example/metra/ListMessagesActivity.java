@@ -11,9 +11,9 @@ import android.database.Cursor;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
+import android.provider.ContactsContract;
 import android.provider.Telephony;
 import android.text.InputFilter;
-import android.text.Spanned;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -46,7 +46,8 @@ public class ListMessagesActivity extends AppCompatActivity {
 
     static ListMessagesActivity inst;
     static boolean active = false;
-    final int READ_SMS_PERMISSION_REQUEST_CODE = 2;
+    private static final int READ_CONTACTS_PERMISSION_REQUEST_CODE = 2;
+    final int READ_SMS_PERMISSION_REQUEST_CODE = 1;
     Context activityContext = this;
 
     public static ListMessagesActivity instance() {
@@ -94,52 +95,92 @@ public class ListMessagesActivity extends AppCompatActivity {
 
     public void refreshSmsInbox() {
 
-        ContentResolver contentResolver = getContentResolver();
-        Cursor smsInboxCursor = contentResolver.query(Uri.parse("content://sms/inbox"), new String[]{"date", "address", "body"}, null, null, "date DESC LIMIT 5");
-        int indexAddress = Objects.requireNonNull(smsInboxCursor).getColumnIndex("address");
-        int indexBody = smsInboxCursor.getColumnIndex("body");
-        if (indexBody < 0 || !smsInboxCursor.moveToFirst()) return;
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_CONTACTS) != PackageManager.PERMISSION_GRANTED) {
 
-        smsArrayList.clear();
-        do {
+            getPermissionToReadContacts();
 
-            smsArrayList.add(new Sms(smsInboxCursor.getString(indexAddress), smsInboxCursor.getString(indexBody)));
+        } else {
 
-        } while (smsInboxCursor.moveToNext());
+            ContentResolver contentResolver = getContentResolver();
+            Cursor smsInboxCursor = contentResolver.query(Uri.parse("content://sms/inbox"), new String[]{"date", "address", "body"}, null, null, "date DESC LIMIT 5");
+            int indexAddress = Objects.requireNonNull(smsInboxCursor).getColumnIndex("address");
+            int indexBody = smsInboxCursor.getColumnIndex("body");
+            if (indexBody < 0 || !smsInboxCursor.moveToFirst()) return;
 
-        smsInboxRecyclerViewAdapter = new SmsInboxRecyclerViewAdapter(activityContext, smsArrayList);
-        recyclerView.setHasFixedSize(true);
+            smsArrayList.clear();
+            do {
 
-        // use a linear layout manager
-        LinearLayoutManager layoutManager = new LinearLayoutManager(this);
-        recyclerView.setLayoutManager(layoutManager);
+                smsArrayList.add(new Sms(getContactName(smsInboxCursor.getString(indexAddress), this), smsInboxCursor.getString(indexBody)));
 
-        recyclerView.setAdapter(smsInboxRecyclerViewAdapter);
+            } while (smsInboxCursor.moveToNext());
 
-        smsInboxRecyclerViewAdapter.SetOnItemClickListener((view, position, model) -> {
-        });
+            smsInboxRecyclerViewAdapter = new SmsInboxRecyclerViewAdapter(activityContext, smsArrayList);
+            recyclerView.setHasFixedSize(true);
 
-        smsInboxRecyclerViewAdapter.SetOnForwardButtonClickListener(model -> {
+            // use a linear layout manager
+            LinearLayoutManager layoutManager = new LinearLayoutManager(this);
+            recyclerView.setLayoutManager(layoutManager);
 
-            // add the phone number in the data
-            Uri uri = Uri.parse("smsto:" + model.getAddress());
-            Intent smsSIntent = new Intent(Intent.ACTION_SENDTO, uri);
-            // add the message at the sms_body extra field
-            smsSIntent.putExtra("address", model.getAddress());
-            smsSIntent.putExtra("sms_body", model.getMessage());
-            startActivity(smsSIntent);
-        });
+            recyclerView.setAdapter(smsInboxRecyclerViewAdapter);
 
-        smsInboxCursor.close();
+            smsInboxRecyclerViewAdapter.SetOnItemClickListener((view, position, model) -> {
+            });
 
-        DatabaseHelper trustedAppsDatabaseHelper = new DatabaseHelper(this);
-        smsArrayList.addAll(0, trustedAppsDatabaseHelper.getAllMessages());
+            smsInboxRecyclerViewAdapter.SetOnForwardButtonClickListener(model -> {
+
+                // add the phone number in the data
+                Uri uri = Uri.parse("smsto:" + model.getAddress());
+                Intent smsSIntent = new Intent(Intent.ACTION_SENDTO, uri);
+                // add the message at the sms_body extra field
+                smsSIntent.putExtra("address", model.getAddress());
+                smsSIntent.putExtra("sms_body", model.getMessage());
+                startActivity(smsSIntent);
+            });
+
+            smsInboxCursor.close();
+
+            DatabaseHelper trustedAppsDatabaseHelper = new DatabaseHelper(this);
+            smsArrayList.addAll(0, trustedAppsDatabaseHelper.getAllMessages());
+        }
+
+
+    }
+
+    private void getPermissionToReadContacts() {
+
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_CONTACTS) != PackageManager.PERMISSION_GRANTED) {
+
+            if (shouldShowRequestPermissionRationale(Manifest.permission.READ_CONTACTS)) {
+
+                Toast.makeText(this, "Need to read contacts...", Toast.LENGTH_LONG).show();
+
+            } else {
+
+                Toast.makeText(this, "Need to read contacts...", Toast.LENGTH_SHORT).show();
+            }
+
+            requestPermissions(new String[]{Manifest.permission.READ_CONTACTS}, READ_CONTACTS_PERMISSION_REQUEST_CODE);
+        }
     }
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
 
         if (requestCode == READ_SMS_PERMISSION_REQUEST_CODE) {
+
+            if (grantResults.length == 1 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+
+                Toast.makeText(this, "Read SMS permission granted", Toast.LENGTH_SHORT).show();
+                refreshSmsInbox();
+
+            } else {
+
+                Toast.makeText(this, "Read SMS permission denied", Toast.LENGTH_SHORT).show();
+                finishAffinity();
+            }
+
+        } else if (requestCode == READ_CONTACTS_PERMISSION_REQUEST_CODE) {
+
             if (grantResults.length == 1 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
 
                 Toast.makeText(this, "Read SMS permission granted", Toast.LENGTH_SHORT).show();
@@ -242,18 +283,14 @@ public class ListMessagesActivity extends AppCompatActivity {
 
         InputFilter[] fArray = new InputFilter[2];
         fArray[0] = new InputFilter.LengthFilter(40);
-        fArray[1] = new InputFilter() {
+        fArray[1] = (source, start, end, dest, dstart, dend) -> {
 
-            @Override
-            public CharSequence filter(CharSequence source, int start, int end, Spanned dest, int dstart, int dend) {
+            for (int i = start; i < end; i++) {
 
-                for (int i = start; i < end; i++) {
-
-                    if (!Character.isLetterOrDigit(source.charAt(i)))
-                        return "";
-                }
-                return null;
+                if (!Character.isLetterOrDigit(source.charAt(i)))
+                    return "";
             }
+            return null;
         };
         searchEdit.setFilters(fArray);
 
@@ -306,4 +343,30 @@ public class ListMessagesActivity extends AppCompatActivity {
         }
         return super.onOptionsItemSelected(item);
     }
+
+    public String getContactName(final String phoneNumber, Context context) {
+
+
+        String contactName = phoneNumber;
+
+        try {
+            Cursor cursor = getContentResolver().query(ContactsContract.CommonDataKinds.Phone.CONTENT_URI, new String[]{ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME}, ContactsContract.CommonDataKinds.Phone.NORMALIZED_NUMBER + " = ?", new String[]{phoneNumber}, null);
+
+            if (cursor != null && cursor.moveToFirst()) {
+                contactName = cursor.getString(cursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME));
+            }
+
+            if (cursor != null) {
+                cursor.close();
+            }
+
+            LogUtils.debug("Contact : " + contactName);
+
+        } catch (Exception e) {
+
+            LogUtils.debug("E : " + e.getLocalizedMessage());
+        }
+        return contactName;
+    }
+
 }
