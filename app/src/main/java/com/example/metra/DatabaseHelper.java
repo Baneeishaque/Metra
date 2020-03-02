@@ -93,7 +93,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
         for (CommunicationOrigin communicationOrigin : communicationOrigins) {
 
-            if (communicationOrigin.getPhoneNumber().equals(phoneNumber)) {
+            if (communicationOrigin.getName().equalsIgnoreCase(phoneNumber) || (communicationOrigin.getPhoneNumber() != null && communicationOrigin.getPhoneNumber().equals(phoneNumber))) {
 
                 return true;
             }

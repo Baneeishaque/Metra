@@ -2,11 +2,12 @@ package com.example.metra;
 
 import android.Manifest;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.telephony.SmsManager;
+import android.text.InputType;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -79,23 +80,43 @@ public class SendMessageActivity extends AppCompatActivity {
 
             new AlertDialog.Builder(this).setTitle("Caution!").setMessage("Trying to forward a message from trusted source - " + existingSender + ", Continue?")
 
-                    .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                    .setPositiveButton(android.R.string.yes, (dialog, which) -> {
 
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
+                        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+                        builder.setTitle("Enter Pin...");
 
-                            sendIt();
+                        // Set up the input
+                        final EditText input = new EditText(this);
+                        // Specify the type of input expected
+                        input.setInputType(InputType.TYPE_CLASS_NUMBER);
+                        input.setHint("Pin...");
+                        builder.setView(input);
 
-                        }
+                        // Set up the buttons
+                        builder.setPositiveButton("OK", (dialog2, which2) -> {
+
+                            // Storing data into SharedPreferences
+                            SharedPreferences sharedPreferences = getSharedPreferences(ApplicationDetails.applicationName, MODE_PRIVATE);
+                            String pin = sharedPreferences.getString("pin", "");
+
+                            if (input.getText().toString().equals(pin)) {
+
+                                sendIt();
+
+                            } else {
+
+                                Toast.makeText(this, "Invalid Pin...", Toast.LENGTH_LONG).show();
+                            }
+
+                        });
+
+                        builder.setCancelable(false);
+                        builder.show();
                     })
 
-                    .setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
-
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                        }
-
+                    .setNegativeButton(android.R.string.no, (dialog, which) -> {
                     })
+
                     .setIcon(android.R.drawable.ic_dialog_alert)
                     .show();
         } else {

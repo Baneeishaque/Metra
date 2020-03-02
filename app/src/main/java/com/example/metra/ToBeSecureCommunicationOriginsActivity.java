@@ -12,6 +12,7 @@ import android.text.InputFilter;
 import android.view.Menu;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -127,7 +128,7 @@ public class ToBeSecureCommunicationOriginsActivity extends AppCompatActivity {
         DatabaseHelper trustedSourcesDatabaseHelper = new DatabaseHelper(activityContext);
         trustedSourcesDatabaseHelper.insertCommunicationOrigin(name, phoneNumber);
 
-        LogUtils.debug(phoneNumber + " Added to Trusted DB...");
+        LogUtils.debug(name + " Added to Trusted DB...");
 
         //TODO : To Activity Utils
         startActivity(new Intent(activityContext, ToBeSecureCommunicationOriginsActivity.class));
@@ -164,6 +165,8 @@ public class ToBeSecureCommunicationOriginsActivity extends AppCompatActivity {
 
             // Make sure the request was successful
             if (resultCode == RESULT_OK) {
+
+                Toast.makeText(this, "Added Successfully...", Toast.LENGTH_LONG).show();
 
 //                ContentResolver cr = getContentResolver();
 //                Cursor cursor = cr.query(Objects.requireNonNull(Objects.requireNonNull(data).getData()), null, null, null, null);

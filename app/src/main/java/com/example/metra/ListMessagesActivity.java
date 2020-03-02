@@ -368,5 +368,4 @@ public class ListMessagesActivity extends AppCompatActivity {
         }
         return contactName;
     }
-
 }
