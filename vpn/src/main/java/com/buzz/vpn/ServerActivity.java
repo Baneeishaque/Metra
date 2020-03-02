@@ -24,7 +24,6 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
-import com.google.firebase.analytics.FirebaseAnalytics;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -36,7 +35,9 @@ import java.util.List;
 import de.blinkt.openvpn.core.App;
 import de.blinkt.openvpn.core.ProfileManager;
 
-import static com.google.android.gms.common.internal.safeparcel.SafeParcelable.NULL;
+//import com.google.firebase.analytics.FirebaseAnalytics;
+
+//import static com.google.android.gms.common.internal.safeparcel.SafeParcelable.NULL;
 
 public class ServerActivity extends Activity {
     ListView listView_light, listView_dark;
@@ -49,7 +50,7 @@ public class ServerActivity extends Activity {
 
     String DarkMode = "false";
 
-    private FirebaseAnalytics mFirebaseAnalytics;
+//    private FirebaseAnalytics mFirebaseAnalytics;
 
     // 100
     @Override
@@ -64,7 +65,7 @@ public class ServerActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_servers);
 
-        mFirebaseAnalytics = FirebaseAnalytics.getInstance(this);
+//        mFirebaseAnalytics = FirebaseAnalytics.getInstance(this);
 
         pm = ProfileManager.getInstance(ServerActivity.this);
 
@@ -72,7 +73,7 @@ public class ServerActivity extends Activity {
 
         EncryptData En = new EncryptData();
         SharedPreferences AppValues = getSharedPreferences("app_values", 0);
-        String AppDetails = En.decrypt(AppValues.getString("app_details", NULL));
+//        String AppDetails = En.decrypt(AppValues.getString("app_details", NULL));
 
         if (AppDetails.isEmpty()) {
             getConnectionString getConnectionString = new getConnectionString();
@@ -135,10 +136,10 @@ public class ServerActivity extends Activity {
                     }, new Response.ErrorListener() {
                 @Override
                 public void onErrorResponse(VolleyError error) {
-                    Bundle params = new Bundle();
-                    params.putString("device_id", App.device_id);
-                    params.putString("exception", "SA1" + error.toString());
-                    mFirebaseAnalytics.logEvent("app_param_error", params);
+//                    Bundle params = new Bundle();
+//                    params.putString("device_id", App.device_id);
+//                    params.putString("exception", "SA1" + error.toString());
+//                    mFirebaseAnalytics.logEvent("app_param_error", params);
                 }
             });
             queue.add(stringRequest);
@@ -172,10 +173,10 @@ public class ServerActivity extends Activity {
                     }, new Response.ErrorListener() {
                 @Override
                 public void onErrorResponse(VolleyError error) {
-                    Bundle params = new Bundle();
-                    params.putString("device_id", App.device_id);
-                    params.putString("exception", "SA2" + error.toString());
-                    mFirebaseAnalytics.logEvent("app_param_error", params);
+//                    Bundle params = new Bundle();
+//                    params.putString("device_id", App.device_id);
+//                    params.putString("exception", "SA2" + error.toString());
+//                    mFirebaseAnalytics.logEvent("app_param_error", params);
                 }
             });
             queue.add(stringRequest);
@@ -190,10 +191,10 @@ public class ServerActivity extends Activity {
                         Editor.putString("file_details", En.encrypt(FileDetails));
                         Editor.apply();
                     } catch (Exception e) {
-                        Bundle params = new Bundle();
-                        params.putString("device_id", App.device_id);
-                        params.putString("exception", "SA3" + e.toString());
-                        mFirebaseAnalytics.logEvent("app_param_error", params);
+//                        Bundle params = new Bundle();
+//                        params.putString("device_id", App.device_id);
+//                        params.putString("exception", "SA3" + e.toString());
+//                        mFirebaseAnalytics.logEvent("app_param_error", params);
                     }
 
                     iv_server_refresh.setBackground(getDrawable(R.drawable.ic_servers_cloud));
@@ -214,8 +215,8 @@ public class ServerActivity extends Activity {
         void Load() {
             EncryptData En = new EncryptData();
             SharedPreferences ConnectionDetails = getSharedPreferences("app_values", 0);
-            AppDetails = En.decrypt(ConnectionDetails.getString("app_details", NULL));
-            FileDetails = En.decrypt(ConnectionDetails.getString("file_details", NULL));
+//            AppDetails = En.decrypt(ConnectionDetails.getString("app_details", NULL));
+//            FileDetails = En.decrypt(ConnectionDetails.getString("file_details", NULL));
             int NumServers = 0;
             try {
                 JSONObject json_response = new JSONObject(AppDetails);
@@ -234,10 +235,10 @@ public class ServerActivity extends Activity {
                 }
 
             } catch (JSONException e) {
-                Bundle params = new Bundle();
-                params.putString("device_id", App.device_id);
-                params.putString("exception", "SA4" + e.toString());
-                mFirebaseAnalytics.logEvent("app_param_error", params);
+//                Bundle params = new Bundle();
+//                params.putString("device_id", App.device_id);
+//                params.putString("exception", "SA4" + e.toString());
+//                mFirebaseAnalytics.logEvent("app_param_error", params);
             }
 
             try {
@@ -250,10 +251,10 @@ public class ServerActivity extends Activity {
                 }
 
             } catch (JSONException e) {
-                Bundle params = new Bundle();
-                params.putString("device_id", App.device_id);
-                params.putString("exception", "SA5" + e.toString());
-                mFirebaseAnalytics.logEvent("app_param_error", params);
+//                Bundle params = new Bundle();
+//                params.putString("device_id", App.device_id);
+//                params.putString("exception", "SA5" + e.toString());
+//                mFirebaseAnalytics.logEvent("app_param_error", params);
             }
 
             List<Server> ServerList = new ArrayList<>();
@@ -413,10 +414,10 @@ public class ServerActivity extends Activity {
                             App.hasFile = true;
                             App.abortConnection = true;
                         } catch (Exception e) {
-                            Bundle params = new Bundle();
-                            params.putString("device_id", App.device_id);
-                            params.putString("exception", "SA6" + e.toString());
-                            mFirebaseAnalytics.logEvent("app_param_error", params);
+//                            Bundle params = new Bundle();
+//                            params.putString("device_id", App.device_id);
+//                            params.putString("exception", "SA6" + e.toString());
+//                            mFirebaseAnalytics.logEvent("app_param_error", params);
                         }
                         finish();
                         overridePendingTransition(R.anim.anim_slide_in_left, R.anim.anim_slide_out_right);

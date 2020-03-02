@@ -23,7 +23,6 @@ import android.graphics.BitmapFactory;
 import android.net.ConnectivityManager;
 import android.net.VpnService;
 import android.os.Build;
-import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.os.Handler;
 import android.os.Handler.Callback;
@@ -43,7 +42,6 @@ import com.buzz.vpn.BuildConfig;
 import com.buzz.vpn.Data;
 import com.buzz.vpn.MainActivity;
 import com.buzz.vpn.R;
-import com.google.firebase.analytics.FirebaseAnalytics;
 
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
@@ -67,6 +65,8 @@ import static com.buzz.vpn.Data.LongDataUsage;
 import static de.blinkt.openvpn.core.ConnectionStatus.LEVEL_CONNECTED;
 import static de.blinkt.openvpn.core.ConnectionStatus.LEVEL_WAITING_FOR_USER_INPUT;
 import static de.blinkt.openvpn.core.NetworkSpace.ipAddress;
+
+//import com.google.firebase.analytics.FirebaseAnalytics;
 
 public class OpenVPNService extends VpnService implements StateListener, Callback, ByteCountListener, IOpenVPNServiceInternal {
     public static final String START_SERVICE = "de.blinkt.openvpn.START_SERVICE";
@@ -123,7 +123,7 @@ public class OpenVPNService extends VpnService implements StateListener, Callbac
             return OpenVPNService.this.stopVPN(replaceConnection);
         }
     };
-    private FirebaseAnalytics mFirebaseAnalytics;
+    //    private FirebaseAnalytics mFirebaseAnalytics;
     private String mLastTunCfg;
     private String mRemoteGW;
     private Handler guiHandler;
@@ -274,7 +274,7 @@ public class OpenVPNService extends VpnService implements StateListener, Callbac
         PendingIntent pendingIntent = PendingIntent.getActivity(this,
                 0, notificationIntent, 0);
 
-        mFirebaseAnalytics = FirebaseAnalytics.getInstance(this);
+//        mFirebaseAnalytics = FirebaseAnalytics.getInstance(this);
 
         SharedPreferences ConnectionDetails = getSharedPreferences("connection_data", 0);
         City = ConnectionDetails.getString("city", "Select a City");
@@ -283,10 +283,10 @@ public class OpenVPNService extends VpnService implements StateListener, Callbac
         try {
             startForeground(App.NOTIFICATION_ID, getMyActivityNotification("Tap to open the app"));
         } catch (Exception e) {
-            Bundle params = new Bundle();
-            params.putString("device_id", App.device_id);
-            params.putString("exception", "OVPS1" + e.toString());
-            mFirebaseAnalytics.logEvent("app_param_error", params);
+//            Bundle params = new Bundle();
+//            params.putString("device_id", App.device_id);
+//            params.putString("exception", "OVPS1" + e.toString());
+//            mFirebaseAnalytics.logEvent("app_param_error", params);
         }
 
         Date Today = Calendar.getInstance().getTime();
@@ -334,10 +334,10 @@ public class OpenVPNService extends VpnService implements StateListener, Callbac
                         try {
                             ConnectionTimer.cancel();
                         } catch (Exception e) {
-                            Bundle params = new Bundle();
-                            params.putString("device_id", App.device_id);
-                            params.putString("exception", "OVPS2" + e.toString());
-                            mFirebaseAnalytics.logEvent("app_param_error", params);
+//                            Bundle params = new Bundle();
+//                            params.putString("device_id", App.device_id);
+//                            params.putString("exception", "OVPS2" + e.toString());
+//                            mFirebaseAnalytics.logEvent("app_param_error", params);
                         }
                     }
 
@@ -1005,10 +1005,10 @@ public class OpenVPNService extends VpnService implements StateListener, Callbac
             try {
                 updateNotification(Stat);
             } catch (Exception e) {
-                Bundle params = new Bundle();
-                params.putString("device_id", App.device_id);
-                params.putString("exception", "OVPS3" + e.toString());
-                mFirebaseAnalytics.logEvent("app_param_error", params);
+//                Bundle params = new Bundle();
+//                params.putString("device_id", App.device_id);
+//                params.putString("exception", "OVPS3" + e.toString());
+//                mFirebaseAnalytics.logEvent("app_param_error", params);
             }
         }
     }

@@ -24,14 +24,13 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
-import com.google.firebase.analytics.FirebaseAnalytics;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.util.Random;
 
-import de.blinkt.openvpn.core.App;
+//import com.google.firebase.analytics.FirebaseAnalytics;
 
 
 public class WelcomeActivity extends AppCompatActivity {
@@ -41,7 +40,7 @@ public class WelcomeActivity extends AppCompatActivity {
     TextView tv_welcome_title, tv_welcome_description, tv_welcome_size, tv_welcome_version;
 
     int Random;
-    private FirebaseAnalytics mFirebaseAnalytics;
+//    private FirebaseAnalytics mFirebaseAnalytics;
 
     @Override
     public void onBackPressed() {
@@ -52,7 +51,7 @@ public class WelcomeActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_welcome);
 
-        mFirebaseAnalytics = FirebaseAnalytics.getInstance(this);
+//        mFirebaseAnalytics = FirebaseAnalytics.getInstance(this);
 
         StringGetAppURL = "https://raw.githubusercontent.com/gayanvoice/android-vpn-client-ics-openvpn/images/appdetails.json";
         StringGetConnectionURL = "https://raw.githubusercontent.com/gayanvoice/android-vpn-client-ics-openvpn/images/filedetails.json";
@@ -116,10 +115,10 @@ public class WelcomeActivity extends AppCompatActivity {
                     startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://github.com/gayanvoice/android-vpn-client-ics-openvpn")));
 
                 } catch (Exception e) {
-                    Bundle params = new Bundle();
-                    params.putString("device_id", App.device_id);
-                    params.putString("exception", "WA1" + e.toString());
-                    mFirebaseAnalytics.logEvent("app_param_error", params);
+//                    Bundle params = new Bundle();
+//                    params.putString("device_id", App.device_id);
+//                    params.putString("exception", "WA1" + e.toString());
+//                    mFirebaseAnalytics.logEvent("app_param_error", params);
                 }
             }
 
@@ -163,10 +162,10 @@ public class WelcomeActivity extends AppCompatActivity {
                 }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                Bundle params = new Bundle();
-                params.putString("device_id", App.device_id);
-                params.putString("exception", "WA2" + error.toString());
-                mFirebaseAnalytics.logEvent("app_param_error", params);
+//                Bundle params = new Bundle();
+//                params.putString("device_id", App.device_id);
+//                params.putString("exception", "WA2" + error.toString());
+//                mFirebaseAnalytics.logEvent("app_param_error", params);
 
                 Data.isAppDetails = false;
             }
@@ -199,10 +198,10 @@ public class WelcomeActivity extends AppCompatActivity {
                 }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                Bundle params = new Bundle();
-                params.putString("device_id", App.device_id);
-                params.putString("exception", "WA3" + error.toString());
-                mFirebaseAnalytics.logEvent("app_param_error", params);
+//                Bundle params = new Bundle();
+//                params.putString("device_id", App.device_id);
+//                params.putString("exception", "WA3" + error.toString());
+//                mFirebaseAnalytics.logEvent("app_param_error", params);
 
                 Data.isConnectionDetails = false;
             }
@@ -225,10 +224,10 @@ public class WelcomeActivity extends AppCompatActivity {
                     JSONObject jsonResponse = new JSONObject(AppDetails);
                     Ads = jsonResponse.getString("ads");
                 } catch (Exception e) {
-                    Bundle params = new Bundle();
-                    params.putString("device_id", App.device_id);
-                    params.putString("exception", "WA4" + e.toString());
-                    mFirebaseAnalytics.logEvent("app_param_error", params);
+//                    Bundle params = new Bundle();
+//                    params.putString("device_id", App.device_id);
+//                    params.putString("exception", "WA4" + e.toString());
+//                    mFirebaseAnalytics.logEvent("app_param_error", params);
                 }
 
                 try {
@@ -240,10 +239,10 @@ public class WelcomeActivity extends AppCompatActivity {
                     upDescription = jsonObject.getString("description");
                     upSize = jsonObject.getString("size");
                 } catch (Exception e) {
-                    Bundle params = new Bundle();
-                    params.putString("device_id", App.device_id);
-                    params.putString("exception", "WA5" + e.toString());
-                    mFirebaseAnalytics.logEvent("app_param_error", params);
+//                    Bundle params = new Bundle();
+//                    params.putString("device_id", App.device_id);
+//                    params.putString("exception", "WA5" + e.toString());
+//                    mFirebaseAnalytics.logEvent("app_param_error", params);
                 }
 
                 try {
@@ -259,10 +258,10 @@ public class WelcomeActivity extends AppCompatActivity {
                     Active = json_object.getString("active");
                     Signal = json_object.getString("signal");
                 } catch (Exception e) {
-                    Bundle params = new Bundle();
-                    params.putString("device_id", App.device_id);
-                    params.putString("exception", "WA5" + e.toString());
-                    mFirebaseAnalytics.logEvent("app_param_error", params);
+//                    Bundle params = new Bundle();
+//                    params.putString("device_id", App.device_id);
+//                    params.putString("exception", "WA5" + e.toString());
+//                    mFirebaseAnalytics.logEvent("app_param_error", params);
                 }
 
                 try {
@@ -272,10 +271,10 @@ public class WelcomeActivity extends AppCompatActivity {
                     FileID = json_object.getString("id");
                     File = json_object.getString("file");
                 } catch (Exception e) {
-                    Bundle params = new Bundle();
-                    params.putString("device_id", App.device_id);
-                    params.putString("exception", "WA6" + e.toString());
-                    mFirebaseAnalytics.logEvent("app_param_error", params);
+//                    Bundle params = new Bundle();
+//                    params.putString("device_id", App.device_id);
+//                    params.putString("exception", "WA6" + e.toString());
+//                    mFirebaseAnalytics.logEvent("app_param_error", params);
                 }
 
 
@@ -298,10 +297,10 @@ public class WelcomeActivity extends AppCompatActivity {
                     Editor.putString("cu_version", cuVersion);
                     Editor.apply();
                 } catch (Exception e) {
-                    Bundle params = new Bundle();
-                    params.putString("device_id", App.device_id);
-                    params.putString("exception", "WA7" + e.toString());
-                    mFirebaseAnalytics.logEvent("app_param_error", params);
+//                    Bundle params = new Bundle();
+//                    params.putString("device_id", App.device_id);
+//                    params.putString("exception", "WA7" + e.toString());
+//                    mFirebaseAnalytics.logEvent("app_param_error", params);
                 }
 
                 try {
@@ -318,10 +317,10 @@ public class WelcomeActivity extends AppCompatActivity {
                     Editor.putString("signal", Signal);
                     Editor.apply();
                 } catch (Exception e) {
-                    Bundle params = new Bundle();
-                    params.putString("device_id", App.device_id);
-                    params.putString("exception", "WA8" + e.toString());
-                    mFirebaseAnalytics.logEvent("app_param_error", params);
+//                    Bundle params = new Bundle();
+//                    params.putString("device_id", App.device_id);
+//                    params.putString("exception", "WA8" + e.toString());
+//                    mFirebaseAnalytics.logEvent("app_param_error", params);
                 }
 
                 try {
@@ -331,10 +330,10 @@ public class WelcomeActivity extends AppCompatActivity {
                     Editor.putString("file_details", En.encrypt(FileDetails));
                     Editor.apply();
                 } catch (Exception e) {
-                    Bundle params = new Bundle();
-                    params.putString("device_id", App.device_id);
-                    params.putString("exception", "WA9" + e.toString());
-                    mFirebaseAnalytics.logEvent("app_param_error", params);
+//                    Bundle params = new Bundle();
+//                    params.putString("device_id", App.device_id);
+//                    params.putString("exception", "WA9" + e.toString());
+//                    mFirebaseAnalytics.logEvent("app_param_error", params);
                 }
 
                 tv_welcome_title.setText(upTitle);

@@ -27,11 +27,10 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
-import com.google.firebase.analytics.FirebaseAnalytics;
 
 import java.net.URLEncoder;
 
-import de.blinkt.openvpn.core.App;
+//import com.google.firebase.analytics.FirebaseAnalytics;
 
 public class ContactActivity extends Activity {
     Button btn_about_contact_submit;
@@ -40,7 +39,7 @@ public class ContactActivity extends Activity {
     EditText et_about_contact_other_problems, et_about_contact_email;
 
     String advertise, speed, connecting, working, crashed, other, email;
-    private FirebaseAnalytics mFirebaseAnalytics;
+//    private FirebaseAnalytics mFirebaseAnalytics;
 
     @Override
     public void onBackPressed() {
@@ -53,7 +52,7 @@ public class ContactActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_contact);
 
-        mFirebaseAnalytics = FirebaseAnalytics.getInstance(this);
+//        mFirebaseAnalytics = FirebaseAnalytics.getInstance(this);
 
         tv_contact_title = findViewById(R.id.tv_contact_title);
         tv_about_about_contact_problem = findViewById(R.id.tv_about_contact_problem);
@@ -217,10 +216,10 @@ public class ContactActivity extends Activity {
                         haveConnectedMobile = true;
             }
         } catch (Exception e) {
-            Bundle params = new Bundle();
-            params.putString("device_id", App.device_id);
-            params.putString("exception", "CA1" + e.toString());
-            mFirebaseAnalytics.logEvent("app_param_error", params);
+//            Bundle params = new Bundle();
+//            params.putString("device_id", App.device_id);
+//            params.putString("exception", "CA1" + e.toString());
+//            mFirebaseAnalytics.logEvent("app_param_error", params);
         }
 
         return haveConnectedWifi || haveConnectedMobile;
@@ -256,10 +255,10 @@ public class ContactActivity extends Activity {
                         + "&" + URLEncoder.encode("other", "UTF-8") + "=" + URLEncoder.encode(other, "UTF-8")
                         + "&" + URLEncoder.encode("email", "UTF-8") + "=" + URLEncoder.encode(email, "UTF-8");
             } catch (Exception e) { // SF5
-                Bundle params = new Bundle();
-                params.putString("device_id", App.device_id);
-                params.putString("exception", "CA4" + e.toString());
-                mFirebaseAnalytics.logEvent("app_param_error", params);
+//                Bundle params = new Bundle();
+//                params.putString("device_id", App.device_id);
+//                params.putString("exception", "CA4" + e.toString());
+//                mFirebaseAnalytics.logEvent("app_param_error", params);
             }
 
             str_url = str_url + "?" + str_post;
@@ -274,10 +273,10 @@ public class ContactActivity extends Activity {
                     }, new Response.ErrorListener() {
                 @Override
                 public void onErrorResponse(VolleyError error) {
-                    Bundle params = new Bundle();
-                    params.putString("device_id", App.device_id);
-                    params.putString("exception", "CA2" + error.toString());
-                    mFirebaseAnalytics.logEvent("app_param_error", params);
+//                    Bundle params = new Bundle();
+//                    params.putString("device_id", App.device_id);
+//                    params.putString("exception", "CA2" + error.toString());
+//                    mFirebaseAnalytics.logEvent("app_param_error", params);
                 }
             });
             // Add the request to the RequestQueue.
@@ -302,10 +301,10 @@ public class ContactActivity extends Activity {
                 version = pInfo.versionName;
             } catch (PackageManager.NameNotFoundException e) {
                 version = "00";
-                Bundle params = new Bundle();
-                params.putString("device_id", App.device_id);
-                params.putString("exception", "CA3" + e.toString());
-                mFirebaseAnalytics.logEvent("app_param_error", params);
+//                Bundle params = new Bundle();
+//                params.putString("device_id", App.device_id);
+//                params.putString("exception", "CA3" + e.toString());
+//                mFirebaseAnalytics.logEvent("app_param_error", params);
             }
             return time + str_manufacturer + str_api + str_model + version;
         }

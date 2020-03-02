@@ -19,14 +19,13 @@ import android.widget.TextView;
 import androidx.annotation.Nullable;
 
 import com.airbnb.lottie.LottieAnimationView;
-import com.google.firebase.analytics.FirebaseAnalytics;
 
-import de.blinkt.openvpn.core.App;
+//import com.google.firebase.analytics.FirebaseAnalytics;
 
 
 public class ReviewActivity extends Activity {
 
-    private FirebaseAnalytics mFirebaseAnalytics;
+//    private FirebaseAnalytics mFirebaseAnalytics;
 
     @Override
     public void onBackPressed() {
@@ -39,7 +38,7 @@ public class ReviewActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_review);
 
-        mFirebaseAnalytics = FirebaseAnalytics.getInstance(this);
+//        mFirebaseAnalytics = FirebaseAnalytics.getInstance(this);
 
         Typeface RobotoBold = Typeface.createFromAsset(getAssets(), "fonts/Roboto-Bold.ttf");
 
@@ -92,10 +91,10 @@ public class ReviewActivity extends Activity {
                 Editor.putString("rate", "true");
                 Editor.apply();
 
-                Bundle params = new Bundle();
-                params.putString("device_id", App.device_id);
-                params.putString("click", "review-stars");
-                mFirebaseAnalytics.logEvent("app_param_click", params);
+//                Bundle params = new Bundle();
+//                params.putString("device_id", App.device_id);
+//                params.putString("click", "review-stars");
+//                mFirebaseAnalytics.logEvent("app_param_click", params);
 
 
                 finish();
@@ -106,17 +105,17 @@ public class ReviewActivity extends Activity {
                     intent.setData(Uri.parse("market://details?id=com.buzz.vpn"));
                     startActivity(intent);
                 } catch (ActivityNotFoundException activityNotFound) {
-                    params = new Bundle();
-                    params.putString("device_id", App.device_id);
-                    params.putString("exception", "RA1" + activityNotFound.toString());
-                    mFirebaseAnalytics.logEvent("app_param_error", params);
+//                    params = new Bundle();
+//                    params.putString("device_id", App.device_id);
+//                    params.putString("exception", "RA1" + activityNotFound.toString());
+//                    mFirebaseAnalytics.logEvent("app_param_error", params);
 
                     startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=com.buzz.vpn")));
                 } catch (Exception e) {
-                    params = new Bundle();
-                    params.putString("device_id", App.device_id);
-                    params.putString("exception", "RA2" + e.toString());
-                    mFirebaseAnalytics.logEvent("app_param_error", params);
+//                    params = new Bundle();
+//                    params.putString("device_id", App.device_id);
+//                    params.putString("exception", "RA2" + e.toString());
+//                    mFirebaseAnalytics.logEvent("app_param_error", params);
                 }
 
             }
@@ -131,10 +130,10 @@ public class ReviewActivity extends Activity {
                 Editor.putString("rate", "true");
                 Editor.apply();
 
-                Bundle params = new Bundle();
-                params.putString("device_id", App.device_id);
-                params.putString("click", "review-button");
-                mFirebaseAnalytics.logEvent("app_param_click", params);
+//                Bundle params = new Bundle();
+//                params.putString("device_id", App.device_id);
+//                params.putString("click", "review-button");
+//                mFirebaseAnalytics.logEvent("app_param_click", params);
 
                 finish();
                 overridePendingTransition(R.anim.anim_slide_in_left, R.anim.anim_slide_out_right);
@@ -143,16 +142,16 @@ public class ReviewActivity extends Activity {
                     intent.setData(Uri.parse("market://details?id=com.buzz.vpn"));
                     startActivity(intent);
                 } catch (ActivityNotFoundException activityNotFound) {
-                    params = new Bundle();
-                    params.putString("device_id", App.device_id);
-                    params.putString("exception", "RA2" + activityNotFound.toString());
-                    mFirebaseAnalytics.logEvent("app_param_error", params);
+//                    params = new Bundle();
+//                    params.putString("device_id", App.device_id);
+//                    params.putString("exception", "RA2" + activityNotFound.toString());
+//                    mFirebaseAnalytics.logEvent("app_param_error", params);
                     startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=com.buzz.vpn")));
                 } catch (Exception e) {
-                    params = new Bundle();
-                    params.putString("device_id", App.device_id);
-                    params.putString("exception", "RA3" + e.toString());
-                    mFirebaseAnalytics.logEvent("app_param_error", params);
+//                    params = new Bundle();
+//                    params.putString("device_id", App.device_id);
+//                    params.putString("exception", "RA3" + e.toString());
+//                    mFirebaseAnalytics.logEvent("app_param_error", params);
                 }
 
 

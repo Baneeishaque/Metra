@@ -9,7 +9,6 @@
     android:orientation="vertical"
     tools:context=".MainActivity">
 
-
     <LinearLayout
         android:id="@+id/linearLayoutMainHome"
         android:layout_width="wrap_content"
@@ -48,8 +47,6 @@
             android:layout_width="34dp"
             android:layout_height="34dp"
             android:layout_gravity="center" />
-
-
     </LinearLayout>
 
     <LinearLayout
@@ -60,7 +57,6 @@
         app:layout_constraintBottom_toTopOf="@+id/la_animation"
         app:layout_constraintEnd_toEndOf="@+id/la_animation"
         app:layout_constraintStart_toStartOf="@+id/la_animation">
-
 
         <LinearLayout
             android:layout_width="match_parent"
