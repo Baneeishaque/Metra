@@ -95,20 +95,28 @@ public class ToBeSecureCommunicationOriginsActivity extends AppCompatActivity {
 
         super.onActivityResult(requestCode, resultCode, data);
 
-        // Get the URI and query the content provider for the phone number
-        Uri contactUri = data.getData();
-        String[] projection = new String[]{ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME, ContactsContract.CommonDataKinds.Phone.NORMALIZED_NUMBER};
-        Cursor cursor = this.getContentResolver().query(contactUri, projection,
-                null, null, null);
+        // Check which request we're responding to
+        if (requestCode == SELECT_PHONE_NUMBER) {
 
-        // If the cursor returned is valid, get the phone number
-        if (cursor != null && cursor.moveToFirst()) {
+            // Make sure the request was successful
+            if (resultCode == RESULT_OK) {
 
-            int nameIndex = cursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME);
-            int numberIndex = cursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NORMALIZED_NUMBER);
-            addPhoneNumberToDb(cursor.getString(nameIndex), cursor.getString(numberIndex));
+                // Get the URI and query the content provider for the phone number
+                Uri contactUri = Objects.requireNonNull(data).getData();
+                String[] projection = new String[]{ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME, ContactsContract.CommonDataKinds.Phone.NORMALIZED_NUMBER};
+                Cursor cursor = this.getContentResolver().query(Objects.requireNonNull(contactUri), projection,
+                        null, null, null);
+
+                // If the cursor returned is valid, get the phone number
+                if (cursor != null && cursor.moveToFirst()) {
+
+                    int nameIndex = cursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME);
+                    int numberIndex = cursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NORMALIZED_NUMBER);
+                    addPhoneNumberToDb(cursor.getString(nameIndex), cursor.getString(numberIndex));
+                }
+                Objects.requireNonNull(cursor).close();
+            }
         }
-        cursor.close();
     }
 
     @Override
@@ -156,7 +164,7 @@ public class ToBeSecureCommunicationOriginsActivity extends AppCompatActivity {
             @Override
             public boolean onQueryTextChange(String s) {
 
-                ArrayList<CommunicationOrigin> filterList = new ArrayList<CommunicationOrigin>();
+                ArrayList<CommunicationOrigin> filterList = new ArrayList<>();
 
                 if (s.length() > 0) {
 

@@ -167,12 +167,13 @@ public class UnTrustedAppsActivity extends AppCompatActivity {
 
         super.onActivityResult(requestCode, resultCode, data);
 
-        String application = data.getStringExtra("result");
         // Check which request we're responding to
         if (requestCode == PICK_UNTRUSTED_APPLICATION_REQUEST) {
 
             // Make sure the request was successful
             if (resultCode == RESULT_OK) {
+
+                String application = data.getStringExtra("result");
 
                 //TODO : Check for already existing app name
                 DatabaseHelper trustedAppsDatabaseHelper = new DatabaseHelper(activityContext);
