@@ -8,6 +8,8 @@ import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.telephony.SmsManager;
 import android.text.InputType;
+import android.view.ContextMenu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -32,6 +34,8 @@ public class SendMessageActivity extends AppCompatActivity {
 
     String existingSender;
 
+    Button buttonSend;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
@@ -40,20 +44,17 @@ public class SendMessageActivity extends AppCompatActivity {
 
         editTextPhoneNumber = findViewById(R.id.edit_text_phone_number);
         editTextMessageBody = findViewById(R.id.edit_text_message);
-        Button buttonSend = findViewById(R.id.button_send);
+        buttonSend = findViewById(R.id.button_send);
 
-        buttonSend.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+        buttonSend.setOnClickListener(v -> {
 
-                if (ContextCompat.checkSelfPermission(activityContext, Manifest.permission.SEND_SMS) != PackageManager.PERMISSION_GRANTED) {
+            if (ContextCompat.checkSelfPermission(activityContext, Manifest.permission.SEND_SMS) != PackageManager.PERMISSION_GRANTED) {
 
-                    getPermissionToSendSMS();
+                getPermissionToSendSMS();
 
-                } else {
+            } else {
 
-                    sendSMS();
-                }
+                sendSMS();
             }
         });
 
@@ -101,7 +102,11 @@ public class SendMessageActivity extends AppCompatActivity {
 
                             if (input.getText().toString().equals(pin)) {
 
-                                sendIt();
+//                                openContextMenu(buttonSend);
+
+                                registerForContextMenu(buttonSend);
+                                openContextMenu(buttonSend);
+                                unregisterForContextMenu(buttonSend);
 
                             } else {
 
@@ -188,5 +193,35 @@ public class SendMessageActivity extends AppCompatActivity {
 //            }
 //        }
 
+    }
+
+    @Override
+    public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
+
+        super.onCreateContextMenu(menu, v, menuInfo);
+        menu.add(0, v.getId(), 0, "Forward Via. MSG");
+        menu.add(0, v.getId(), 0, "Forward Via. N/W");
+    }
+
+    @Override
+    public boolean onContextItemSelected(@NonNull MenuItem item) {
+
+        if (item.getTitle() == "Forward Via. MSG") {
+
+            sendIt();
+
+        } else if (item.getTitle() == "Forward Via. N/W") {
+
+            Intent sendIntent = new Intent();
+            sendIntent.setAction(Intent.ACTION_SEND);
+            sendIntent.putExtra(Intent.EXTRA_TEXT, editTextMessageBody.getText().toString());
+            sendIntent.setType("text/plain");
+
+            Intent shareIntent = Intent.createChooser(sendIntent, null);
+            startActivity(shareIntent);
+
+            editTextMessageBody.setText("");
+        }
+        return super.onContextItemSelected(item);
     }
 }
