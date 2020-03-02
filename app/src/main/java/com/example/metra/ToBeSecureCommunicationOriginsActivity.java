@@ -29,8 +29,14 @@ import java.util.Objects;
 public class ToBeSecureCommunicationOriginsActivity extends AppCompatActivity {
 
     Context activityContext = this;
+
+    private static final int INSERT_CONTACT_REQUEST = 2;
     FloatingActionButton fab_from_contacts;
+    FloatingActionButton fab_from_input;
+
     private ArrayList<CommunicationOrigin> communicationOrigins = new ArrayList<>();
+    private boolean isFABOpen;
+
     private int SELECT_PHONE_NUMBER = 1;
     private CommunicationOriginsRecyclerViewAdapter communicationOriginsRecyclerViewAdapter;
 
@@ -43,12 +49,36 @@ public class ToBeSecureCommunicationOriginsActivity extends AppCompatActivity {
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+        FloatingActionButton fab = findViewById(R.id.fab);
+        fab_from_input = findViewById(R.id.fab_from_input);
+
         fab_from_contacts = findViewById(R.id.fab_from_contacts);
         fab_from_contacts.setOnClickListener(v -> {
 
             Intent i = new Intent(Intent.ACTION_PICK);
             i.setType(ContactsContract.CommonDataKinds.Phone.CONTENT_TYPE);
             startActivityForResult(i, SELECT_PHONE_NUMBER);
+        });
+
+        fab.setOnClickListener(view -> {
+
+            if (!isFABOpen) {
+
+                showFABMenu();
+
+            } else {
+
+                closeFABMenu();
+            }
+        });
+
+        fab_from_input.setOnClickListener(view -> {
+
+            Intent intent = new Intent(Intent.ACTION_INSERT);
+            intent.setType(ContactsContract.Contacts.CONTENT_TYPE);
+            // Sets the special extended data for navigation
+            intent.putExtra("finishActivityOnSaveCompleted", true);
+            startActivityForResult(intent, INSERT_CONTACT_REQUEST);
         });
 
         RecyclerView recyclerView = findViewById(R.id.recycler_view);
@@ -76,6 +106,20 @@ public class ToBeSecureCommunicationOriginsActivity extends AppCompatActivity {
             communicationOrigins.remove(position);
             communicationOriginsRecyclerViewAdapter.updateList(communicationOrigins);
         });
+    }
+
+    private void showFABMenu() {
+
+        isFABOpen = true;
+        fab_from_contacts.animate().translationY(-getResources().getDimension(R.dimen.standard_55));
+        fab_from_input.animate().translationY(-getResources().getDimension(R.dimen.standard_105));
+    }
+
+    private void closeFABMenu() {
+
+        isFABOpen = false;
+        fab_from_contacts.animate().translationY(0);
+        fab_from_input.animate().translationY(0);
     }
 
     private void addPhoneNumberToDb(String name, String phoneNumber) {
@@ -116,6 +160,34 @@ public class ToBeSecureCommunicationOriginsActivity extends AppCompatActivity {
                 }
                 Objects.requireNonNull(cursor).close();
             }
+        } else if (requestCode == INSERT_CONTACT_REQUEST) {
+
+            // Make sure the request was successful
+            if (resultCode == RESULT_OK) {
+
+//                ContentResolver cr = getContentResolver();
+//                Cursor cursor = cr.query(Objects.requireNonNull(Objects.requireNonNull(data).getData()), null, null, null, null);
+//                if (cursor != null && cursor.moveToFirst()) {
+//                    String name = cursor.getString(cursor.getColumnIndex(ContactsContract.Contacts.DISPLAY_NAME));
+//                    String id = cursor.getString(cursor.getColumnIndex(ContactsContract.Contacts._ID));
+//                    if (cursor.getInt(cursor.getColumnIndex(ContactsContract.Contacts.HAS_PHONE_NUMBER)) > 0) {
+//                        //Has phoneNumber
+//                        Cursor pCur = cr.query(ContactsContract.CommonDataKinds.Phone.CONTENT_URI, null, ContactsContract.CommonDataKinds.Phone.CONTACT_ID + " = ?", new String[]{id}, null);
+//                        while (pCur != null && pCur.moveToNext()) {
+//                            String phoneNo = pCur.getString(pCur.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER));
+//                            Log.d("SteveMoretz", "NAME : " + name + " phoneNo : " + phoneNo);
+//                        }
+//                        if (pCur != null) {
+//                            pCur.close();
+//                        }
+//                    }
+//                } else {
+//                    Toast.makeText(getApplicationContext(), "User canceled adding contacts", Toast.LENGTH_SHORT).show();
+//                }
+//                if (cursor != null) {
+//                    cursor.close();
+//                }
+            }
         }
     }
 
@@ -131,7 +203,7 @@ public class ToBeSecureCommunicationOriginsActivity extends AppCompatActivity {
         SearchManager searchManager = (SearchManager) this.getSystemService(SEARCH_SERVICE);
         searchView.setSearchableInfo(Objects.requireNonNull(searchManager).getSearchableInfo(this.getComponentName()));
 
-        //changing edittext color
+        //changing edit text color
         EditText searchEdit = searchView.findViewById(androidx.appcompat.R.id.search_src_text);
         searchEdit.setTextColor(Color.WHITE);
         searchEdit.setHintTextColor(Color.WHITE);
