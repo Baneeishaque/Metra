@@ -1,10 +1,10 @@
-package com.example.metra;
+package com.example.common;
 
 import android.util.Log;
 
 public class LogUtils {
 
-    static void debug(String message) {
+    public static void debug(String message) {
         Log.d(ApplicationDetails.applicationName, message);
     }
 }

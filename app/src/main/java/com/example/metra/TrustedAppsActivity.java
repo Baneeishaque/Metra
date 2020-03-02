@@ -21,12 +21,15 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.buzz.vpn.MainActivity;
+import com.example.common.DatabaseHelper;
+import com.example.common.LogUtils;
+import com.example.common.TrustedApp;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.ArrayList;
 import java.util.Objects;
 
-public class UnTrustedAppsActivity extends AppCompatActivity {
+public class TrustedAppsActivity extends AppCompatActivity {
 
     Context activityContext = this;
     private static final int PICK_UNTRUSTED_APPLICATION_REQUEST = 1;
@@ -51,9 +54,9 @@ public class UnTrustedAppsActivity extends AppCompatActivity {
         RecyclerView recyclerView = findViewById(R.id.recycler_view);
         communicationOrigins.clear();
         DatabaseHelper trustedAppsDatabaseHelper = new DatabaseHelper(this);
-        ArrayList<UnTrustedApp> unTrustedApps = trustedAppsDatabaseHelper.getAllTrustedApps();
-        for (UnTrustedApp unTrustedApp : unTrustedApps) {
-            communicationOrigins.add(unTrustedApp.getApp_name());
+        ArrayList<TrustedApp> trustedApps = trustedAppsDatabaseHelper.getAllTrustedApps();
+        for (TrustedApp trustedApp : trustedApps) {
+            communicationOrigins.add(trustedApp.getApp_name());
         }
         communicationOriginsRecyclerViewAdapter = new ApplicationsRecyclerViewAdapterWithDelete(activityContext, communicationOrigins);
         recyclerView.setHasFixedSize(true);
@@ -181,7 +184,7 @@ public class UnTrustedAppsActivity extends AppCompatActivity {
                 LogUtils.debug(application + " Added to Trusted DB...");
 
                 //TODO : To Activity Utils
-                startActivity(new Intent(activityContext, UnTrustedAppsActivity.class));
+                startActivity(new Intent(activityContext, TrustedAppsActivity.class));
                 ((AppCompatActivity) activityContext).finish();
 
                 LogUtils.debug("Picked Application is : " + application);

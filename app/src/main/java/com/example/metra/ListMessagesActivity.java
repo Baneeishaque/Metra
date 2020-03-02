@@ -30,6 +30,9 @@ import androidx.core.view.MenuItemCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.common.DatabaseHelper;
+import com.example.common.LogUtils;
+import com.example.common.Sms;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.ArrayList;
@@ -339,7 +342,7 @@ public class ListMessagesActivity extends AppCompatActivity {
 
         } else if (item.getItemId() == R.id.trusted_apps) {
 
-            startActivity(new Intent(this, UnTrustedAppsActivity.class));
+            startActivity(new Intent(this, TrustedAppsActivity.class));
         }
         return super.onOptionsItemSelected(item);
     }

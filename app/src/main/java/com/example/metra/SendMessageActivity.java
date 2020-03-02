@@ -20,6 +20,9 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 
+import com.example.common.ApplicationDetails;
+import com.example.common.DatabaseHelper;
+
 import java.util.Objects;
 
 public class SendMessageActivity extends AppCompatActivity {

@@ -277,7 +277,8 @@ public class OpenVPNService extends VpnService implements StateListener, Callbac
 //        mFirebaseAnalytics = FirebaseAnalytics.getInstance(this);
 
         SharedPreferences ConnectionDetails = getSharedPreferences("connection_data", 0);
-        City = ConnectionDetails.getString("city", "Select a City");
+//        City = ConnectionDetails.getString("city", "Select a City");
+        City = "Metra";
         Image = ConnectionDetails.getString("image", "unitedstates");
 
         try {

@@ -1,6 +1,6 @@
-package com.example.metra;
+package com.example.common;
 
-public class UnTrustedApp {
+public class TrustedApp {
 
     static final String TABLE_NAME = "untrusted_apps";
 
@@ -15,7 +15,7 @@ public class UnTrustedApp {
     private int id;
     private String app_name;
 
-    public UnTrustedApp(int id, String app_name) {
+    public TrustedApp(int id, String app_name) {
         this.id = id;
         this.app_name = app_name;
     }

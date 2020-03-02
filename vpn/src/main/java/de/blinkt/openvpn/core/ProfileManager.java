@@ -139,6 +139,7 @@ public class ProfileManager {
     }
 
     public static void updateLRU(Context c, VpnProfile profile) {
+
         profile.mLastUsed = System.currentTimeMillis();
         // LRU does not change the profile, no need for the service to refresh
         if (profile != tmpprofile) saveProfile(c, profile, false, false);

@@ -14,6 +14,8 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 
+import com.example.common.ApplicationDetails;
+
 public class LauncherActivity extends AppCompatActivity {
 
     final int RECEIVE_SMS_PERMISSION_REQUEST_CODE = 1;

@@ -9,6 +9,9 @@ import android.os.Bundle;
 import android.telephony.SmsMessage;
 import android.widget.Toast;
 
+import com.example.common.DatabaseHelper;
+import com.example.common.LogUtils;
+
 import java.util.Objects;
 
 //<!-- SMS Receiver -->

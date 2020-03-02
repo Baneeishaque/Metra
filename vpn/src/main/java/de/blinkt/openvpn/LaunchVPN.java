@@ -69,6 +69,7 @@ import de.blinkt.openvpn.core.VpnStatus;
  * or start a particular operation.
  */
 public class LaunchVPN extends Activity {
+
     public static final String EXTRA_KEY = "de.blinkt.openvpn.shortcutProfileUUID";
     public static final String EXTRA_NAME = "de.blinkt.openvpn.shortcutProfileName";
     public static final String EXTRA_HIDELOG = "de.blinkt.openvpn.showNoLogWindow";
@@ -79,9 +80,12 @@ public class LaunchVPN extends Activity {
     private boolean mCmfixed = false;
     private String mTransientAuthPW;
     private String mTransientCertOrPCKS12PW;
+
     private ServiceConnection mConnection = new ServiceConnection() {
+
         @Override
         public void onServiceConnected(ComponentName componentName, IBinder binder) {
+
             IServiceStatus service = IServiceStatus.Stub.asInterface(binder);
             try {
                 if (mTransientAuthPW != null)
@@ -107,6 +111,7 @@ public class LaunchVPN extends Activity {
     }
 
     protected void startVpnFromIntent() {
+
         // Resolve the intent
         //DataObj.str_network = "Establish Connection";
         //DataObj.bl_continue = true;
@@ -137,6 +142,7 @@ public class LaunchVPN extends Activity {
     }
 
     private void askForPW(final int type) {
+
         final EditText entry = new EditText(this);
         entry.setSingleLine();
         entry.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
@@ -194,13 +200,19 @@ public class LaunchVPN extends Activity {
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+
         super.onActivityResult(requestCode, resultCode, data);
+
         if (requestCode == START_VPN_PROFILE) {
+
             if (resultCode == Activity.RESULT_OK) {
+
                 int needpw = mSelectedProfile.needUserPWInput(mTransientCertOrPCKS12PW, mTransientAuthPW);
                 if (needpw != 0) {
+
                     VpnStatus.updateStateString("USER_VPN_PASSWORD", "", R.string.state_user_vpn_password, ConnectionStatus.LEVEL_WAITING_FOR_USER_INPUT);
                     askForPW(needpw);
+
                 } else {
                     SharedPreferences prefs = Preferences.getDefaultSharedPreferences(this);
                     boolean showLogWindow = prefs.getBoolean("showlogwindow", true);
@@ -210,6 +222,7 @@ public class LaunchVPN extends Activity {
                     finish();
                 }
             } else if (resultCode == Activity.RESULT_CANCELED) {
+
                 // User does not want us to start, so we just vanish
                 VpnStatus.updateStateString("USER_VPN_PERMISSION_CANCELLED", "", R.string.state_user_vpn_permission_cancelled, ConnectionStatus.LEVEL_NOTCONNECTED);
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N)
@@ -255,6 +268,7 @@ public class LaunchVPN extends Activity {
     }
 
     void launchVPN() {
+
         int vpnok = mSelectedProfile.checkProfile(this);
         if (vpnok != R.string.no_error_found) {
             showConfigErrorDialog(vpnok);
@@ -273,7 +287,9 @@ public class LaunchVPN extends Activity {
             VpnStatus.updateStateString("USER_VPN_PERMISSION", "", R.string.state_user_vpn_permission, ConnectionStatus.LEVEL_WAITING_FOR_USER_INPUT);
             // Start the query
             try {
+
                 startActivityForResult(intent, START_VPN_PROFILE);
+
             } catch (ActivityNotFoundException ane) {
                 // Shame on you Sony! At least one user reported that
                 // an official Sony Xperia Arc S image triggers this exception

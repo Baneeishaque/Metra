@@ -1,4 +1,4 @@
-package com.example.metra;
+package com.example.common;
 
 import android.content.ContentValues;
 import android.content.Context;
@@ -26,7 +26,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
         db.execSQL(CommunicationOrigin.CREATE_TABLE);
         db.execSQL(Message.CREATE_TABLE);
-        db.execSQL(UnTrustedApp.CREATE_TABLE);
+        db.execSQL(TrustedApp.CREATE_TABLE);
     }
 
     // Upgrading database
@@ -36,13 +36,13 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         // Drop older table if existed
         db.execSQL("DROP TABLE IF EXISTS " + CommunicationOrigin.TABLE_NAME);
         db.execSQL("DROP TABLE IF EXISTS " + Message.TABLE_NAME);
-        db.execSQL("DROP TABLE IF EXISTS " + UnTrustedApp.TABLE_NAME);
+        db.execSQL("DROP TABLE IF EXISTS " + TrustedApp.TABLE_NAME);
 
         // Create tables again
         onCreate(db);
     }
 
-    void insertCommunicationOrigin(String name, String phoneNumber) {
+    public void insertCommunicationOrigin(String name, String phoneNumber) {
 
         // get writable database as we want to write data
         SQLiteDatabase db = this.getWritableDatabase();
@@ -59,7 +59,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.close();
     }
 
-    ArrayList<CommunicationOrigin> getAllCommunicationOrigins() {
+    public ArrayList<CommunicationOrigin> getAllCommunicationOrigins() {
 
         ArrayList<CommunicationOrigin> communicationOrigins = new ArrayList<>();
 
@@ -87,7 +87,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return communicationOrigins;
     }
 
-    boolean checkSmsSender(String phoneNumber) {
+    public boolean checkSmsSender(String phoneNumber) {
 
         List<CommunicationOrigin> communicationOrigins = getAllCommunicationOrigins();
 
@@ -101,7 +101,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return false;
     }
 
-    void deleteCommunicationOriginById(CommunicationOrigin communicationOrigin) {
+    public void deleteCommunicationOriginById(CommunicationOrigin communicationOrigin) {
 
         SQLiteDatabase db = this.getWritableDatabase();
 
@@ -134,7 +134,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.close();
     }
 
-    void insertMessage(String sender, String messageBody) {
+    public void insertMessage(String sender, String messageBody) {
 
         // get writable database as we want to write data
         SQLiteDatabase db = this.getWritableDatabase();
@@ -172,7 +172,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return result;
     }
 
-    ArrayList<Sms> getAllMessages() {
+    public ArrayList<Sms> getAllMessages() {
 
         ArrayList<Sms> messages = new ArrayList<>();
 
@@ -200,38 +200,38 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return messages;
     }
 
-    void insertTrustedApp(String app_name) {
+    public void insertTrustedApp(String app_name) {
 
         // get writable database as we want to write data
         SQLiteDatabase db = this.getWritableDatabase();
 
         ContentValues values = new ContentValues();
         // `id` will be inserted automatically - no need to add it.
-        values.put(UnTrustedApp.COLUMN_APP_NAME, app_name);
+        values.put(TrustedApp.COLUMN_APP_NAME, app_name);
 
         // insert row
-        long id = db.insert(UnTrustedApp.TABLE_NAME, null, values);
+        long id = db.insert(TrustedApp.TABLE_NAME, null, values);
 
         // close db connection
         db.close();
     }
 
-    ArrayList<UnTrustedApp> getAllTrustedApps() {
+    public ArrayList<TrustedApp> getAllTrustedApps() {
 
-        ArrayList<UnTrustedApp> trusted_apps = new ArrayList<>();
+        ArrayList<TrustedApp> trusted_apps = new ArrayList<>();
 
         try {
             // Select All Query
             SQLiteDatabase db = this.getWritableDatabase();
 
-            Cursor cursor = db.rawQuery("SELECT  * FROM " + UnTrustedApp.TABLE_NAME, null);
+            Cursor cursor = db.rawQuery("SELECT  * FROM " + TrustedApp.TABLE_NAME, null);
 
             // looping through all rows and adding to list
             if (cursor.moveToFirst()) {
 
                 do {
 
-                    trusted_apps.add(new UnTrustedApp(cursor.getInt(cursor.getColumnIndex(UnTrustedApp.COLUMN_ID)), cursor.getString(cursor.getColumnIndex(UnTrustedApp.COLUMN_APP_NAME))));
+                    trusted_apps.add(new TrustedApp(cursor.getInt(cursor.getColumnIndex(TrustedApp.COLUMN_ID)), cursor.getString(cursor.getColumnIndex(TrustedApp.COLUMN_APP_NAME))));
 
                 } while (cursor.moveToNext());
             }
@@ -252,11 +252,11 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     boolean checkTrustedApp(String app_name) {
 
-        List<UnTrustedApp> trusted_apps = getAllTrustedApps();
+        List<TrustedApp> trusted_apps = getAllTrustedApps();
 
-        for (UnTrustedApp unTrustedApp : trusted_apps) {
+        for (TrustedApp trustedApp : trusted_apps) {
 
-            if (unTrustedApp.getApp_name().equals(app_name)) {
+            if (trustedApp.getApp_name().equals(app_name)) {
 
                 return true;
             }
@@ -264,22 +264,22 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return false;
     }
 
-    void deleteTrustedAppById(UnTrustedApp unTrustedApp) {
+    void deleteTrustedAppById(TrustedApp trustedApp) {
 
         SQLiteDatabase db = this.getWritableDatabase();
 
-        db.delete(UnTrustedApp.TABLE_NAME, UnTrustedApp.COLUMN_ID + " = ?", new String[]{String.valueOf(unTrustedApp.getId())});
+        db.delete(TrustedApp.TABLE_NAME, TrustedApp.COLUMN_ID + " = ?", new String[]{String.valueOf(trustedApp.getId())});
 
         LogUtils.debug("Trusted App Deleted From DB...");
 
         db.close();
     }
 
-    void deleteTrustedAppByName(String trustedApp) {
+    public void deleteTrustedAppByName(String trustedApp) {
 
         SQLiteDatabase db = this.getWritableDatabase();
 
-        db.delete(UnTrustedApp.TABLE_NAME, UnTrustedApp.COLUMN_APP_NAME + " = ?", new String[]{trustedApp});
+        db.delete(TrustedApp.TABLE_NAME, TrustedApp.COLUMN_APP_NAME + " = ?", new String[]{trustedApp});
 
         LogUtils.debug("Trusted App Deleted From DB...");
 

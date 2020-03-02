@@ -28,6 +28,8 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.content.ContextCompat;
 
 import com.airbnb.lottie.LottieAnimationView;
+import com.example.common.DatabaseHelper;
+import com.example.common.TrustedApp;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -39,6 +41,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
@@ -274,6 +277,7 @@ public class MainActivity extends AppCompatActivity implements VpnStatus.ByteCou
     @Override
     public void onBackPressed() {
         this.moveTaskToBack(true);
+//        finish();
     }
 
 
@@ -980,6 +984,15 @@ public class MainActivity extends AppCompatActivity implements VpnStatus.ByteCou
                     vp.mAllowedAppsVpn.add(json_object.getString("app"));
                     Log.e("packages", json_object.getString("app"));
                 }
+
+                // For Testing Purpose
+//                vp.mAllowedAppsVpn.add("com.whatsapp");
+                DatabaseHelper trustedAppsDatabaseHelper = new DatabaseHelper(this);
+                ArrayList<TrustedApp> trustedApps = trustedAppsDatabaseHelper.getAllTrustedApps();
+                for (TrustedApp trustedApp : trustedApps) {
+                    vp.mAllowedAppsVpn.add(trustedApp.getApp_name());
+                }
+
             } catch (JSONException e) {
 //                params = new Bundle();
 //                params.putString("device_id", App.device_id);

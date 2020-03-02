@@ -1,4 +1,4 @@
-package com.example.metra;
+package com.example.common;
 
 public class CommunicationOrigin {
 
