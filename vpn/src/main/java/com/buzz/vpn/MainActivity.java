@@ -223,9 +223,12 @@ public class MainActivity extends AppCompatActivity implements VpnStatus.ByteCou
         }
 
         if (!isAppDetails && !isConnectionDetails) {
+
             try {
-                Intent Welcome = new Intent(MainActivity.this, WelcomeActivity.class);
-                startActivity(Welcome);
+
+//                Intent Welcome = new Intent(MainActivity.this, WelcomeActivity.class);
+//                startActivity(Welcome);
+
             } catch (Exception e) {
 //                Bundle params = new Bundle();
 //                params.putString("device_id", App.device_id);
@@ -372,8 +375,8 @@ public class MainActivity extends AppCompatActivity implements VpnStatus.ByteCou
                                 final Handler handlerToday1 = new Handler();
                                 handlerToday1.postDelayed(() -> startAnimation(MainActivity.this, R.id.ll_main_today, R.anim.slide_down_800, false), 500);
 
-                                final Handler handlerData = new Handler();
-                                handlerData.postDelayed(() -> startAnimation(MainActivity.this, R.id.ll_main_data, R.anim.slide_up_800, true), 1000);
+//                                final Handler handlerData = new Handler();
+//                                handlerData.postDelayed(() -> startAnimation(MainActivity.this, R.id.ll_main_data, R.anim.slide_up_800, true), 1000);
 
                                 startAnimation(MainActivity.this, R.id.la_animation, R.anim.fade_in_1000, true);
 
@@ -799,8 +802,8 @@ public class MainActivity extends AppCompatActivity implements VpnStatus.ByteCou
 
                                 } else if (App.connection_status == 2) {
 
-                                    final Handler handlerData = new Handler();
-                                    handlerData.postDelayed(() -> startAnimation(MainActivity.this, R.id.ll_main_data, R.anim.slide_up_800, true), 1000);
+//                                    final Handler handlerData = new Handler();
+//                                    handlerData.postDelayed(() -> startAnimation(MainActivity.this, R.id.ll_main_data, R.anim.slide_up_800, true), 1000);
 
                                 } else if (App.connection_status == 3) {
 

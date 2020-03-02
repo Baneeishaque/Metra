@@ -29,6 +29,7 @@ import java.util.Random;
 
 
 public class WelcomeActivity extends AppCompatActivity {
+
     TextView tv_welcome_status, tv_welcome_app;
     String StringGetAppURL, StringGetConnectionURL, AppDetails, FileDetails;
     SharedPreferences SharedAppDetails;
@@ -43,6 +44,7 @@ public class WelcomeActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_welcome);
 
