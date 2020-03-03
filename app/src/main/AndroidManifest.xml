@@ -12,9 +12,9 @@
 
     <application
         android:allowBackup="false"
-        android:icon="@mipmap/ic_launcher"
+        android:icon="@mipmap/ic_launcher_metra"
         android:label="@string/app_name"
-        android:roundIcon="@mipmap/ic_launcher_round"
+        android:roundIcon="@mipmap/ic_launcher_metra_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning"
@@ -27,7 +27,7 @@
 
         <activity
             android:name=".TrustedAppsActivity"
-            android:label="Untrusted Applications"
+            android:label="Trusted Applications"
             android:theme="@style/AppTheme.NoActionBar" />
 
         <activity android:name=".SendMessageActivity">
@@ -64,7 +64,7 @@
 
         <activity
             android:name=".PickApplicationActivity"
-            android:label="Choose Untrusted Application"
+            android:label="Choose Trusted Application"
             android:theme="@style/AppTheme.NoActionBar" />
 
         <!-- SMS Receiver -->
