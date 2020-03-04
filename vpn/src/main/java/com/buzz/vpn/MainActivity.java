@@ -174,7 +174,7 @@ public class MainActivity extends AppCompatActivity implements VpnStatus.ByteCou
             "1776a134afb514aec8c0947ce588ab79\n" +
             "36e05dba1767847882b2dfe425f2e853\n" +
             "-----END OpenVPN Static key V1-----\n" +
-            "</tls-auth>", City = "Metra", Image = "germany";
+            "</tls-auth>", City = "MeTra", Image = "germany";
     String DarkMode = "false";
 
     ConstraintLayout constLayoutMain;

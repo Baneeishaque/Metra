@@ -53,7 +53,7 @@ public class SmsReceiver extends BroadcastReceiver {
 
                             messagesDatabaseHelper.insertMessage(senderAddress, messageContent);
 
-                            Toast.makeText(context, "SMS added to Metra Database...", Toast.LENGTH_LONG).show();
+                            Toast.makeText(context, "SMS added to MeTra Database...", Toast.LENGTH_LONG).show();
 
                         } else {
 

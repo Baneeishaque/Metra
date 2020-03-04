@@ -278,7 +278,7 @@ public class OpenVPNService extends VpnService implements StateListener, Callbac
 
         SharedPreferences ConnectionDetails = getSharedPreferences("connection_data", 0);
 //        City = ConnectionDetails.getString("city", "Select a City");
-        City = "Metra";
+        City = "MeTra";
         Image = ConnectionDetails.getString("image", "unitedstates");
 
         try {

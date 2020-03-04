@@ -234,7 +234,7 @@ public class ListMessagesActivity extends AppCompatActivity {
 
             // App is not default.
             // Show the "not currently set as the default SMS app" interface
-            new AlertDialog.Builder(this).setTitle("Caution!").setMessage("Metra is not your default SMS application, please correct it...")
+            new AlertDialog.Builder(this).setTitle("Caution!").setMessage("MeTra is not your default SMS application, please correct it...")
                     // Specifying a listener allows you to take an action before dismissing the dialog.
                     // The dialog is automatically dismissed when a dialog button is clicked.
                     .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
