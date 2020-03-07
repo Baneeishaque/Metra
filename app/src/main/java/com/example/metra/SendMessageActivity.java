@@ -24,7 +24,8 @@ import java.util.Objects;
 
 public class SendMessageActivity extends AppCompatActivity {
 
-    final int PIN_ENTER_REQUEST = 2;
+    final int PIN_ENTER_REQUEST_FWD_MSG = 2;
+    final int PIN_ENTER_REQUEST_FWD_NW = 3;
     final int SEND_SMS_PERMISSION_REQUEST_CODE = 1;
 
     Context activityContext = this;
@@ -84,7 +85,9 @@ public class SendMessageActivity extends AppCompatActivity {
 
                     .setPositiveButton(android.R.string.yes, (dialog, which) -> {
 
-                        startActivityForResult(new Intent(this, EnterPinActivity.class), PIN_ENTER_REQUEST);
+                        registerForContextMenu(buttonSend);
+                        openContextMenu(buttonSend);
+                        unregisterForContextMenu(buttonSend);
 
                     })
 
@@ -179,19 +182,11 @@ public class SendMessageActivity extends AppCompatActivity {
 
         if (item.getTitle() == "Forward Via. MSG") {
 
-            sendIt();
+            startActivityForResult(new Intent(this, EnterPinActivity.class), PIN_ENTER_REQUEST_FWD_MSG);
 
         } else if (item.getTitle() == "Forward Via. N/W") {
 
-            Intent sendIntent = new Intent();
-            sendIntent.setAction(Intent.ACTION_SEND);
-            sendIntent.putExtra(Intent.EXTRA_TEXT, editTextMessageBody.getText().toString());
-            sendIntent.setType("text/plain");
-
-            Intent shareIntent = Intent.createChooser(sendIntent, null);
-            startActivity(shareIntent);
-
-            editTextMessageBody.setText("");
+            startActivityForResult(new Intent(this, EnterPinActivity.class), PIN_ENTER_REQUEST_FWD_NW);
         }
         return super.onContextItemSelected(item);
     }
@@ -202,7 +197,7 @@ public class SendMessageActivity extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
 
         // Check which request we're responding to
-        if (requestCode == PIN_ENTER_REQUEST) {
+        if (requestCode == PIN_ENTER_REQUEST_FWD_MSG) {
 
             // Make sure the request was successful
             if (resultCode == RESULT_OK) {
@@ -211,11 +206,30 @@ public class SendMessageActivity extends AppCompatActivity {
 
                 if (Objects.equals(result, "OK")) {
 
-                    registerForContextMenu(buttonSend);
-                    openContextMenu(buttonSend);
-                    unregisterForContextMenu(buttonSend);
+                    sendIt();
+                }
+            }
+        } else if (requestCode == PIN_ENTER_REQUEST_FWD_NW) {
+
+            // Make sure the request was successful
+            if (resultCode == RESULT_OK) {
+
+                String result = data.getStringExtra("result");
+
+                if (Objects.equals(result, "OK")) {
+
+                    Intent sendIntent = new Intent();
+                    sendIntent.setAction(Intent.ACTION_SEND);
+                    sendIntent.putExtra(Intent.EXTRA_TEXT, editTextMessageBody.getText().toString());
+                    sendIntent.setType("text/plain");
+
+                    Intent shareIntent = Intent.createChooser(sendIntent, null);
+                    startActivity(shareIntent);
+
+                    editTextMessageBody.setText("");
                 }
             }
         }
+
     }
 }
