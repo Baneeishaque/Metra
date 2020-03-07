@@ -67,6 +67,11 @@
             android:label="Choose Trusted Application"
             android:theme="@style/AppTheme.NoActionBar" />
 
+        <activity
+            android:name=".EnterPinActivity"
+            android:label="Enter Pin..."
+            android:theme="@style/AppTheme.Dialog" />
+
         <!-- SMS Receiver -->
         <receiver
             android:name=".SmsReceiver"

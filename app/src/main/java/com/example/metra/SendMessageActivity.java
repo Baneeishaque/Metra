@@ -3,11 +3,9 @@ package com.example.metra;
 import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.telephony.SmsManager;
-import android.text.InputType;
 import android.view.ContextMenu;
 import android.view.MenuItem;
 import android.view.View;
@@ -20,13 +18,13 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 
-import com.example.common.ApplicationDetails;
 import com.example.common.DatabaseHelper;
 
 import java.util.Objects;
 
 public class SendMessageActivity extends AppCompatActivity {
 
+    final int PIN_ENTER_REQUEST = 2;
     final int SEND_SMS_PERMISSION_REQUEST_CODE = 1;
 
     Context activityContext = this;
@@ -86,40 +84,8 @@ public class SendMessageActivity extends AppCompatActivity {
 
                     .setPositiveButton(android.R.string.yes, (dialog, which) -> {
 
-                        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-                        builder.setTitle("Enter Pin...");
+                        startActivityForResult(new Intent(this, EnterPinActivity.class), PIN_ENTER_REQUEST);
 
-                        // Set up the input
-                        final EditText input = new EditText(this);
-                        // Specify the type of input expected
-                        input.setInputType(InputType.TYPE_CLASS_NUMBER);
-                        input.setHint("Pin...");
-                        builder.setView(input);
-
-                        // Set up the buttons
-                        builder.setPositiveButton("OK", (dialog2, which2) -> {
-
-                            // Storing data into SharedPreferences
-                            SharedPreferences sharedPreferences = getSharedPreferences(ApplicationDetails.applicationName, MODE_PRIVATE);
-                            String pin = sharedPreferences.getString("pin", "");
-
-                            if (input.getText().toString().equals(pin)) {
-
-//                                openContextMenu(buttonSend);
-
-                                registerForContextMenu(buttonSend);
-                                openContextMenu(buttonSend);
-                                unregisterForContextMenu(buttonSend);
-
-                            } else {
-
-                                Toast.makeText(this, "Invalid Pin...", Toast.LENGTH_LONG).show();
-                            }
-
-                        });
-
-                        builder.setCancelable(false);
-                        builder.show();
                     })
 
                     .setNegativeButton(android.R.string.no, (dialog, which) -> {
@@ -145,7 +111,9 @@ public class SendMessageActivity extends AppCompatActivity {
     }
 
     private void getPermissionToSendSMS() {
+
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.SEND_SMS) != PackageManager.PERMISSION_GRANTED) {
+
             if (shouldShowRequestPermissionRationale(Manifest.permission.SEND_SMS)) {
                 Toast.makeText(this, "Please allow permission! - Send SMS", Toast.LENGTH_SHORT).show();
             } else {
@@ -226,5 +194,28 @@ public class SendMessageActivity extends AppCompatActivity {
             editTextMessageBody.setText("");
         }
         return super.onContextItemSelected(item);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+
+        super.onActivityResult(requestCode, resultCode, data);
+
+        // Check which request we're responding to
+        if (requestCode == PIN_ENTER_REQUEST) {
+
+            // Make sure the request was successful
+            if (resultCode == RESULT_OK) {
+
+                String result = data.getStringExtra("result");
+
+                if (Objects.equals(result, "OK")) {
+
+                    registerForContextMenu(buttonSend);
+                    openContextMenu(buttonSend);
+                    unregisterForContextMenu(buttonSend);
+                }
+            }
+        }
     }
 }
